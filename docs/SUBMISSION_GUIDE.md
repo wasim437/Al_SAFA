@@ -94,10 +94,32 @@ How the park is organised — rooms, thresholds, and the spine that links them.
 | **Files** | `Al_Safa_2_Park_3D_Spatial_Visualizations.pdf` (8.6 MB) plus aerial day/night, eye-level spine and plaza, thermal comfort heatmap |
 | **Backed by** | Renders are AI-generated illustrations; the **thermal comfort heatmap is computed**, not illustrated — see [`figures/fig04_site_comfort_map.png`](../figures/fig04_site_comfort_map.png) |
 
-> **Before submitting:** label clearly which images are *illustrative renders* and
-> which are *computed analysis*. Conflating the two is the fastest way to lose a
-> technically literate juror. The comfort map is real output; the golden-hour
-> aerial is an impression.
+> ### ⚠️ The renders show a different park from the plans
+>
+> This is the most serious unresolved issue in the submission. The photoreal JPGs
+> show a **curved, oval park with a large water lagoon** under a hexagonal lattice
+> shell. The plans, the diagrams and **every number in the analysis** describe a
+> **rectangular 150 × 100 m site with a straight 140 m spine and no water**.
+>
+> They are not two views of one design. A juror will see it immediately — and the
+> lagoon also contradicts the water-scarcity argument in slot 08 (5,700 m³/yr
+> irrigation, 43% recycled).
+>
+> **Also:** `aerial_day.png`, `aerial_night.png` and the `eyelevel_*.png` files are
+> script-drawn diagrams sitting next to photoreal renders of the same subject.
+> They are the weakest images in the submission and they make the mismatch louder.
+>
+> **Three ways out, in order of strength:**
+> 1. Regenerate the photoreal renders to match the analysed scheme, so plans,
+>    renders and numbers all describe one park.
+> 2. Redo the analysis geometry to match the curved render — defensible, but it
+>    invalidates the current shade, comfort and cost figures until re-run.
+> 3. Drop the weak script-drawn PNGs, keep the photoreal set, and caption them
+>    *"artistic impression — illustrative of concept intent"* with the plans
+>    labelled *"technical drawing, to scale"*. Cheapest; the mismatch remains.
+>
+> The 60-second film in slot 12 already shows the **analysed** scheme, so it is
+> consistent with the numbers.
 
 ---
 
@@ -203,24 +225,31 @@ an image generator. This submission can show a reproducible analysis pipeline.
 ---
 
 ## 12 · Concept Animation Video
-**Portal accepts:** ZIP, PDF · **Status:** ⚠️ **not yet produced**
+**Portal accepts:** ZIP, PDF · **Status:** ✅ **film built — needs screen-recording to MP4**
 
 | | |
 |---|---|
-| **Files present** | `Concept_Animation_Storyboard.pdf` / `.docx`, `README_VIDEO.txt` |
-| **Missing** | The 60-second video itself |
+| **Files** | `concept_film.html` — the 60-second film, `Concept_Animation_Storyboard.pdf` / `.docx` |
+| **Backed by** | Every frame is drawn from the project's own analysis: the same 8,760-hour solar model, the same 150 × 100 m plan geometry, the same 131 trees |
 
-This slot is **optional** on the portal. The storyboard alone is a legitimate
-submission if time runs short — but a short film is the single highest-leverage
-remaining item, because the shortlist goes to a **community vote**, and a
-community votes on what it can see and feel, not on an R² score.
+The film runs exactly 60 seconds across five scenes: the heat (0–10s), the spine
+building itself (10–25s), a walk beneath the canopy (25–40s), the computed
+comfort map resolving (40–50s), and the park in evening use (50–60s).
 
-**If you make it, the 60 seconds that would work:**
-`0–10s` the problem — an empty park at 42 °C ·
-`10–25s` the spine appears, shadow sweeping across the plan ·
-`25–40s` eye-level walk through the shaded corridor ·
-`40–50s` the comfort map resolving from red to blue ·
-`50–60s` evening, the park in use.
+**To turn it into the MP4 the portal wants:**
+
+1. Open `concept_film.html` full-screen in a browser.
+2. Start a screen recording — `Win + Alt + R` on Windows, `Shift + Cmd + 5` on macOS.
+3. Press **Restart** and let all sixty seconds run.
+4. Stop, trim the ends, add a voiceover if you want one.
+5. Upload the MP4.
+
+This slot is **optional** on the portal, but it is the highest-leverage item you
+have: the shortlist goes to a **community vote**, and a community votes on what
+it can see, not on an R² score.
+
+> The film deliberately shows the *analysed* scheme — straight spine, rectangular
+> site, no water feature. See the note under slot 05 about why that matters.
 
 ---
 

@@ -1,0 +1,675 @@
+<title>Al Safa 2 Park — 60-Second Concept Film</title>
+<style>
+  :root {
+    --ground:  #0E0C0A;
+    --sun:     #FFB627;
+    --heat:    #D0561F;
+    --shade:   #4A7C7E;
+    --bone:    #EDE6DA;
+
+    --page:    #F2EFE9;
+    --panel:   #FFFFFF;
+    --ink:     #17150F;
+    --ink-2:   #57534A;
+    --ink-3:   #8A857A;
+    --rule:    #DED8CC;
+
+    --display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+
+    --frame-max: 1180px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --page: #0B0A09; --panel: #151310; --ink: #F4F1EA;
+      --ink-2: #A8A296; --ink-3: #6E6A61; --rule: #2A2620;
+    }
+  }
+  :root[data-theme="dark"] {
+    --page: #0B0A09; --panel: #151310; --ink: #F4F1EA;
+    --ink-2: #A8A296; --ink-3: #6E6A61; --rule: #2A2620;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font-family: var(--display);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--frame-max); margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- masthead ---------- */
+  header { padding: 44px 0 22px; }
+  .kicker {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-3); margin: 0 0 14px;
+  }
+  h1 {
+    margin: 0; font-size: clamp(30px, 5.4vw, 52px); line-height: .98;
+    letter-spacing: -.035em; font-weight: 700; text-wrap: balance;
+  }
+  h1 span { color: var(--ink-3); }
+  .standfirst {
+    margin: 14px 0 0; max-width: 60ch; color: var(--ink-2);
+    font-size: 16px; line-height: 1.6;
+  }
+
+  /* ---------- the film ---------- */
+  .film {
+    position: relative; margin: 26px 0 0; background: var(--ground);
+    border-radius: 3px; overflow: hidden; aspect-ratio: 16 / 9;
+    box-shadow: 0 24px 60px -28px rgba(0,0,0,.6);
+  }
+  .film canvas { display: block; width: 100%; height: 100%; }
+
+  .overlay {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background: rgba(14,12,10,.55); cursor: pointer; border: 0;
+    color: var(--bone); font-family: var(--display); gap: 0;
+  }
+  .overlay[hidden] { display: none; }
+  .play-mark {
+    width: 74px; height: 74px; border-radius: 50%;
+    border: 1.5px solid rgba(237,230,218,.65); display: grid; place-items: center;
+    transition: transform .25s ease, background .25s ease;
+  }
+  .overlay:hover .play-mark { transform: scale(1.07); background: rgba(237,230,218,.10); }
+  .play-mark::after {
+    content: ""; width: 0; height: 0; margin-left: 5px;
+    border-left: 17px solid var(--bone);
+    border-top: 11px solid transparent; border-bottom: 11px solid transparent;
+  }
+  .overlay p {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; margin: 16px 0 0; color: rgba(237,230,218,.8);
+  }
+
+  /* ---------- transport ---------- */
+  .transport {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 2px 0; border-bottom: 1px solid var(--rule); padding-bottom: 16px;
+  }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; background: none; color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 2px; padding: 8px 13px;
+    cursor: pointer; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--ink-3); }
+  .btn:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+  .tc {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-2);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+
+  .rail { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; flex: 1; }
+  .seg {
+    position: relative; background: none; border: 0; padding: 0; cursor: pointer;
+    text-align: left; color: var(--ink-3); font-family: var(--mono);
+    font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+  }
+  .seg .bar {
+    display: block; height: 3px; background: var(--rule); margin-bottom: 7px;
+    overflow: hidden;
+  }
+  .seg .bar i { display: block; height: 100%; width: 0; background: var(--sun); }
+  .seg.on { color: var(--ink); }
+  .seg:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; }
+  .seg .lbl { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ---------- data strip ---------- */
+  .data { padding: 26px 0 8px; }
+  .data h2 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 400; margin: 0 0 16px;
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule);
+  }
+  .cell { background: var(--panel); padding: 16px 16px 15px; }
+  .cell .v {
+    font-family: var(--mono); font-size: 25px; letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums; line-height: 1;
+  }
+  .cell .v.up { color: var(--shade); }
+  .cell .v.hot { color: var(--heat); }
+  .cell .l { font-size: 12px; color: var(--ink-2); margin-top: 8px; line-height: 1.45; }
+
+  .notes { padding: 30px 0 60px; display: grid; gap: 22px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .notes { grid-template-columns: 1.25fr 1fr; gap: 46px; } }
+  .notes h3 { font-size: 15px; margin: 0 0 8px; letter-spacing: -.01em; }
+  .notes p { margin: 0 0 12px; color: var(--ink-2); font-size: 14.5px; line-height: 1.65; max-width: 62ch; }
+  .notes code {
+    font-family: var(--mono); font-size: 12.5px; background: var(--panel);
+    border: 1px solid var(--rule); padding: 1px 5px; border-radius: 2px;
+  }
+  .notes ol { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 14.5px; line-height: 1.7; }
+  .notes li { margin-bottom: 5px; }
+  footer {
+    border-top: 1px solid var(--rule); padding: 20px 0 50px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .05em;
+    color: var(--ink-3); line-height: 1.8;
+  }
+  @media (prefers-reduced-motion: reduce) { .play-mark { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="kicker">Dubai Municipality · AI Park Design Challenge · Submission 12</p>
+    <h1>The Shaded Spine<br><span>Al Safa 2 Park in sixty seconds</span></h1>
+    <p class="standfirst">
+      Every frame below is drawn from the project's own analysis — the same 8,760-hour
+      solar model, the same 150 × 100 m plan, the same 131 trees. Nothing here is an
+      artist's impression of a different park.
+    </p>
+  </header>
+
+  <div class="film">
+    <canvas id="stage" width="1600" height="900" role="img"
+            aria-label="Sixty-second animated concept film for Al Safa 2 Park, showing the site in extreme heat, the shaded spine being built, a walk beneath the canopy, the computed comfort map, and the park in evening use."></canvas>
+    <button class="overlay" id="opener" aria-label="Play the sixty-second concept film">
+      <span class="play-mark"></span>
+      <p>Play · 60 seconds</p>
+    </button>
+  </div>
+
+  <div class="transport">
+    <button class="btn" id="toggle">Pause</button>
+    <button class="btn" id="restart">Restart</button>
+    <div class="rail" id="rail"></div>
+    <span class="tc" id="tc">00:00 / 01:00</span>
+  </div>
+
+  <section class="data">
+    <h2>What the film asserts, and what computed it</h2>
+    <div class="grid">
+      <div class="cell"><div class="v hot">42.1 °C</div><div class="l">August mean daily maximum — NCM normals, 39-year record</div></div>
+      <div class="cell"><div class="v hot">56.8 °C</div><div class="l">Peak heat index, exposed</div></div>
+      <div class="cell"><div class="v up">48.7 °C</div><div class="l">Peak heat index, under canopy</div></div>
+      <div class="cell"><div class="v">44.5 %</div><div class="l">Daylight hours comfortable today</div></div>
+      <div class="cell"><div class="v up">64.6 %</div><div class="l">Daylight hours comfortable as designed</div></div>
+      <div class="cell"><div class="v">69.6 %</div><div class="l">Annual shade on the spine — canopy plus tree avenue</div></div>
+      <div class="cell"><div class="v">131</div><div class="l">Trees, five species, from the planting schedule</div></div>
+      <div class="cell"><div class="v">7,640</div><div class="l">Residents within a 10-minute walk</div></div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div>
+      <h3>On the shade figure</h3>
+      <p>
+        An earlier draft of this project claimed 99.2% annual shade on the spine. It does not
+        survive a geometric check: a flat 9 m canopy at 5.5 m stops shading a 9 m walkway once
+        the sun is low and to the south, because the shadow slides off the path. Modelled hour
+        by hour across all 4,402 annual daylight hours, the canopy alone gives 60.2%, and the
+        canopy together with its flanking tree avenue gives <strong>69.6%</strong>.
+      </p>
+      <p>
+        The honest number is lower, and it is the better argument — it is what shows the tree
+        avenue is structural to the concept rather than decoration.
+      </p>
+    </div>
+    <div>
+      <h3>To submit this as the required video</h3>
+      <ol>
+        <li>Open this page full-screen.</li>
+        <li>Start a screen recording — <code>Win + Alt + R</code> on Windows, <code>Shift + Cmd + 5</code> on macOS.</li>
+        <li>Press <strong>Restart</strong> and let all sixty seconds run.</li>
+        <li>Stop, trim the ends, add a voiceover if you want one.</li>
+        <li>Upload the MP4 to submission slot 12.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    Al Safa 2 Park · The Shaded Spine · Mohamed Wasim<br>
+    Solar geometry: NREL SPA via pvlib, 25.190°N 55.238°E · Climate: NCM Dubai normals 1977–2015<br>
+    Reproduce every figure: <code>python run_analysis.py</code>
+  </footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const cv = document.getElementById("stage");
+  const ctx = cv.getContext("2d");
+  const W = cv.width, H = cv.height;
+  const DUR = 60;                         // seconds
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const C = {
+    ground: "#0E0C0A", sun: "#FFB627", heat: "#D0561F",
+    shade: "#4A7C7E", bone: "#EDE6DA", deep: "#1B1815",
+  };
+
+  // Five scenes. Order and duration carry the argument: the problem gets ten
+  // seconds, the fix gets fifteen, and the evidence gets ten.
+  const SCENES = [
+    { t0: 0,  t1: 10, name: "The heat" },
+    { t0: 10, t1: 25, name: "The spine" },
+    { t0: 25, t1: 40, name: "Beneath it" },
+    { t0: 40, t1: 50, name: "The proof" },
+    { t0: 50, t1: 60, name: "In use" },
+  ];
+
+  // ---- helpers ----------------------------------------------------------
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const ease  = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
+  const lerp  = (a, b, t) => a + (b - a) * t;
+  // Fade in over `inT`, hold, fade out over `outT`.
+  const win = (t, inT, outT) => Math.min(clamp(t/inT,0,1), clamp((1-t)/outT,0,1));
+
+  function mono(size, weight) {
+    ctx.font = `${weight||400} ${size}px ui-monospace, "SF Mono", Consolas, monospace`;
+  }
+  function disp(size, weight) {
+    ctx.font = `${weight||700} ${size}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+  }
+  function text(str, x, y, a) {
+    ctx.globalAlpha = a === undefined ? 1 : a;
+    ctx.fillText(str, x, y);
+    ctx.globalAlpha = 1;
+  }
+
+  // Site plan: 150 x 100 m mapped into a frame rectangle.
+  const PLAN = { x: 300, y: 210, w: 1000, h: 667 };
+  const mx = m => PLAN.x + (m / 150) * PLAN.w;
+  const my = m => PLAN.y + PLAN.h - (m / 100) * PLAN.h;
+  const ms = m => (m / 150) * PLAN.w;
+
+  // The 131 trees: a double avenue flanking the spine, a biodiversity cluster,
+  // olives in the quiet garden, palms at the two entrances.
+  const TREES = (() => {
+    let s = 7;
+    const rnd = () => (s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    const a = [];
+    for (let i = 0; i < 37; i++) {
+      const x = 8 + (134 * i) / 36;
+      a.push({ x, y: 43.5, r: 5 }, { x, y: 56.5, r: 5 });
+    }
+    for (let i = 0; i < 34; i++) a.push({ x: 28 + rnd()*25, y: 9 + rnd()*34, r: 4.5 });
+    for (let i = 0; i < 11; i++) a.push({ x: 57 + rnd()*19, y: 9 + rnd()*34, r: 3.5 });
+    for (let i = 0; i < 12; i++) a.push({ x: i % 2 ? 147.5 : 2.5, y: 34 + 6*Math.floor(i/2), r: 3 });
+    return a;
+  })();
+
+  const ROOMS = [
+    { x0: 5,   x1: 33.4,  y0: 54.5, y1: 92.8, n: "Children's play" },
+    { x0: 33.4,x1: 56.5,  y0: 54.5, y1: 92.8, n: "Family picnic" },
+    { x0: 56.5,x1: 88.5,  y0: 54.5, y1: 92.8, n: "Community plaza" },
+    { x0: 5,   x1: 26.3,  y0: 7.2,  y1: 45.5, n: "Fitness" },
+    { x0: 26.3,x1: 54.7,  y0: 7.2,  y1: 45.5, n: "Biodiversity" },
+    { x0: 54.7,x1: 77.8,  y0: 7.2,  y1: 45.5, n: "Quiet garden" },
+    { x0: 77.8,x1: 97.3,  y0: 7.2,  y1: 45.5, n: "Kiosks" },
+    { x0: 97.3,x1: 131,   y0: 7.2,  y1: 45.5, n: "Sports lawn" },
+  ];
+
+  function clearFrame(top, bottom) {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, top); g.addColorStop(1, bottom);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
+
+  function caption(line, sub, a) {
+    ctx.textAlign = "left";
+    ctx.fillStyle = C.bone;
+    disp(46, 700);
+    text(line, 96, H - 132, a);
+    if (sub) {
+      ctx.fillStyle = "rgba(237,230,218,.62)";
+      mono(19, 400);
+      text(sub, 96, H - 92, a);
+    }
+  }
+
+  function sourceStamp(a) {
+    ctx.textAlign = "right"; ctx.fillStyle = "rgba(237,230,218,.34)";
+    mono(14, 400);
+    text("NREL SPA · NCM 1977–2015", W - 96, H - 92, a);
+    ctx.textAlign = "left";
+  }
+
+  function drawPlanBase(a, groundCol) {
+    ctx.globalAlpha = a;
+    ctx.fillStyle = groundCol;
+    ctx.fillRect(PLAN.x, PLAN.y, PLAN.w, PLAN.h);
+    ctx.strokeStyle = "rgba(237,230,218,.28)"; ctx.lineWidth = 1.5;
+    ctx.strokeRect(PLAN.x, PLAN.y, PLAN.w, PLAN.h);
+    ctx.globalAlpha = 1;
+  }
+
+  // ---- scene 1 — the heat ------------------------------------------------
+  function sceneHeat(t) {
+    const heatUp = ease(clamp(t / .55, 0, 1));
+    clearFrame(`rgb(${lerp(26,150,heatUp)|0},${lerp(24,58,heatUp)|0},${lerp(22,30,heatUp)|0})`, C.ground);
+
+    // Sun climbing, growing hotter.
+    const sx = lerp(180, W - 240, clamp(t*1.25, 0, 1));
+    const sy = lerp(H*.62, 150, ease(clamp(t*1.25, 0, 1)));
+    const rad = ctx.createRadialGradient(sx, sy, 0, sx, sy, 340);
+    rad.addColorStop(0, `rgba(255,182,39,${.95*heatUp})`);
+    rad.addColorStop(.28, `rgba(208,86,31,${.42*heatUp})`);
+    rad.addColorStop(1, "rgba(208,86,31,0)");
+    ctx.fillStyle = rad; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = C.sun; ctx.globalAlpha = heatUp;
+    ctx.beginPath(); ctx.arc(sx, sy, 42, 0, 7); ctx.fill();
+    ctx.globalAlpha = 1;
+
+    drawPlanBase(clamp(t*3, 0, 1) * .85, `rgba(${lerp(40,120,heatUp)|0},${lerp(34,44,heatUp)|0},28,1)`);
+
+    // Bare site: nothing but heat shimmer.
+    if (!reduce) {
+      ctx.strokeStyle = `rgba(255,182,39,${.10*heatUp})`; ctx.lineWidth = 2;
+      for (let i = 0; i < 26; i++) {
+        const yy = PLAN.y + (i / 25) * PLAN.h;
+        ctx.beginPath();
+        for (let xx = PLAN.x; xx <= PLAN.x + PLAN.w; xx += 22) {
+          ctx.lineTo(xx, yy + Math.sin(xx * .022 + t * 26 + i) * 3.4 * heatUp);
+        }
+        ctx.stroke();
+      }
+    }
+
+    // The temperature climbs to the real August normal.
+    const shown = (24 + (42.1 - 24) * ease(clamp((t - .18) / .5, 0, 1))).toFixed(1);
+    ctx.textAlign = "center"; ctx.fillStyle = C.sun;
+    mono(150, 700);
+    text(shown + "°", W/2, 470, clamp((t - .15) * 4, 0, 1));
+    ctx.fillStyle = "rgba(237,230,218,.66)"; mono(19, 400);
+    text("AUGUST MEAN DAILY MAXIMUM", W/2, 520, clamp((t - .25) * 4, 0, 1));
+    ctx.textAlign = "left";
+
+    caption("15,000 m² of Dubai.", "For half the year, too hot to stand in.", win(t, .16, .12));
+    sourceStamp(win(t, .3, .12));
+  }
+
+  // ---- scene 2 — the spine builds ---------------------------------------
+  function sceneSpine(t) {
+    clearFrame("#241E18", C.ground);
+    drawPlanBase(1, "#2C251E");
+
+    // Rooms fade up first — the park's programme.
+    const roomA = clamp(t / .22, 0, 1);
+    ctx.strokeStyle = `rgba(237,230,218,${.20*roomA})`;
+    ctx.fillStyle = `rgba(237,230,218,${.045*roomA})`;
+    ctx.lineWidth = 1.2;
+    ROOMS.forEach(r => {
+      const x = mx(r.x0), y = my(r.y1), w = ms(r.x1 - r.x0), h = my(r.y0) - my(r.y1);
+      ctx.fillRect(x, y, w, h); ctx.strokeRect(x, y, w, h);
+    });
+
+    // The canopy draws itself west to east.
+    const grow = ease(clamp((t - .18) / .42, 0, 1));
+    if (grow > 0) {
+      const x0 = mx(5), x1 = mx(5) + ms(140) * grow;
+      const yTop = my(54.5), yBot = my(45.5);
+      const g = ctx.createLinearGradient(0, yTop, 0, yBot);
+      g.addColorStop(0, "rgba(74,124,126,.92)");
+      g.addColorStop(1, "rgba(74,124,126,.66)");
+      ctx.fillStyle = g; ctx.fillRect(x0, yTop, x1 - x0, yBot - yTop);
+      // Structural ribs.
+      ctx.strokeStyle = "rgba(237,230,218,.30)"; ctx.lineWidth = 1;
+      for (let x = x0; x < x1; x += ms(4)) {
+        ctx.beginPath(); ctx.moveTo(x, yTop); ctx.lineTo(x, yBot); ctx.stroke();
+      }
+      ctx.strokeStyle = C.bone; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x1, yTop - 8); ctx.lineTo(x1, yBot + 8); ctx.stroke();
+    }
+
+    // Then the tree avenue plants itself.
+    const plant = clamp((t - .46) / .40, 0, 1);
+    TREES.forEach((tr, i) => {
+      const p = clamp(plant * TREES.length - i, 0, 1);
+      if (p <= 0) return;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(74,124,126,${.30 + .34*p})`;
+      ctx.arc(mx(tr.x), my(tr.y), ms(tr.r) * ease(p), 0, 7); ctx.fill();
+    });
+
+    const n = Math.round(clamp(plant, 0, 1) * 131);
+    ctx.textAlign = "right"; ctx.fillStyle = C.bone; mono(58, 700);
+    text(String(n).padStart(3, "0"), W - 96, 200, clamp(plant*3, 0, 1));
+    ctx.fillStyle = "rgba(237,230,218,.6)"; mono(15, 400);
+    text("TREES PLANTED", W - 96, 228, clamp(plant*3, 0, 1));
+    ctx.textAlign = "left";
+
+    caption("One shaded route, end to end.",
+            "140 m of canopy, and a double avenue of Neem either side.", win(t, .12, .1));
+  }
+
+  // ---- scene 3 — beneath the canopy -------------------------------------
+  function sceneBeneath(t) {
+    clearFrame("#3A5B5E", "#14100D");
+    const vx = W/2, vy = H*.46, walk = t * 3.0;
+
+    // Ground plane.
+    ctx.fillStyle = "#1A1613";
+    ctx.beginPath(); ctx.moveTo(0, H); ctx.lineTo(vx - 60, vy); ctx.lineTo(vx + 60, vy); ctx.lineTo(W, H);
+    ctx.closePath(); ctx.fill();
+
+    // Canopy ribs receding to the vanishing point — depth carried by scale.
+    for (let i = 14; i >= 0; i--) {
+      const d = (i + 1 - (walk % 1)) / 15;
+      const k = Math.pow(d, 1.7);
+      const halfW = lerp(48, W * .62, k), yTop = lerp(vy - 12, -40, k), yThk = lerp(2, 30, k);
+      ctx.fillStyle = `rgba(237,230,218,${.05 + .30*(1-d)})`;
+      ctx.fillRect(vx - halfW, yTop, halfW*2, yThk);
+      // Columns.
+      ctx.fillStyle = `rgba(237,230,218,${.07 + .26*(1-d)})`;
+      const colH = lerp(28, H*.60, k), colW = lerp(2, 16, k);
+      ctx.fillRect(vx - halfW, yTop + yThk, colW, colH);
+      ctx.fillRect(vx + halfW - colW, yTop + yThk, colW, colH);
+      // Dappled light pooling on the paving between ribs.
+      const py = yTop + yThk + colH;
+      ctx.fillStyle = `rgba(255,182,39,${.05 + .10*(1-d)})`;
+      ctx.fillRect(vx - halfW*.82, py, halfW*1.64, lerp(2, 22, k));
+    }
+
+    // Trees flanking, and a figure walking.
+    for (let i = 12; i >= 0; i--) {
+      const d = (i + 1 - (walk % 1)) / 13, k = Math.pow(d, 1.7);
+      const off = lerp(64, W*.78, k), r = lerp(6, 120, k), yy = lerp(vy + 6, H*.80, k);
+      ctx.fillStyle = `rgba(74,124,126,${.16 + .34*(1-d)})`;
+      ctx.beginPath(); ctx.arc(vx - off, yy, r, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(vx + off, yy, r, 0, 7); ctx.fill();
+    }
+    const fk = Math.pow(.42, 1.7);
+    ctx.fillStyle = "rgba(20,16,13,.85)";
+    ctx.beginPath();
+    ctx.ellipse(vx - 90, lerp(vy + 6, H*.80, fk), lerp(3,26,fk), lerp(8,64,fk), 0, 0, 7);
+    ctx.fill();
+
+    caption("Walk it in August.",
+            "Shade drops the heat index by 7.1 °C on average — 8.1 °C at the peak.",
+            win(t, .12, .12));
+  }
+
+  // ---- scene 4 — the computed proof -------------------------------------
+  function sceneProof(t) {
+    clearFrame("#171310", C.ground);
+    drawPlanBase(1, "#201914");
+
+    // The comfort surface resolves cell by cell, cool where the shade lands.
+    const reveal = ease(clamp(t / .55, 0, 1));
+    const step = 2.5;
+    for (let gx = 0; gx < 150; gx += step) {
+      for (let gy = 0; gy < 100; gy += step) {
+        const dx = gx + step/2, dy = gy + step/2;
+        if ((dx / 150) > reveal) continue;
+        let near = 99;
+        for (const tr of TREES) {
+          const d = Math.hypot(dx - tr.x, dy - tr.y);
+          if (d < near) near = d;
+        }
+        const onSpine = dy > 45.5 && dy < 54.5 && dx > 5 && dx < 145;
+        // Cool score: 1 = fully shaded, 0 = exposed.
+        let cool = clamp(1 - near / 16, 0, 1) * .75 + (onSpine ? .55 : 0);
+        cool = clamp(cool, 0, 1);
+        const r = lerp(196, 40, cool), g = lerp(86, 112, cool), b = lerp(31, 114, cool);
+        ctx.fillStyle = `rgba(${r|0},${g|0},${b|0},.92)`;
+        ctx.fillRect(mx(gx), my(gy + step), ms(step) + 1, (my(gy) - my(gy + step)) + 1);
+      }
+    }
+
+    // Two counters, before and after.
+    const a = clamp((t - .5) / .28, 0, 1);
+    if (a > 0) {
+      ctx.textAlign = "center";
+      const y = 168;
+      ctx.fillStyle = "rgba(237,230,218,.55)"; mono(15, 400);
+      text("COMFORTABLE DAYLIGHT HOURS", W/2, y - 46, a);
+      ctx.fillStyle = C.heat; mono(74, 700);
+      text("44.5%", W/2 - 190, y + 22, a);
+      ctx.fillStyle = "rgba(237,230,218,.4)"; mono(40, 400);
+      text("→", W/2, y + 18, a);
+      ctx.fillStyle = "#7FB8A4"; mono(74, 700);
+      text((44.5 + 20.1 * ease(a)).toFixed(1) + "%", W/2 + 200, y + 22, a);
+      ctx.textAlign = "left";
+    }
+
+    caption("Not promised. Measured.",
+            "8,760 hours of real sun geometry, 15,000 m² tested one square metre at a time.",
+            win(t, .14, .12));
+    sourceStamp(win(t, .3, .12));
+  }
+
+  // ---- scene 5 — evening, in use ----------------------------------------
+  function sceneEvening(t) {
+    clearFrame("#241A2C", "#0B0908");
+    drawPlanBase(1, "#171220");
+
+    // Warm light along the spine.
+    const lit = ease(clamp(t / .34, 0, 1));
+    const g = ctx.createLinearGradient(mx(5), 0, mx(145), 0);
+    g.addColorStop(0, `rgba(255,182,39,${.10*lit})`);
+    g.addColorStop(.5, `rgba(255,182,39,${.30*lit})`);
+    g.addColorStop(1, `rgba(255,182,39,${.10*lit})`);
+    ctx.fillStyle = g;
+    ctx.fillRect(mx(5), my(54.5), ms(140), my(45.5) - my(54.5));
+
+    TREES.forEach(tr => {
+      ctx.beginPath();
+      ctx.fillStyle = "rgba(52,74,68,.62)";
+      ctx.arc(mx(tr.x), my(tr.y), ms(tr.r), 0, 7); ctx.fill();
+    });
+
+    // Lamps, then people arriving along the spine.
+    for (let i = 0; i < 18; i++) {
+      const p = clamp(lit * 18 - i, 0, 1);
+      if (p <= 0) continue;
+      const x = mx(10 + i * 7.6);
+      ctx.fillStyle = `rgba(255,182,39,${.85*p})`;
+      ctx.beginPath(); ctx.arc(x, my(50), 4.5, 0, 7); ctx.fill();
+      const halo = ctx.createRadialGradient(x, my(50), 0, x, my(50), 46);
+      halo.addColorStop(0, `rgba(255,182,39,${.30*p})`);
+      halo.addColorStop(1, "rgba(255,182,39,0)");
+      ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(x, my(50), 46, 0, 7); ctx.fill();
+    }
+    const people = clamp((t - .22) / .42, 0, 1);
+    for (let i = 0; i < 46; i++) {
+      const p = clamp(people * 46 - i, 0, 1);
+      if (p <= 0) continue;
+      const seed = (i * 2654435761) % 1000 / 1000;
+      const x = mx(8 + seed * 134);
+      const y = my(46.5 + ((i * 37) % 70) / 10);
+      ctx.fillStyle = `rgba(237,230,218,${.72*p})`;
+      ctx.beginPath(); ctx.arc(x, y, 3.4, 0, 7); ctx.fill();
+    }
+
+    // Closing title.
+    const a = clamp((t - .58) / .26, 0, 1);
+    if (a > 0) {
+      ctx.textAlign = "center"; ctx.fillStyle = C.bone;
+      disp(76, 700); text("The Shaded Spine", W/2, 372, a);
+      ctx.fillStyle = "rgba(237,230,218,.62)"; mono(21, 400);
+      text("AL SAFA 2 PARK  ·  DUBAI", W/2, 420, a);
+      ctx.fillStyle = "rgba(237,230,218,.40)"; mono(15, 400);
+      text("Every figure reproducible: python run_analysis.py", W/2, 470, a);
+      ctx.textAlign = "left";
+    }
+
+    caption(a > .2 ? "" : "A park you can actually use.",
+            a > .2 ? "" : "7,640 residents within a ten-minute walk.", win(t, .14, .5));
+  }
+
+  const RENDER = [sceneHeat, sceneSpine, sceneBeneath, sceneProof, sceneEvening];
+
+  function draw(time) {
+    const i = Math.min(SCENES.length - 1, SCENES.findIndex(s => time < s.t1));
+    const s = SCENES[i < 0 ? SCENES.length - 1 : i];
+    RENDER[SCENES.indexOf(s)]((time - s.t0) / (s.t1 - s.t0));
+
+    // Cross-scene wipe, so cuts read as cuts rather than jumps.
+    const into = time - s.t0;
+    if (into < .45 && time > .2) {
+      ctx.fillStyle = `rgba(14,12,10,${1 - into/.45})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+    return SCENES.indexOf(s);
+  }
+
+  // ---- transport --------------------------------------------------------
+  const rail = document.getElementById("rail");
+  const segs = SCENES.map((s, i) => {
+    const b = document.createElement("button");
+    b.className = "seg"; b.type = "button";
+    b.innerHTML = `<span class="bar"><i></i></span><span class="lbl">${i+1} · ${s.name}</span>`;
+    b.addEventListener("click", () => { t = s.t0; if (!playing) tick(performance.now()); });
+    rail.appendChild(b);
+    return b;
+  });
+
+  const tcEl = document.getElementById("tc");
+  const toggle = document.getElementById("toggle");
+  const restart = document.getElementById("restart");
+  const opener = document.getElementById("opener");
+
+  let t = 0, playing = false, last = 0;
+
+  function fmt(v) {
+    const m = Math.floor(v / 60), s = Math.floor(v % 60);
+    return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  }
+
+  function paint() {
+    const active = draw(t);
+    SCENES.forEach((s, i) => {
+      segs[i].classList.toggle("on", i === active);
+      const p = clamp((t - s.t0) / (s.t1 - s.t0), 0, 1);
+      segs[i].querySelector("i").style.width = (p * 100) + "%";
+    });
+    tcEl.textContent = `${fmt(t)} / 01:00`;
+  }
+
+  function tick(now) {
+    if (playing) {
+      const dt = Math.min(.05, (now - last) / 1000);
+      last = now;
+      t += dt;
+      if (t >= DUR) { t = DUR; playing = false; toggle.textContent = "Replay"; }
+    }
+    paint();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  function play() {
+    if (t >= DUR) t = 0;
+    playing = true; last = performance.now();
+    toggle.textContent = "Pause";
+    opener.hidden = true;
+    requestAnimationFrame(tick);
+  }
+
+  toggle.addEventListener("click", () => {
+    if (playing) { playing = false; toggle.textContent = "Play"; }
+    else play();
+  });
+  restart.addEventListener("click", () => { t = 0; play(); });
+  opener.addEventListener("click", play);
+
+  // Reduced motion: hold on the proof frame rather than animating unbidden.
+  if (reduce) { t = 46; toggle.textContent = "Play"; }
+  paint();
+})();
+</script>
