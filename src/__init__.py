@@ -13,9 +13,10 @@ reports are authored in Word, by a human, as they should be.
     src.dataset   dataset assembly and feature engineering
     src.models    the machine learning layer
     src.viz       the one figure system every chart is built through
+    src.figures   every figure in the submission, built through src.viz
 """
 
-from . import climate, config, dataset, models, solar, viz  # noqa: F401
+from . import climate, config, dataset, figures, models, solar, viz  # noqa: F401
 
-__all__ = ["config", "climate", "solar", "dataset", "models", "viz"]
+__all__ = ["config", "climate", "solar", "dataset", "models", "viz", "figures"]
 __version__ = "2.0.0"

@@ -166,14 +166,14 @@ def fig_site_comfort_map(grid: pd.DataFrame, trees: pd.DataFrame):
 
 
 def fig_model_performance(m1: dict, grid: pd.DataFrame):
-    """Predicted versus measured, and the residuals. The honesty check."""
-    from sklearn.model_selection import train_test_split
-    from src.models import SURROGATE_FEATURES
+    """Predicted versus measured, and the residuals. The honesty check.
 
-    X = grid[SURROGATE_FEATURES].to_numpy(dtype=float)
-    y = grid["shade_hours"].to_numpy(dtype=float)
-    _, X_te, _, y_te = train_test_split(
-        X, y, test_size=C.TEST_SIZE, random_state=C.RANDOM_SEED)
+    Uses the exact held-out test set the model was scored on, handed over by
+    `train_shade_surrogate`. Re-splitting here would draw a different partition
+    whose points overlap the training set — which would make the one figure
+    whose job is to verify the model the least trustworthy thing in the set.
+    """
+    X_te, y_te = m1["_test"]
     pred = m1["estimators"]["neural_network"].predict(X_te)
 
     fig, (ax1, ax2) = viz.open_figure(
@@ -345,42 +345,61 @@ def fig_diurnal_heatmap(hourly: pd.DataFrame):
 def fig_site_plan(grid: pd.DataFrame, trees: pd.DataFrame):
     """The masterplan, drawn from the same geometry the analysis used."""
     zones = pd.read_csv(C.DATA_RAW / "site_zoning_schedule.csv")
-    cat_color = {
-        "Circulation": C.SERIES[0], "Active": C.SERIES[1], "Passive": C.SERIES[2],
-        "Green": C.SERIES[5], "Green_Buffer": C.SERIES[5], "Social": C.SERIES[3],
-        "Arrival": C.SERIES[4], "Commercial": C.PALETTE["muted"],
+
+    # Fourteen zones across eight categories is more than any categorical palette
+    # can carry — the validated ramp holds six, and a seventh hue is never
+    # generated. So this plan does what an architectural drawing does: it names
+    # the rooms on the drawing. Fill is a single neutral, and identity comes from
+    # the label, not from colour. The spine is the one element given a colour,
+    # because it is the one element the whole scheme is about.
+    short = {
+        "Perimeter Shade Buffer (S)": "Shade buffer (S)",
+        "Perimeter Shade Buffer (N)": "Shade buffer (N)",
+        "Outdoor Fitness & Wellness": "Fitness",
+        "Native Planting / Biodiversity Strip": "Biodiversity\nstrip",
+        "Quiet Contemplation Garden": "Quiet\ngarden",
+        "Commercial & Service Kiosk Cluster": "Kiosks",
+        "Multipurpose Sports Lawn": "Sports lawn",
+        "Main Entrance Plaza": "Entry\nW",
+        "Secondary Entrance (E)": "Entry\nE",
+        "Children's Play Zone": "Children's play",
+        "Family Picnic & Shaded Seating": "Family picnic",
+        "Community Plaza & Event Lawn": "Community plaza",
     }
     fig, ax = viz.open_figure(
         "Masterplan — zones, planting and the spine",
         "Drawn from site_zoning_schedule.csv, the same geometry the models use",
-        width=11.0, height=6.4,
+        width=11.0, height=6.6,
     )
-    seen = set()
     for _, z in zones.iterrows():
         if z["Zone"].startswith("Path Network"):
             continue
-        c = cat_color.get(z["Category"], C.PALETTE["muted"])
-        lbl = z["Category"] if z["Category"] not in seen else None
-        seen.add(z["Category"])
+        w, h = z["X_max"] - z["X_min"], z["Y_max"] - z["Y_min"]
         ax.add_patch(Rectangle(
-            (z["X_min"], z["Y_min"]), z["X_max"] - z["X_min"], z["Y_max"] - z["Y_min"],
-            facecolor=c, alpha=0.30, edgecolor=c, linewidth=1.4, label=lbl))
+            (z["X_min"], z["Y_min"]), w, h,
+            facecolor=C.PALETTE["rule"], alpha=0.55,
+            edgecolor=C.PALETTE["baseline"], linewidth=1.0))
+        if w * h > 400:
+            ax.annotate(
+                short.get(z["Zone"], z["Zone"]),
+                xy=(z["X_min"] + w / 2, z["Y_min"] + h / 2),
+                ha="center", va="center", fontsize=8,
+                color=C.PALETTE["ink_secondary"], linespacing=1.25)
 
     ax.add_patch(Rectangle(
         (5, C.SPINE["y_centre_m"] - C.SPINE["width_m"] / 2), 140, C.SPINE["width_m"],
-        facecolor=C.SERIES[0], alpha=0.55, edgecolor=C.SERIES[0], linewidth=2))
-    for _, t in trees.iterrows():
-        ax.add_patch(Circle((t["x"], t["y"]), t["canopy_r_m"],
-                            facecolor=C.SERIES[5], alpha=0.35,
-                            edgecolor=C.SERIES[5], linewidth=0.6))
+        facecolor=C.SERIES[0], alpha=0.75, edgecolor=C.SERIES[0], linewidth=1.5,
+        zorder=3, label="The Shaded Spine"))
+    ax.scatter(trees["x"], trees["y"], s=11, color=C.SERIES[5],
+               linewidths=0, zorder=4, label=f"Tree ({len(trees)})")
 
-    ax.set_xlim(-3, C.SITE["length_m"] + 3)
-    ax.set_ylim(-3, C.SITE["width_m"] + 3)
+    ax.set_xlim(-4, C.SITE["length_m"] + 4)
+    ax.set_ylim(-4, C.SITE["width_m"] + 4)
     ax.set_aspect("equal")
     ax.set_xlabel("metres (east →)")
     ax.set_ylabel("metres (north ↑)")
     ax.grid(False)
-    ax.legend(loc="upper center", ncol=7, bbox_to_anchor=(0.5, -0.13))
+    ax.legend(loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.20))
 
     return viz.finish(
         fig, "fig10_masterplan",

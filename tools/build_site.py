@@ -53,6 +53,13 @@ FIG_CAPTIONS = {
 
 m = json.loads((ROOT / "models" / "headline_metrics.json").read_text(encoding="utf-8"))
 
+# Read the model scores from the metrics file rather than typing them into the
+# page. A hand-typed figure here is exactly how a website drifts out of step
+# with the analysis it is describing.
+_mm = json.loads((ROOT / "models" / "model_metrics.json").read_text(encoding="utf-8"))
+_rf = _mm["M1_shade_surrogate"]["models"]["random_forest"]
+_nn = _mm["M1_shade_surrogate"]["models"]["neural_network"]
+
 
 def slot_cards() -> str:
     out = []
@@ -246,8 +253,8 @@ HTML = f"""<!doctype html>
   </p>
   <div class="scroll"><table>
     <tr><th>Model</th><th>Task</th><th>Result</th><th>Why it is a real problem</th></tr>
-    <tr><td>Random Forest</td><td>Shade surrogate</td><td class="n">R² 0.995</td><td>Learns a slow ray-traced simulation from cheap plan geometry</td></tr>
-    <tr><td>Neural network</td><td>Shade surrogate (deployed)</td><td class="n">R² {m['model_M1_test_r2']}</td><td>Differentiable, so it can sit inside a layout optimiser</td></tr>
+    <tr><td>Random Forest</td><td>Shade surrogate</td><td class="n">R² {_rf['test_r2']:.3f}</td><td>Learns a slow ray-traced simulation from cheap plan geometry</td></tr>
+    <tr><td>Neural network</td><td>Shade surrogate (deployed)</td><td class="n">R² {_nn['test_r2']:.3f}</td><td>Differentiable, so it can sit inside a layout optimiser</td></tr>
     <tr><td>Gradient Boosting</td><td>Comfort band, 4-class</td><td class="n">{m['model_M2_test_accuracy']:.1%}</td><td>Temperature and humidity <strong>withheld</strong> — sun position and calendar only</td></tr>
     <tr><td>K-Means</td><td>Microclimate regimes</td><td class="n">k = {m['model_M3_regimes']}</td><td>Unsupervised; k selected by silhouette, not chosen</td></tr>
   </table></div>

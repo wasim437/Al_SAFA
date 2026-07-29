@@ -125,19 +125,31 @@ def tree_positions(seed: int = C.RANDOM_SEED) -> pd.DataFrame:
         for y in (C.SPINE["y_centre_m"] - 6.5, C.SPINE["y_centre_m"] + 6.5):
             rows.append(("Neem", x, y, 5.0, 9.0))
 
-    # Biodiversity strip — informal native cluster.
-    for _ in range(int(species.loc[species["Species"] == "Ficus nitida", "Count"].iloc[0])):
-        rows.append(("Ficus nitida", rng.uniform(54, 86), rng.uniform(8, 42), 4.5, 8.0))
+    # Species are planted into the zone that the masterplan assigns them, read
+    # from the zoning schedule rather than hard-coded, so the planting layout
+    # cannot drift out of step with the plan geometry.
+    zones = pd.read_csv(C.DATA_RAW / "site_zoning_schedule.csv").set_index("Zone")
 
-    # Contemplation garden olives.
-    for _ in range(int(species.loc[species["Species"] == "Olive", "Count"].iloc[0])):
-        rows.append(("Olive", rng.uniform(90, 116), rng.uniform(8, 42), 3.5, 6.0))
+    def _scatter(species_name: str, zone: str, r: float, h: float, inset: float = 2.0):
+        z = zones.loc[zone]
+        n = int(species.loc[species["Species"] == species_name, "Count"].iloc[0])
+        for _ in range(n):
+            rows.append((
+                species_name,
+                rng.uniform(z["X_min"] + inset, z["X_max"] - inset),
+                rng.uniform(z["Y_min"] + inset, z["Y_max"] - inset),
+                r, h,
+            ))
 
-    # Date palms marking the two entrances.
+    _scatter("Ficus nitida", "Native Planting / Biodiversity Strip", 4.5, 8.0)
+    _scatter("Olive", "Quiet Contemplation Garden", 3.5, 6.0)
+
+    # Date palms marking the two entrances, ranked either side of the spine.
     n_palm = int(species.loc[species["Species"] == "Date Palm", "Count"].iloc[0])
     for i in range(n_palm):
-        x = 6.0 if i % 2 == 0 else 144.0
-        rows.append(("Date Palm", x, 40.0 + 4.0 * (i // 2), 3.0, 12.0))
+        z = zones.loc["Main Entrance Plaza" if i % 2 == 0 else "Secondary Entrance (E)"]
+        x = (z["X_min"] + z["X_max"]) / 2.0
+        rows.append(("Date Palm", x, 34.0 + 6.0 * (i // 2), 3.0, 12.0))
 
     return pd.DataFrame(rows, columns=["species", "x", "y", "canopy_r_m", "height_m"])
 

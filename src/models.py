@@ -218,6 +218,11 @@ def train_shade_surrogate(grid: pd.DataFrame, *, tune: bool = True) -> dict:
     )
 
     results["estimators"] = {"random_forest": rf, "neural_network": nn}
+    # Carry the actual held-out test set out with the results. Figures that plot
+    # predicted-vs-actual MUST use this rather than re-splitting: a fresh
+    # train_test_split draws a different partition, so the "test" points would
+    # overlap the training set and the plot would flatter the model.
+    results["_test"] = (X_te, y_te)
     return results
 
 

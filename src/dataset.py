@@ -167,9 +167,16 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
     ).astype(int)
 
     # Zone membership and surface properties.
-    grid["zone"] = "Path Network & Landscape Setbacks"
-    grid["albedo"] = 0.30
-    for _, z in zones.iterrows():
+    #
+    # The path network is the RESIDUAL zone: its extent in the schedule spans
+    # the whole site because it is everything left over between the rooms. It is
+    # therefore the default, and is skipped in the loop below — applying it as a
+    # normal row would overwrite every specific zone assigned before it and
+    # leave the entire grid labelled "Path Network" with a constant albedo.
+    RESIDUAL = "Path Network & Landscape Setbacks"
+    grid["zone"] = RESIDUAL
+    grid["albedo"] = float(zones.loc[zones["Zone"] == RESIDUAL, "SurfaceAlbedo"].iloc[0])
+    for _, z in zones[zones["Zone"] != RESIDUAL].iterrows():
         m = (gx >= z["X_min"]) & (gx < z["X_max"]) & (gy >= z["Y_min"]) & (gy < z["Y_max"])
         grid.loc[m, "zone"] = z["Zone"]
         grid.loc[m, "albedo"] = z["SurfaceAlbedo"]
@@ -192,12 +199,15 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
 
     shade_frac = np.clip(grid["shade_pct"] / 100.0, 0.0, 1.0)
     relief = shade_frac * C.SHADE_TEMP_RELIEF_C
-    t_cell = jul["TempMax_C"] - relief
-    _, rh_cell = climate.apply_shade(
-        np.full(len(grid), jul["TempMax_C"]), np.full(len(grid), jul["RH_pct"]),
-        relief_c=0.0,
+    # Each cell gets relief in proportion to how much of the year it is shaded.
+    # Cooler air at unchanged absolute moisture means higher relative humidity,
+    # so both come from the same Magnus relation used in src.climate — a cell
+    # that gains shade is not credited with dry-air comfort it would not have.
+    t_cell, rh_cell = climate.apply_shade(
+        np.full(len(grid), jul["TempMax_C"]),
+        np.full(len(grid), jul["RH_pct"]),
+        relief_c=relief,
     )
-    rh_cell = np.clip(jul["RH_pct"] * (1 + 0.030 * relief), 0, 100)
     grid["summer_heat_index_c"] = climate.heat_index_c(t_cell, rh_cell)
     grid["comfort_gain_c"] = exposed_hi - grid["summer_heat_index_c"]
     grid["comfort_band"] = climate.comfort_band(grid["summer_heat_index_c"])

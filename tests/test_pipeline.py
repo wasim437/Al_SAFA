@@ -144,6 +144,52 @@ def test_site_geometry():
                and (trees["y"].between(0, C.SITE["width_m"])).all()))
 
 
+def test_spatial_zone_assignment():
+    """Every designed zone must actually claim ground on the grid.
+
+    Regression guard. The path network's extent in the schedule spans the whole
+    site because it is the residual zone; applying it like any other row
+    overwrote every specific zone and left the entire grid labelled "Path
+    Network" with a constant albedo — which silently reduced the zone analysis
+    to a single bar and turned albedo into a dead feature.
+    """
+    from src import dataset
+
+    # 1 m cells. A coarser grid cannot resolve the 9 m spine — three 4 m rows
+    # fall inside a 9 m band and the area check reports a 33% error that is a
+    # discretisation artefact, not a geometry fault. Few sampled hours keeps it
+    # cheap; this test is about geometry, not shade.
+    grid, _ = dataset.build_spatial(step_m=1.0, sample_hours=4, verbose=False)
+    zones = pd.read_csv(C.DATA_RAW / "site_zoning_schedule.csv")
+
+    n_zones = grid["zone"].nunique()
+    check("more than one zone is represented on the grid",
+          n_zones > 1, f"{n_zones} distinct zones")
+
+    n_cat = grid["category"].nunique()
+    check("more than one zone category is represented",
+          n_cat > 1, f"{n_cat} categories")
+
+    check("surface albedo varies across the site",
+          grid["albedo"].nunique() > 1,
+          f"{grid['albedo'].nunique()} distinct values")
+
+    missing = [z for z in zones["Zone"] if z not in set(grid["zone"])]
+    check("every scheduled zone appears on the grid",
+          not missing, f"missing: {missing[:3]}")
+
+    # The real proof the rectangles do not overlap: the ground each zone claims
+    # on the grid must match the area the Phase 5 schedule gives it. Overlapping
+    # rectangles show up here as one zone eating another's area.
+    got = grid["zone"].value_counts() * 1.0  # 1 m cells -> 1 m2 each
+    want = zones.set_index("Zone")["Area_sqm"]
+    err = ((got - want) / want * 100).abs().dropna()
+    worst = err.max()
+    check("each zone's ground area matches the schedule within 5%",
+          worst <= 5.0,
+          f"worst {err.idxmax()} off by {worst:.1f}%")
+
+
 def test_no_leaky_features():
     """The classifier must not be able to see the answer."""
     from src.models import CLASSIFIER_FEATURES
@@ -161,6 +207,7 @@ def main() -> int:
     test_heat_index()
     test_shade_model(sol)
     test_site_geometry()
+    test_spatial_zone_assignment()
     test_no_leaky_features()
 
     width = max(len(n) for _, n, _ in _results) + 2

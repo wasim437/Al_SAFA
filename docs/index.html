@@ -118,8 +118,8 @@
     <div class="kpi"><div class="v">44.5%</div><div class="l">Comfortable daylight hours today</div></div>
     <div class="kpi up"><div class="v">64.6%</div><div class="l">Comfortable daylight hours as designed</div></div>
     <div class="kpi"><div class="v">7.13 °C</div><div class="l">Mean heat-index reduction</div></div>
-    <div class="kpi"><div class="v">70.9%</div><div class="l">Annual shade on the spine</div></div>
-    <div class="kpi"><div class="v">0.9948</div><div class="l">Shade surrogate test R²</div></div>
+    <div class="kpi"><div class="v">69.6%</div><div class="l">Annual shade on the spine</div></div>
+    <div class="kpi"><div class="v">0.9961</div><div class="l">Shade surrogate test R²</div></div>
     <div class="kpi"><div class="v">97.5%</div><div class="l">Comfort classifier accuracy</div></div>
   </div>
 </div></section>
@@ -136,7 +136,7 @@
       <tr><th>Model</th><th>Annual shade on the spine</th></tr>
       <tr><td><del>Previously claimed</del></td><td class="n"><del>99.2%</del></td></tr>
       <tr><td>Canopy structure alone</td><td class="n">60.18%</td></tr>
-      <tr><td>Canopy <strong>+ flanking tree avenue</strong></td><td class="n">70.9%</td></tr>
+      <tr><td>Canopy <strong>+ flanking tree avenue</strong></td><td class="n">69.6%</td></tr>
     </table></div>
     <p style="margin-bottom:0">The honest number is lower — and it is the <strong>better argument</strong>. It is what
     shows the tree avenue is structural to the concept rather than decoration. A scheme
@@ -154,8 +154,8 @@
   </p>
   <div class="scroll"><table>
     <tr><th>Model</th><th>Task</th><th>Result</th><th>Why it is a real problem</th></tr>
-    <tr><td>Random Forest</td><td>Shade surrogate</td><td class="n">R² 0.995</td><td>Learns a slow ray-traced simulation from cheap plan geometry</td></tr>
-    <tr><td>Neural network</td><td>Shade surrogate (deployed)</td><td class="n">R² 0.9948</td><td>Differentiable, so it can sit inside a layout optimiser</td></tr>
+    <tr><td>Random Forest</td><td>Shade surrogate</td><td class="n">R² 0.998</td><td>Learns a slow ray-traced simulation from cheap plan geometry</td></tr>
+    <tr><td>Neural network</td><td>Shade surrogate (deployed)</td><td class="n">R² 0.996</td><td>Differentiable, so it can sit inside a layout optimiser</td></tr>
     <tr><td>Gradient Boosting</td><td>Comfort band, 4-class</td><td class="n">97.5%</td><td>Temperature and humidity <strong>withheld</strong> — sun position and calendar only</td></tr>
     <tr><td>K-Means</td><td>Microclimate regimes</td><td class="n">k = 2</td><td>Unsupervised; k selected by silhouette, not chosen</td></tr>
   </table></div>

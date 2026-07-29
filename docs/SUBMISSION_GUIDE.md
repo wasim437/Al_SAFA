@@ -126,7 +126,7 @@ an image generator. This submission can show a reproducible analysis pipeline.
    including them would make the task algebra. It reaches 97.5% from sun position
    and the calendar alone — which means park operations need no sensor network.
 3. **The correction.** The project revised its own headline shade figure downward
-   from 99.2% to 70.9% when a geometric check contradicted it. Say so explicitly.
+   from 99.2% to 69.6% when a geometric check contradicted it. Say so explicitly.
 
 ---
 
@@ -185,7 +185,7 @@ an image generator. This submission can show a reproducible analysis pipeline.
 | **Backed by** | Everything above |
 
 > **Update before submitting.** This report still carries the withdrawn **99.2%**
-> shade figure. Replace it with **70.9% (canopy + tree avenue)** and add a line
+> shade figure. Replace it with **69.6% (canopy + tree avenue)** and add a line
 > explaining the revision. The `.docx` is editable — open it in Word and change the
 > text directly. The corrected reasoning is in [`README.md`](../README.md).
 
@@ -229,7 +229,7 @@ community votes on what it can see and feel, not on an R² score.
 | | Item |
 |---|---|
 | ☐ | **Open the DWG** and confirm the site boundary — every area figure depends on it |
-| ☐ | Replace **99.2% → 70.9%** in the Complete Design Report and anywhere else it appears |
+| ☐ | Replace **99.2% → 69.6%** in the Complete Design Report and anywhere else it appears |
 | ☐ | Label renders as *illustrative* and analysis outputs as *computed* in slot 05 |
 | ☐ | State the concept-scoring weights explicitly in slot 01 |
 | ☐ | Confirm the solar array **deficit** wording in slot 08 |

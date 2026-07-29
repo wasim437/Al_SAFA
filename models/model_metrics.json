@@ -20,84 +20,84 @@
     "n_test": 2250,
     "models": {
       "random_forest": {
-        "val_r2": 0.9978475810248204,
-        "val_rmse": 51.66766373617539,
-        "test_r2": 0.9982158575160484,
-        "test_rmse": 48.4243814204191,
-        "test_mae": 27.831836809210355,
-        "cv_r2_mean": 0.9976670113407087,
-        "cv_r2_std": 0.0001724064772730441
+        "val_r2": 0.9981907438450509,
+        "val_rmse": 46.84995239203234,
+        "test_r2": 0.9984696593183899,
+        "test_rmse": 44.24224608995988,
+        "test_mae": 24.382167663580493,
+        "cv_r2_mean": 0.9976964757019509,
+        "cv_r2_std": 0.0004210601677308253
       },
       "neural_network_best_params": {
-        "mlp__alpha": "0.0001",
+        "mlp__alpha": "0.001",
         "mlp__hidden_layer_sizes": "(128, 64, 32)"
       },
       "neural_network": {
-        "val_r2": 0.9946051645934944,
-        "val_rmse": 81.798345221248,
-        "test_r2": 0.9948226699436242,
-        "test_rmse": 82.49017794505173,
-        "test_mae": 56.075170928773666,
+        "val_r2": 0.995549818471798,
+        "val_rmse": 73.47641998822273,
+        "test_r2": 0.9960836054846917,
+        "test_rmse": 70.77605019237238,
+        "test_mae": 48.2544874162144,
         "backend": "sklearn MLPRegressor",
         "architecture": "(128, 64, 32)",
-        "n_iter": 201
+        "n_iter": 243
       }
     },
     "permutation_importance": [
       {
-        "feature": "trees_within_20m",
-        "importance": 0.3589945599513364,
-        "std": 0.007978982544913282
-      },
-      {
         "feature": "y",
-        "importance": 0.13778956405839268,
-        "std": 0.003505296060090757
+        "importance": 0.21775084910033882,
+        "std": 0.004547963707835279
       },
       {
-        "feature": "dist_to_edge_m",
-        "importance": 0.0768213501093056,
-        "std": 0.0015331243432346498
-      },
-      {
-        "feature": "sky_view_factor",
-        "importance": 0.05062042072710722,
-        "std": 0.0010898054516167047
+        "feature": "trees_within_20m",
+        "importance": 0.21227144278454385,
+        "std": 0.004827798624197903
       },
       {
         "feature": "trees_within_10m",
-        "importance": 0.028223714276307467,
-        "std": 0.0004829329174242044
+        "importance": 0.16018582116309849,
+        "std": 0.003651695096989212
       },
       {
-        "feature": "dist_to_spine_m",
-        "importance": 0.022318594083657085,
-        "std": 0.0005212473709051988
+        "feature": "sky_view_factor",
+        "importance": 0.04406579495630736,
+        "std": 0.0008978556008474841
       },
       {
         "feature": "x",
-        "importance": 0.021892472962371522,
-        "std": 0.0006845799103327646
+        "importance": 0.034852768355648545,
+        "std": 0.0011064633489966413
+      },
+      {
+        "feature": "dist_to_spine_m",
+        "importance": 0.029733133288899538,
+        "std": 0.0006793613478804682
       },
       {
         "feature": "dist_to_tree_m",
-        "importance": 0.02153250142121501,
-        "std": 0.0003815417225310065
+        "importance": 0.01170705922833537,
+        "std": 0.0005082835393399481
       },
       {
-        "feature": "canopy_overhead",
-        "importance": 0.0003476296068118945,
-        "std": 3.524653047874011e-05
-      },
-      {
-        "feature": "under_spine_canopy",
-        "importance": 4.6956005654574806e-05,
-        "std": 3.31874728072319e-06
+        "feature": "dist_to_edge_m",
+        "importance": 0.01157773083997372,
+        "std": 0.0007920708364491953
       },
       {
         "feature": "albedo",
-        "importance": 0.0,
-        "std": 0.0
+        "importance": 0.0005670495272573018,
+        "std": 8.803243032692093e-05
+      },
+      {
+        "feature": "canopy_overhead",
+        "importance": 6.613693009327459e-05,
+        "std": 1.0816247773812392e-05
+      },
+      {
+        "feature": "under_spine_canopy",
+        "importance": 4.851468854678575e-05,
+        "std": 6.284261265259347e-06
       }
     ],
     "_name": "M1_shade_surrogate"
@@ -224,7 +224,7 @@
       {
         "k": 4,
         "silhouette": 0.32637068494369836,
-        "inertia": 7982.381688748549
+        "inertia": 7982.381688748548
       },
       {
         "k": 5,
@@ -234,7 +234,7 @@
       {
         "k": 6,
         "silhouette": 0.3217726052318897,
-        "inertia": 5855.706119282764
+        "inertia": 5855.706119282763
       },
       {
         "k": 7,
@@ -244,7 +244,7 @@
       {
         "k": 8,
         "silhouette": 0.33164726819389306,
-        "inertia": 4512.8908807872485
+        "inertia": 4512.890880787248
       }
     ],
     "best_k": 2,
@@ -273,6 +273,6 @@
     ],
     "_name": "M3_microclimate_regimes"
   },
-  "_generated": "2026-07-29T21:04:29",
+  "_generated": "2026-07-29T21:39:34",
   "_random_seed": 42
 }
