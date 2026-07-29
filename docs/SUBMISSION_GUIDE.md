@@ -7,7 +7,11 @@ This is the reference for what goes into each of the twelve upload slots on the
 Dubai Municipality portal: what the file is, what is inside it, **which analysis
 backs it**, the format the portal will accept, and what still needs doing.
 
-Applicant: Mohamed Wasim · Individual Applicant · `wasimmisaw437@gmail.com` · +971 56 591 9456
+Applicant: Mohamed Wasim · Individual Applicant
+
+> Contact details (email, mobile) are entered directly on the Dubai Municipality
+> portal at submission time and are deliberately **not** recorded in this
+> repository, which is public.
 
 ---
 

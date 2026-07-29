@@ -18,3 +18,8 @@ Desktop.ini
 # Nothing in data/, figures/ or models/ is ignored — the whole point of this
 # repository is that a juror can see the inputs, the outputs and the trained
 # model metrics without running anything.
+
+# Personal data. This is a scrape of the filled-in submission form and contains
+# a name, email address and mobile number. It stays on disk but is kept out of a
+# public repository. Nothing in the analysis reads it.
+archive/source_files/UPLODED DOCUMENT DETAILS.txt
