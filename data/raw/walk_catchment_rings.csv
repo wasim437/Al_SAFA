@@ -1,0 +1,4 @@
+Ring,Radius_m,WalkMinutes,Area_km2,Density_per_km2,Est_Residents
+5-min walk,400,5,0.503,3800,1910
+10-min walk,800,10,2.011,3800,7640
+15-min walk,1200,15,4.524,3800,17190

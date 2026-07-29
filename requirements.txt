@@ -1,0 +1,35 @@
+# Al Safa 2 Park — AI Design Challenge
+# Analysis environment. Tested on Python 3.14.3 (Windows 11).
+#
+#   python -m venv .venv && .venv\Scripts\activate
+#   pip install -r requirements.txt
+#   python -m tests.test_pipeline
+#   python run_analysis.py
+
+# Data
+pandas>=2.2
+numpy>=1.26
+
+# Physics — NREL Solar Position Algorithm
+pvlib>=0.11
+
+# Machine learning
+scikit-learn>=1.5
+scipy>=1.13
+joblib>=1.4
+
+# Visualisation
+matplotlib>=3.8
+seaborn>=0.13
+
+# Notebook
+jupyter>=1.0
+nbformat>=5.10
+nbconvert>=7.16
+ipykernel>=6.29
+
+# Optional — the shade surrogate uses Keras automatically when it is present,
+# and falls back to scikit-learn's MLPRegressor when it is not. TensorFlow
+# publishes no wheels for Python 3.14 at the time of writing, so the fallback is
+# what actually runs here. The result is equivalent at this problem size.
+# tensorflow>=2.16 ; python_version < "3.14"

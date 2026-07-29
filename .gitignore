@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+*.egg-info/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Nothing in data/, figures/ or models/ is ignored — the whole point of this
+# repository is that a juror can see the inputs, the outputs and the trained
+# model metrics without running anything.

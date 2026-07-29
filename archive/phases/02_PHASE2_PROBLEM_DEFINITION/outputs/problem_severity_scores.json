@@ -1,0 +1,98 @@
+[
+  {
+    "id": "P1",
+    "name": "Summer thermal discomfort (near-zero midday shade)",
+    "Evidence": 5,
+    "Impact": 5,
+    "Reach": 5,
+    "Urgency": 5,
+    "WeightedScore": 5.0,
+    "basis": "Phase 1.05/1.06 computed: ~88\u00b0 summer sun, <0.5m shadow at noon; affects whole site ~5 months/yr",
+    "Rank": 1,
+    "Priority": "CRITICAL"
+  },
+  {
+    "id": "P2",
+    "name": "Undocumented / inadequate accessibility",
+    "Evidence": 4,
+    "Impact": 5,
+    "Reach": 4,
+    "Urgency": 4,
+    "WeightedScore": 4.3,
+    "basis": "Phase 1.10: no verified universal-design features; brief mandates People of Determination access",
+    "Rank": 2,
+    "Priority": "CRITICAL"
+  },
+  {
+    "id": "P3",
+    "name": "Shade inequity (canopy only on west side)",
+    "Evidence": 4,
+    "Impact": 3,
+    "Reach": 4,
+    "Urgency": 3,
+    "WeightedScore": 3.5,
+    "basis": "Phase 1.02 image analysis + 1.11 SWOT: existing canopy concentrated west; east open/hot",
+    "Rank": 3,
+    "Priority": "MEDIUM"
+  },
+  {
+    "id": "P7",
+    "name": "Irrigation-dependent landscape / water stress",
+    "Evidence": 5,
+    "Impact": 3,
+    "Reach": 3,
+    "Urgency": 3,
+    "WeightedScore": 3.5,
+    "basis": "Phase 1.05: near-zero rainfall Jun-Sep; any planting is fully irrigation-dependent",
+    "Rank": 4,
+    "Priority": "MEDIUM"
+  },
+  {
+    "id": "P4",
+    "name": "Missing commercial / service facilities",
+    "Evidence": 3,
+    "Impact": 3,
+    "Reach": 4,
+    "Urgency": 3,
+    "WeightedScore": 3.25,
+    "basis": "Phase 1.03 + brief Section E: no kiosks/F&B; Manual benchmark ~15% leasable area unmet",
+    "Rank": 5,
+    "Priority": "MEDIUM"
+  },
+  {
+    "id": "P5",
+    "name": "Weak legibility (arrival, wayfinding, lighting)",
+    "Evidence": 3,
+    "Impact": 3,
+    "Reach": 3,
+    "Urgency": 3,
+    "WeightedScore": 3.0,
+    "basis": "Phase 1.03/1.10: single confirmed entrance, no signage/lighting data",
+    "Rank": 6,
+    "Priority": "MEDIUM"
+  },
+  {
+    "id": "P6",
+    "name": "Severed metro/city connectivity across SZR",
+    "Evidence": 4,
+    "Impact": 2,
+    "Reach": 3,
+    "Urgency": 2,
+    "WeightedScore": 2.75,
+    "basis": "Phase 1.08: ONPASSIVE metro across an 8-lane highway barrier; likely no safe crossing",
+    "Rank": 7,
+    "Priority": "MEDIUM"
+  },
+  {
+    "id": "P8",
+    "name": "SZR-edge noise & air quality",
+    "Evidence": 3,
+    "Impact": 2,
+    "Reach": 2,
+    "Urgency": 2,
+    "WeightedScore": 2.25,
+    "basis": "Phase 1.07: 8-lane arterial on east edge; no dB/air data but qualitatively significant",
+    "Rank": 8,
+    "Priority": "LOW"
+  }
+]

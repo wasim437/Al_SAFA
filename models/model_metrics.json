@@ -1,0 +1,278 @@
+{
+  "M1_shade_surrogate": {
+    "task": "regression",
+    "target": "shade_hours (annual, ray-traced ground truth)",
+    "features": [
+      "x",
+      "y",
+      "dist_to_spine_m",
+      "dist_to_edge_m",
+      "dist_to_tree_m",
+      "trees_within_10m",
+      "trees_within_20m",
+      "canopy_overhead",
+      "under_spine_canopy",
+      "albedo",
+      "sky_view_factor"
+    ],
+    "n_train": 10500,
+    "n_val": 2250,
+    "n_test": 2250,
+    "models": {
+      "random_forest": {
+        "val_r2": 0.9978475810248204,
+        "val_rmse": 51.66766373617539,
+        "test_r2": 0.9982158575160484,
+        "test_rmse": 48.4243814204191,
+        "test_mae": 27.831836809210355,
+        "cv_r2_mean": 0.9976670113407087,
+        "cv_r2_std": 0.0001724064772730441
+      },
+      "neural_network_best_params": {
+        "mlp__alpha": "0.0001",
+        "mlp__hidden_layer_sizes": "(128, 64, 32)"
+      },
+      "neural_network": {
+        "val_r2": 0.9946051645934944,
+        "val_rmse": 81.798345221248,
+        "test_r2": 0.9948226699436242,
+        "test_rmse": 82.49017794505173,
+        "test_mae": 56.075170928773666,
+        "backend": "sklearn MLPRegressor",
+        "architecture": "(128, 64, 32)",
+        "n_iter": 201
+      }
+    },
+    "permutation_importance": [
+      {
+        "feature": "trees_within_20m",
+        "importance": 0.3589945599513364,
+        "std": 0.007978982544913282
+      },
+      {
+        "feature": "y",
+        "importance": 0.13778956405839268,
+        "std": 0.003505296060090757
+      },
+      {
+        "feature": "dist_to_edge_m",
+        "importance": 0.0768213501093056,
+        "std": 0.0015331243432346498
+      },
+      {
+        "feature": "sky_view_factor",
+        "importance": 0.05062042072710722,
+        "std": 0.0010898054516167047
+      },
+      {
+        "feature": "trees_within_10m",
+        "importance": 0.028223714276307467,
+        "std": 0.0004829329174242044
+      },
+      {
+        "feature": "dist_to_spine_m",
+        "importance": 0.022318594083657085,
+        "std": 0.0005212473709051988
+      },
+      {
+        "feature": "x",
+        "importance": 0.021892472962371522,
+        "std": 0.0006845799103327646
+      },
+      {
+        "feature": "dist_to_tree_m",
+        "importance": 0.02153250142121501,
+        "std": 0.0003815417225310065
+      },
+      {
+        "feature": "canopy_overhead",
+        "importance": 0.0003476296068118945,
+        "std": 3.524653047874011e-05
+      },
+      {
+        "feature": "under_spine_canopy",
+        "importance": 4.6956005654574806e-05,
+        "std": 3.31874728072319e-06
+      },
+      {
+        "feature": "albedo",
+        "importance": 0.0,
+        "std": 0.0
+      }
+    ],
+    "_name": "M1_shade_surrogate"
+  },
+  "M2_comfort_classifier": {
+    "task": "multiclass classification",
+    "target": "comfort_band (exposed)",
+    "features": [
+      "elevation_deg",
+      "azimuth_deg",
+      "zenith_deg",
+      "hour_sin",
+      "hour_cos",
+      "doy_sin",
+      "doy_cos",
+      "hours_from_solar_noon",
+      "is_weekend"
+    ],
+    "features_withheld": [
+      "temp_c",
+      "rh_pct",
+      "heat_index_c"
+    ],
+    "why_withheld": "The heat index is a closed-form function of temperature and humidity. Including them would make the task algebraic rather than predictive.",
+    "n_train": 6132,
+    "n_val": 1314,
+    "n_test": 1314,
+    "val_accuracy": 0.9817351598173516,
+    "test_accuracy": 0.9748858447488584,
+    "test_balanced_accuracy": 0.9701644891936579,
+    "confusion_matrix": [
+      [
+        551,
+        9,
+        0,
+        0
+      ],
+      [
+        1,
+        177,
+        10,
+        0
+      ],
+      [
+        0,
+        5,
+        298,
+        4
+      ],
+      [
+        0,
+        0,
+        4,
+        255
+      ]
+    ],
+    "classification_report": {
+      "Comfortable": {
+        "precision": 0.9981884057971014,
+        "recall": 0.9839285714285714,
+        "f1-score": 0.9910071942446043,
+        "support": 560.0
+      },
+      "Caution": {
+        "precision": 0.9267015706806283,
+        "recall": 0.9414893617021277,
+        "f1-score": 0.9340369393139841,
+        "support": 188.0
+      },
+      "Extreme Caution": {
+        "precision": 0.9551282051282052,
+        "recall": 0.9706840390879479,
+        "f1-score": 0.962843295638126,
+        "support": 307.0
+      },
+      "Danger": {
+        "precision": 0.9845559845559846,
+        "recall": 0.9845559845559846,
+        "f1-score": 0.9845559845559846,
+        "support": 259.0
+      },
+      "accuracy": 0.9748858447488584,
+      "macro avg": {
+        "precision": 0.9661435415404799,
+        "recall": 0.9701644891936578,
+        "f1-score": 0.9681108534381747,
+        "support": 1314.0
+      },
+      "weighted avg": {
+        "precision": 0.975212908301898,
+        "recall": 0.9748858447488584,
+        "f1-score": 0.9750044635684262,
+        "support": 1314.0
+      }
+    },
+    "class_balance": {
+      "Comfortable": 3734,
+      "Extreme Caution": 2050,
+      "Danger": 1723,
+      "Caution": 1253
+    },
+    "_name": "M2_comfort_classifier"
+  },
+  "M3_microclimate_regimes": {
+    "task": "unsupervised clustering",
+    "features": [
+      "temp_c",
+      "rh_pct",
+      "ghi_wh_m2",
+      "elevation_deg",
+      "wind_kmh"
+    ],
+    "k_selection": [
+      {
+        "k": 2,
+        "silhouette": 0.34527829310641606,
+        "inertia": 12803.769787279456
+      },
+      {
+        "k": 3,
+        "silhouette": 0.2907661105240691,
+        "inertia": 10224.45945736712
+      },
+      {
+        "k": 4,
+        "silhouette": 0.32637068494369836,
+        "inertia": 7982.381688748549
+      },
+      {
+        "k": 5,
+        "silhouette": 0.328483160577076,
+        "inertia": 6664.570269245395
+      },
+      {
+        "k": 6,
+        "silhouette": 0.3217726052318897,
+        "inertia": 5855.706119282764
+      },
+      {
+        "k": 7,
+        "silhouette": 0.33667135253485664,
+        "inertia": 5154.7842956022
+      },
+      {
+        "k": 8,
+        "silhouette": 0.33164726819389306,
+        "inertia": 4512.8908807872485
+      }
+    ],
+    "best_k": 2,
+    "selection_rule": "highest silhouette score across k in [2, 3, 4, 5, 6, 7, 8]",
+    "regime_summary": [
+      {
+        "regime": 0,
+        "hours": 2166,
+        "mean_temp_c": 35.64459497580743,
+        "mean_rh_pct": 48.750227723725004,
+        "mean_heat_index_c": 42.85091499944849,
+        "mean_ghi": 647.13686600455,
+        "modal_hour": 12,
+        "modal_month": 7
+      },
+      {
+        "regime": 1,
+        "hours": 2236,
+        "mean_temp_c": 26.275625526591224,
+        "mean_rh_pct": 59.64566643977579,
+        "mean_heat_index_c": 27.97738030015942,
+        "mean_ghi": 306.887991160172,
+        "modal_hour": 7,
+        "modal_month": 1
+      }
+    ],
+    "_name": "M3_microclimate_regimes"
+  },
+  "_generated": "2026-07-29T21:04:29",
+  "_random_seed": 42
+}

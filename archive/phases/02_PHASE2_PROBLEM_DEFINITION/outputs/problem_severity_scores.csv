@@ -1,0 +1,9 @@
+id,name,Evidence,Impact,Reach,Urgency,WeightedScore,basis,Rank,Priority
+P1,Summer thermal discomfort (near-zero midday shade),5,5,5,5,5.0,"Phase 1.05/1.06 computed: ~88° summer sun, <0.5m shadow at noon; affects whole site ~5 months/yr",1,CRITICAL
+P2,Undocumented / inadequate accessibility,4,5,4,4,4.3,Phase 1.10: no verified universal-design features; brief mandates People of Determination access,2,CRITICAL
+P3,Shade inequity (canopy only on west side),4,3,4,3,3.5,Phase 1.02 image analysis + 1.11 SWOT: existing canopy concentrated west; east open/hot,3,MEDIUM
+P7,Irrigation-dependent landscape / water stress,5,3,3,3,3.5,Phase 1.05: near-zero rainfall Jun-Sep; any planting is fully irrigation-dependent,4,MEDIUM
+P4,Missing commercial / service facilities,3,3,4,3,3.25,Phase 1.03 + brief Section E: no kiosks/F&B; Manual benchmark ~15% leasable area unmet,5,MEDIUM
+P5,"Weak legibility (arrival, wayfinding, lighting)",3,3,3,3,3.0,"Phase 1.03/1.10: single confirmed entrance, no signage/lighting data",6,MEDIUM
+P6,Severed metro/city connectivity across SZR,4,2,3,2,2.75,Phase 1.08: ONPASSIVE metro across an 8-lane highway barrier; likely no safe crossing,7,MEDIUM
+P8,SZR-edge noise & air quality,3,2,2,2,2.25,Phase 1.07: 8-lane arterial on east edge; no dB/air data but qualitatively significant,8,LOW

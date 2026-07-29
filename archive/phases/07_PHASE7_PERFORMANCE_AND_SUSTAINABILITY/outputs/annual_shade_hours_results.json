@@ -1,0 +1,23 @@
+{
+  "total_daylight_hours": 4425,
+  "annual_shade_hours": {
+    "Shaded Spine (path)": 4391,
+    "Children's Play Zone": 161,
+    "Family Picnic & Shaded Seating": 274,
+    "Community Plaza & Event Lawn": 310,
+    "Outdoor Fitness & Wellness": 204,
+    "Quiet Contemplation Garden": 718,
+    "Commercial & Service Kiosks": 342,
+    "Multipurpose Sports Lawn": 191
+  },
+  "annual_shade_pct": {
+    "Shaded Spine (path)": 99.2,
+    "Children's Play Zone": 3.6,
+    "Family Picnic & Shaded Seating": 6.2,
+    "Community Plaza & Event Lawn": 7.0,
+    "Outdoor Fitness & Wellness": 4.6,
+    "Quiet Contemplation Garden": 16.2,
+    "Commercial & Service Kiosks": 7.7,
+    "Multipurpose Sports Lawn": 4.3
+  }
+}

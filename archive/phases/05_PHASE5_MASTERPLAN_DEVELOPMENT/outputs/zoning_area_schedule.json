@@ -1,0 +1,89 @@
+{
+  "site_area_sqm": 15000.0,
+  "zones": [
+    [
+      "Main Entrance Plaza",
+      "Arrival",
+      240,
+      1.6
+    ],
+    [
+      "Shaded Spine (Central Walkway)",
+      "Circulation",
+      1260,
+      8.4
+    ],
+    [
+      "Secondary Entrance (E)",
+      "Arrival",
+      240,
+      1.6
+    ],
+    [
+      "Children's Play Zone",
+      "Active",
+      1088,
+      7.3
+    ],
+    [
+      "Family Picnic & Shaded Seating",
+      "Passive",
+      884,
+      5.9
+    ],
+    [
+      "Community Plaza & Event Lawn",
+      "Social",
+      1224,
+      8.2
+    ],
+    [
+      "Outdoor Fitness & Wellness",
+      "Active",
+      816,
+      5.4
+    ],
+    [
+      "Native Planting / Biodiversity Strip",
+      "Green",
+      1088,
+      7.3
+    ],
+    [
+      "Quiet Contemplation Garden",
+      "Passive",
+      884,
+      5.9
+    ],
+    [
+      "Commercial & Service Kiosk Cluster",
+      "Commercial",
+      748,
+      5.0
+    ],
+    [
+      "Multipurpose Sports Lawn",
+      "Active",
+      1292,
+      8.6
+    ],
+    [
+      "Perimeter Shade Buffer (N)",
+      "Green_Buffer",
+      1008,
+      6.7
+    ],
+    [
+      "Perimeter Shade Buffer (S)",
+      "Green_Buffer",
+      1008,
+      6.7
+    ],
+    [
+      "Path Network & Landscape Setbacks (between rooms, to entrances, perimeter jogging loop)",
+      "Circulation",
+      3220.0,
+      21.5
+    ]
+  ]
+}

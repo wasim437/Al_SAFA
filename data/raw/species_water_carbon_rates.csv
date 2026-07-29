@@ -1,0 +1,6 @@
+Species,ScientificName,Count,Native,kgCO2_per_tree_yr,Water_L_per_tree_day_summer,Water_L_per_tree_day_winter,MatureCanopyRadius_m,MatureHeight_m,DroughtTolerance_1to5
+Neem,Azadirachta indica,58,0,18,90,45,5.0,9.0,4
+Ghaf,Prosopis cineraria,16,1,12,45,20,6.0,8.0,5
+Ficus nitida,Ficus microcarpa nitida,34,0,20,110,55,4.5,8.0,3
+Olive,Olea europaea,11,0,8,60,30,3.5,6.0,4
+Date Palm,Phoenix dactylifera,12,1,10,120,60,3.0,12.0,5

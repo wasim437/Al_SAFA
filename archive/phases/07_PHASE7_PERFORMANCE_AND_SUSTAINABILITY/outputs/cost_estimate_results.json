@@ -1,0 +1,129 @@
+{
+  "line_items": [
+    {
+      "Element": "Shaded Spine (Central Walkway)",
+      "Area_sqm": 1260,
+      "Rate_AED_sqm": 400,
+      "Cost_AED": 504000
+    },
+    {
+      "Element": "Main Entrance Plaza",
+      "Area_sqm": 240,
+      "Rate_AED_sqm": 500,
+      "Cost_AED": 120000
+    },
+    {
+      "Element": "Secondary Entrance (E)",
+      "Area_sqm": 240,
+      "Rate_AED_sqm": 500,
+      "Cost_AED": 120000
+    },
+    {
+      "Element": "Children's Play Zone",
+      "Area_sqm": 1088,
+      "Rate_AED_sqm": 900,
+      "Cost_AED": 979200
+    },
+    {
+      "Element": "Family Picnic & Shaded Seating",
+      "Area_sqm": 884,
+      "Rate_AED_sqm": 100,
+      "Cost_AED": 88400
+    },
+    {
+      "Element": "Community Plaza & Event Lawn",
+      "Area_sqm": 1224,
+      "Rate_AED_sqm": 500,
+      "Cost_AED": 612000
+    },
+    {
+      "Element": "Outdoor Fitness & Wellness",
+      "Area_sqm": 816,
+      "Rate_AED_sqm": 700,
+      "Cost_AED": 571200
+    },
+    {
+      "Element": "Native Planting / Biodiversity Strip",
+      "Area_sqm": 1088,
+      "Rate_AED_sqm": 100,
+      "Cost_AED": 108800
+    },
+    {
+      "Element": "Quiet Contemplation Garden",
+      "Area_sqm": 884,
+      "Rate_AED_sqm": 100,
+      "Cost_AED": 88400
+    },
+    {
+      "Element": "Commercial & Service Kiosk Cluster",
+      "Area_sqm": 748,
+      "Rate_AED_sqm": 4500,
+      "Cost_AED": 3366000
+    },
+    {
+      "Element": "Multipurpose Sports Lawn",
+      "Area_sqm": 1292,
+      "Rate_AED_sqm": 130,
+      "Cost_AED": 167960
+    },
+    {
+      "Element": "Perimeter Shade Buffer (N)",
+      "Area_sqm": 1008,
+      "Rate_AED_sqm": 100,
+      "Cost_AED": 100800
+    },
+    {
+      "Element": "Perimeter Shade Buffer (S)",
+      "Area_sqm": 1008,
+      "Rate_AED_sqm": 100,
+      "Cost_AED": 100800
+    },
+    {
+      "Element": "Path Network & Landscape Setbacks (between rooms, to entrances, perimeter jogging loop)",
+      "Area_sqm": 3220,
+      "Rate_AED_sqm": 400,
+      "Cost_AED": 1288000
+    },
+    {
+      "Element": "Shaded Spine \u2014 overhead canopy structure",
+      "Area_sqm": 1592,
+      "Rate_AED_sqm": 2500,
+      "Cost_AED": 3980400
+    },
+    {
+      "Element": "Canopy trees (108 \u00d7 Ghaf/Neem, supply+plant)",
+      "Area_sqm": "-",
+      "Rate_AED_sqm": "3500/tree",
+      "Cost_AED": 378000
+    },
+    {
+      "Element": "Site lighting (LED, spine + loop + bollards)",
+      "Area_sqm": "-",
+      "Rate_AED_sqm": "% of works",
+      "Cost_AED": 754438
+    },
+    {
+      "Element": "Irrigation network (drip/subsurface)",
+      "Area_sqm": "-",
+      "Rate_AED_sqm": "% of works",
+      "Cost_AED": 628698
+    },
+    {
+      "Element": "Smart infrastructure (sensors, digital wayfinding)",
+      "Area_sqm": "-",
+      "Rate_AED_sqm": "% of works",
+      "Cost_AED": 377219
+    }
+  ],
+  "addons": {
+    "Subtotal \u2014 direct works": 14334315.0,
+    "Preliminaries & enabling (10%)": 1433432,
+    "Design contingency (12%)": 1720118,
+    "Professional fees (8%)": 1146745,
+    "TOTAL ESTIMATED COST": 18634610.0
+  },
+  "budget_AED": 35000000,
+  "total_AED": 18634610.0,
+  "headroom_AED": 16365390.0,
+  "pct_of_budget": 53.2
+}

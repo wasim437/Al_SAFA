@@ -1,0 +1,35 @@
+{
+  "water_tariff_AED_m3": 8.8,
+  "annual_water_m3": 5702,
+  "line_items": [
+    {
+      "item": "Irrigation water (computed vol \u00d7 real DEWA tariff)",
+      "annual_AED": 50178,
+      "basis": "REAL"
+    },
+    {
+      "item": "Horticulture maintenance (6% of build cost)",
+      "annual_AED": 1118077,
+      "basis": "ratio"
+    },
+    {
+      "item": "Electricity (lighting, pumps, smart infra)",
+      "annual_AED": 180000,
+      "basis": "estimate"
+    },
+    {
+      "item": "Cleaning, waste & minor repairs (2% of build)",
+      "annual_AED": 372692,
+      "basis": "ratio"
+    },
+    {
+      "item": "Facilities servicing & security",
+      "annual_AED": 250000,
+      "basis": "estimate"
+    }
+  ],
+  "total_annual_om_AED": 1970946,
+  "build_cost_AED": 18634610.0,
+  "om_pct_of_build": 10.6,
+  "cost_over_10yr_AED": 38344074
+}

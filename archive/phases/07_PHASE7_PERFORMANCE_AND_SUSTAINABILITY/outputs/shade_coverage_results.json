@@ -1,0 +1,10 @@
+{
+  "Summer Solstice - Noon": 32.0,
+  "Winter Solstice - Noon": 41.2,
+  "Equinox - Noon": 36.0,
+  "shaded_spine_path_only": {
+    "Summer Solstice - Noon": 100.0,
+    "Winter Solstice - Noon": 100.0,
+    "Equinox - Noon": 100.0
+  }
+}

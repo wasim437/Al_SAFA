@@ -1,0 +1,30 @@
+{
+  "generated": "2026-07-29T21:04:29",
+  "site_area_sqm": 15000.0,
+  "annual_daylight_hours": 4402,
+  "spine_shade_canopy_only_pct": 60.18,
+  "spine_shade_canopy_plus_trees_pct": 70.9,
+  "site_mean_shade_pct": 26.2,
+  "daylight_hours_comfortable_exposed_pct": 44.5,
+  "daylight_hours_comfortable_shaded_pct": 64.6,
+  "comfort_hours_gained_pct_points": 20.1,
+  "mean_heat_index_reduction_c": 7.13,
+  "peak_heat_index_exposed_c": 56.8,
+  "peak_heat_index_shaded_c": 48.7,
+  "comfort_band_share_exposed_pct": {
+    "Comfortable": 42.6,
+    "Extreme Caution": 23.4,
+    "Danger": 19.7,
+    "Caution": 14.3
+  },
+  "comfort_band_share_shaded_pct": {
+    "Comfortable": 70.0,
+    "Extreme Caution": 12.6,
+    "Caution": 9.0,
+    "Danger": 8.4
+  },
+  "trees": 131,
+  "model_M1_test_r2": 0.9948,
+  "model_M2_test_accuracy": 0.9749,
+  "model_M3_regimes": 2
+}

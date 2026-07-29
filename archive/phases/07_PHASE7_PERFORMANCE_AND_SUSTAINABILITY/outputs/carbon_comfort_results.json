@@ -1,0 +1,46 @@
+{
+  "carbon": {
+    "total_annual_kgCO2": 2124,
+    "total_annual_tonnes": 2.1,
+    "car_km_equiv": 12744,
+    "by_species": [
+      {
+        "Species": "Neem (Azadirachta indica)",
+        "Count": 58,
+        "kgCO2_per_tree_yr": 18,
+        "annual_kgCO2": 1044
+      },
+      {
+        "Species": "Ghaf (Prosopis cineraria)",
+        "Count": 16,
+        "kgCO2_per_tree_yr": 12,
+        "annual_kgCO2": 192
+      },
+      {
+        "Species": "Ficus nitida",
+        "Count": 34,
+        "kgCO2_per_tree_yr": 20,
+        "annual_kgCO2": 680
+      },
+      {
+        "Species": "Olive (Olea europaea)",
+        "Count": 11,
+        "kgCO2_per_tree_yr": 8,
+        "annual_kgCO2": 88
+      },
+      {
+        "Species": "Date Palm (Phoenix dactylifera)",
+        "Count": 12,
+        "kgCO2_per_tree_yr": 10,
+        "annual_kgCO2": 120
+      }
+    ]
+  },
+  "thermal_comfort": {
+    "shade_cooling_C": 6.0,
+    "comfort_threshold_C": 32,
+    "comfortable_months_sun": 3,
+    "comfortable_months_shade": 6,
+    "months_gained": 3
+  }
+}

@@ -1,0 +1,40 @@
+PHASE 1.05 - CLIMATE ANALYSIS - AL SAFA 2 PARK, DUBAI
+============================================================
+
+Site coordinates (approx.): 25.19 N, 55.238 E, altitude 16 m
+
+KEY FINDINGS:
+  - Hottest months: Jul/Aug, avg max temp ~42.1 C
+  - Coolest months: Jan/Dec, avg min temp ~14.3 C
+  - Peak relative humidity: 65% (Jan/Dec, coastal winter humidity)
+  - Lowest relative humidity: 50% (Apr, pre-summer dry period)
+  - Prevailing wind: WNW, annual avg 16.7 km/h
+    (SOURCED: Windfinder, Dubai Intl Airport, 24-yr record 2002-2026)
+  - Solar radiation peak: Jun (~7.1 kWh/m2/day)
+  - Effectively zero rainfall Jun-Sep; light rainfall Dec-Feb
+  - Sunniest months: May/Jun (~11.5 hrs/day average sunshine)
+  - Annual sunshine total: 3570 hours/year
+
+DESIGN IMPLICATIONS FOR PARK (to inform later phases, not decided yet):
+  - Comfortable outdoor season: Nov-Apr (avg max 24-34 C) -> park should be
+    programmed for peak use in these months (aligns with event/community focus).
+  - May-Oct: extreme heat + high solar load -> shade infrastructure, misting,
+    shaded circulation, and material choice (low heat-absorption paving) are
+    critical for year-round usability, per brief's day/night & all-season goals.
+  - WNW prevailing wind (16.7 km/h avg) can be used for
+    passive cooling / natural ventilation corridors if built form or dense
+    planting is oriented WNW-ESE to channel the breeze.
+  - High summer sun angles (see sun path diagram) mean shade structures need
+    to address near-overhead sun (Jun solstice max elevation ~88 deg) as well
+    as low winter sun (Dec solstice, longer shadows) - both extremes matter.
+
+DATA SOURCE:
+  Temperature/humidity/sunshine: Dubai Meteorological Office climate normals
+  (1977-2015 period), as tabulated in the Wikipedia 'Climate of Dubai' article,
+  retrieved via live web search/fetch on 2026-07-24. Rainfall: same source,
+  1967-2009 period. Wind: annual avg speed and dominant direction sourced from
+  Windfinder wind statistics for Dubai International Airport (2002-2026 record).
+  Solar path: computed astronomically for exact site lat/lon using pvlib
+  (NREL SPA-based solar position algorithm) for year 2026 key dates, extended
+  to a full 8,760-hour annual dataset in the Phase 1.05/1.06 upgrade pass
+  (see 05_fullyear_solar_dataset.py).

@@ -1,0 +1,43 @@
+{
+  "population_sources": {
+    "Umm Suqeim First (356)": 7443,
+    "Umm Suqeim Second (362)": 9220,
+    "Umm Suqeim Third (366)": 4867,
+    "Al Safa": 16986
+  },
+  "al_safa_density_per_km2": 3800,
+  "walk_catchment": [
+    {
+      "ring": "400m (5-min walk)",
+      "radius_m": 400,
+      "area_km2": 0.503,
+      "est_residents": 1910
+    },
+    {
+      "ring": "800m (10-min walk)",
+      "radius_m": 800,
+      "area_km2": 2.011,
+      "est_residents": 7640
+    },
+    {
+      "ring": "1200m (15-min walk)",
+      "radius_m": 1200,
+      "area_km2": 4.524,
+      "est_residents": 17190
+    }
+  ],
+  "park_capacity_benchmark": {
+    "low_peak": 225,
+    "high_peak": 600,
+    "basis": "Neighborhood Parks Manual 150-400/10,000sqm"
+  },
+  "demand_model": {
+    "primary_catchment_800m_residents": 7640,
+    "assumed_participation_rate": 0.1,
+    "est_daily_visitors": 764,
+    "est_peak_concurrent_visitors": 169,
+    "capacity_low": 225,
+    "capacity_high": 600,
+    "verdict": "Peak concurrent demand fits within benchmark capacity"
+  }
+}

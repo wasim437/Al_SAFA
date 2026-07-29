@@ -1,0 +1,28 @@
+Season,Time,Object,Object_Height_m,Sun_Elevation_deg,Sun_Azimuth_deg,Shadow_Length_m
+Summer Solstice (21 Jun),Morning (09:00),Tree canopy (6m),6.0,44.5,81.1,6.11
+Summer Solstice (21 Jun),Morning (09:00),Shade structure (3.5m),3.5,44.5,81.1,3.56
+Summer Solstice (21 Jun),Morning (09:00),Low wall/planter (1m),1.0,44.5,81.1,1.02
+Summer Solstice (21 Jun),Noon (12:00),Tree canopy (6m),6.0,84.9,109.2,0.53
+Summer Solstice (21 Jun),Noon (12:00),Shade structure (3.5m),3.5,84.9,109.2,0.31
+Summer Solstice (21 Jun),Noon (12:00),Low wall/planter (1m),1.0,84.9,109.2,0.09
+Summer Solstice (21 Jun),Evening (16:00),Tree canopy (6m),6.0,40.4,280.2,7.05
+Summer Solstice (21 Jun),Evening (16:00),Shade structure (3.5m),3.5,40.4,280.2,4.11
+Summer Solstice (21 Jun),Evening (16:00),Low wall/planter (1m),1.0,40.4,280.2,1.17
+Winter Solstice (21 Dec),Morning (09:00),Tree canopy (6m),6.0,21.9,131.5,14.91
+Winter Solstice (21 Dec),Morning (09:00),Shade structure (3.5m),3.5,21.9,131.5,8.7
+Winter Solstice (21 Dec),Morning (09:00),Low wall/planter (1m),1.0,21.9,131.5,2.48
+Winter Solstice (21 Dec),Noon (12:00),Tree canopy (6m),6.0,41.2,174.8,6.85
+Winter Solstice (21 Dec),Noon (12:00),Shade structure (3.5m),3.5,41.2,174.8,4.0
+Winter Solstice (21 Dec),Noon (12:00),Low wall/planter (1m),1.0,41.2,174.8,1.14
+Winter Solstice (21 Dec),Evening (16:00),Tree canopy (6m),6.0,17.4,232.6,19.14
+Winter Solstice (21 Dec),Evening (16:00),Shade structure (3.5m),3.5,17.4,232.6,11.16
+Winter Solstice (21 Dec),Evening (16:00),Low wall/planter (1m),1.0,17.4,232.6,3.19
+Equinox (20 Mar),Morning (09:00),Tree canopy (6m),6.0,34.1,108.8,8.86
+Equinox (20 Mar),Morning (09:00),Shade structure (3.5m),3.5,34.1,108.8,5.17
+Equinox (20 Mar),Morning (09:00),Low wall/planter (1m),1.0,34.1,108.8,1.48
+Equinox (20 Mar),Noon (12:00),Tree canopy (6m),6.0,63.9,164.8,2.94
+Equinox (20 Mar),Noon (12:00),Shade structure (3.5m),3.5,63.9,164.8,1.71
+Equinox (20 Mar),Noon (12:00),Low wall/planter (1m),1.0,63.9,164.8,0.49
+Equinox (20 Mar),Evening (16:00),Tree canopy (6m),6.0,32.7,252.4,9.36
+Equinox (20 Mar),Evening (16:00),Shade structure (3.5m),3.5,32.7,252.4,5.46
+Equinox (20 Mar),Evening (16:00),Low wall/planter (1m),1.0,32.7,252.4,1.56

@@ -1,0 +1,14 @@
+{
+    "project_name": "Al Safa 2 Park Redesign",
+    "design_concept": "The Shaded Spine",
+    "site_area_sqm": 15000,
+    "annual_walkway_shade_coverage_pct": 99.2,
+    "annual_water_demand_m3": 5401.0,
+    "recycled_water_coverage_pct": 44.8,
+    "total_capex_aed": 18640000,
+    "budget_utilization_pct": 53.3,
+    "npv_30_year_aed": 32857727.15181593,
+    "discounted_payback_years": 8,
+    "30_yr_carbon_sequestration_tonnes": 53.448000000000036,
+    "catchment_10min_population": 7640
+}

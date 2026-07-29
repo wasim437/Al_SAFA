@@ -1,0 +1,49 @@
+{
+  "generated": "2026-07-29T21:03:50",
+  "hourly": {
+    "file": "hourly_climate_comfort_8760.csv",
+    "rows": 8760,
+    "columns": {
+      "elevation_deg": "COMPUTED \u2014 NREL SPA via pvlib",
+      "azimuth_deg": "COMPUTED \u2014 NREL SPA via pvlib",
+      "zenith_deg": "COMPUTED \u2014 NREL SPA via pvlib",
+      "is_daylight": "COMPUTED \u2014 NREL SPA via pvlib",
+      "temp_c": "MODELLED \u2014 diurnal downscaling of NCM monthly normals",
+      "rh_pct": "MODELLED \u2014 diurnal downscaling of NCM monthly normals",
+      "wind_kmh": "MEASURED (monthly) \u2014 NCM normals, held flat within the month",
+      "ghi_wh_m2": "MODELLED \u2014 NCM daily GHI distributed by solar geometry",
+      "heat_index_c": "DERIVED \u2014 NWS Rothfusz on modelled temp/RH",
+      "spine_shade_fraction": "COMPUTED \u2014 geometric canopy occlusion",
+      "temp_shaded_c": "DERIVED \u2014 measured shade relief applied to modelled temp",
+      "rh_shaded_pct": "DERIVED \u2014 Magnus relation on the shaded temperature",
+      "heat_index_shaded_c": "DERIVED \u2014 NWS Rothfusz on the shaded condition",
+      "comfort_gain_c": "TARGET \u2014 heat index reduction delivered by shade",
+      "comfort_band": "DERIVED \u2014 project comfort thresholds on exposed heat index",
+      "comfort_band_shaded": "DERIVED \u2014 project comfort thresholds, shaded",
+      "hour": "INDEX",
+      "month": "INDEX",
+      "dayofyear": "INDEX",
+      "hour_sin": "ENGINEERED \u2014 cyclical encoding of hour",
+      "hour_cos": "ENGINEERED \u2014 cyclical encoding of hour",
+      "doy_sin": "ENGINEERED \u2014 cyclical encoding of day of year",
+      "doy_cos": "ENGINEERED \u2014 cyclical encoding of day of year",
+      "is_weekend": "ENGINEERED \u2014 Fri/Sat, the UAE weekend",
+      "temp_range_c": "ENGINEERED \u2014 daily max minus min",
+      "hours_from_solar_noon": "ENGINEERED",
+      "visitors_est": "MODELLED \u2014 demand response to comfort, see build_hourly"
+    }
+  },
+  "spatial": {
+    "file": "spatial_grid_comfort.csv",
+    "rows": 15000,
+    "cell_size_m": 1.0,
+    "note": "shade_hours is COMPUTED by ray-traced occlusion over sampled daylight hours; summer_heat_index_c is DERIVED from it."
+  },
+  "legend": {
+    "MEASURED": "observed by an instrument and published by the source organisation",
+    "COMPUTED": "deterministic physics or astronomy, no estimation involved",
+    "MODELLED": "reconstructed by a documented model \u2014 carries model error",
+    "DERIVED": "an exact function of other columns in this table",
+    "ENGINEERED": "a feature built for the machine learning models"
+  }
+}

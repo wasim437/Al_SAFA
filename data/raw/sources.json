@@ -1,0 +1,103 @@
+{
+  "_readme": "Machine-readable provenance manifest. Every dataset in data/raw carries an entry here stating where it came from, the period it covers, how it was retrieved, and its known limitations. The human-readable version is DATA_SOURCES.md at the repository root. Nothing in this project is used in an analysis unless it appears in this file.",
+  "compiled": "2026-07-29",
+  "datasets": [
+    {
+      "file": "dubai_climate_normals_ncm.csv",
+      "title": "Dubai monthly climate normals",
+      "variables": ["air temperature (max/min/mean)", "relative humidity", "wind speed", "rainfall", "sunshine hours", "global horizontal irradiance"],
+      "publisher": "National Center of Meteorology (NCM), UAE / Dubai Meteorological Office",
+      "url": "https://www.ncm.gov.ae/",
+      "station": "Dubai International Airport (OMDB)",
+      "period": "1977-2015 station normals, tabulated to the WMO 1991-2020 reference period",
+      "years_of_record": 39,
+      "temporal_resolution": "monthly normals (12 rows)",
+      "measurement_type": "MEASURED",
+      "retrieved": "2026-07-24",
+      "retrieval_method": "Published station normals, cross-checked against the WMO tabulation",
+      "used_for": "The base climate for every downstream model: thermal comfort, shade benefit, irrigation demand, solar yield.",
+      "limitations": "Monthly normals, not a measured hourly time series. The 8,760-hour series used for machine learning is DOWNSCALED from these normals by a documented diurnal model (see src/climate.py) and is labelled MODELLED wherever it appears. A purchased AMY/TMY hourly file would remove this step; none was available within the competition timeframe."
+    },
+    {
+      "file": "(computed at runtime by src/solar.py)",
+      "title": "Solar position, 8,760 hourly steps",
+      "variables": ["solar elevation", "solar azimuth", "solar zenith", "extraterrestrial irradiance"],
+      "publisher": "National Renewable Energy Laboratory (NREL), via the pvlib-python library",
+      "url": "https://www.nrel.gov/",
+      "citation": "Reda, I. & Andreas, A. (2004, revised 2008). Solar Position Algorithm for Solar Radiation Applications. NREL/TP-560-34302.",
+      "period": "Full calendar year 2026, hourly",
+      "years_of_record": 1,
+      "temporal_resolution": "hourly (8,760 rows)",
+      "measurement_type": "COMPUTED (deterministic physics, uncertainty +/- 0.0003 degrees)",
+      "retrieved": "Computed directly for 25.190N, 55.238E - not downloaded",
+      "used_for": "Sun angles, shadow lengths, canopy occlusion, the annual shade-coverage model, and the solar features in the ML feature set.",
+      "limitations": "None material. This is an exact astronomical calculation, not an estimate. It describes where the sun is, not how cloudy it is; cloud cover comes from the NCM sunshine-hours normals."
+    },
+    {
+      "file": "dubai_population_dsc_2023.csv",
+      "title": "Community-level resident population",
+      "variables": ["population by community"],
+      "publisher": "Dubai Statistics Center",
+      "url": "https://www.dsc.gov.ae/",
+      "period": "2023",
+      "years_of_record": 1,
+      "temporal_resolution": "annual snapshot",
+      "measurement_type": "OFFICIAL STATISTIC",
+      "retrieved": "2026-07-24",
+      "used_for": "Catchment population, visitor demand model, capacity check.",
+      "limitations": "Community-level totals only. The walk-ring populations are derived by applying the Al Safa area density to each ring, so they assume even distribution within the ring - reasonable for this uniformly built neighbourhood but not exact."
+    },
+    {
+      "file": "walk_catchment_rings.csv",
+      "title": "Walk-time catchment rings",
+      "publisher": "Derived - this project",
+      "period": "2023 population base",
+      "measurement_type": "DERIVED",
+      "used_for": "Demand and accessibility analysis.",
+      "limitations": "Circular (as-the-crow-flies) rings, not a street-network isochrone. Real walking distance is longer than the radius; the 800 m ring is therefore a slight over-estimate of who can truly reach the park in 10 minutes."
+    },
+    {
+      "file": "species_water_carbon_rates.csv",
+      "title": "Per-species irrigation demand and carbon sequestration rates",
+      "publisher": "Published arid-region urban forestry literature; Ghaf figures from UAE field studies",
+      "period": "Rates published 2015-2023",
+      "measurement_type": "LITERATURE VALUES",
+      "used_for": "Irrigation water balance, carbon sequestration model, planting palette selection.",
+      "limitations": "Per-tree rates vary with age, soil and microclimate. Values are mid-range published figures for semi-mature specimens; the carbon model additionally applies a linear establishment curve over the first 10 years rather than crediting mature rates from year 1."
+    },
+    {
+      "file": "site_zoning_schedule.csv",
+      "title": "Masterplan zoning schedule with geometry",
+      "publisher": "This project - Phase 5 masterplan",
+      "period": "2026",
+      "measurement_type": "DESIGN (own work)",
+      "used_for": "Area schedule, cost take-off, and the spatial grid used by the per-square-metre comfort model.",
+      "limitations": "Zone rectangles are the design's own geometry. The 150x100 m site envelope is an ASSUMPTION pending confirmation against the supplied DWG file - every area figure depends on it."
+    },
+    {
+      "file": "construction_unit_rates_aed.csv",
+      "title": "Dubai construction and utility unit rates",
+      "publisher": "Dubai landscape contractor quotations; DEWA published tariff schedule",
+      "url": "https://www.dewa.gov.ae/",
+      "period": "2025",
+      "measurement_type": "MARKET RATES / PUBLISHED TARIFF",
+      "used_for": "Capital cost estimate, operations and maintenance model, 30-year life-cycle cost.",
+      "limitations": "Rates are the upper bound of quoted ranges, which is deliberately conservative. A real tender would price lower or higher depending on market conditions at the time."
+    },
+    {
+      "file": "(source documents, archive/source_files/)",
+      "title": "Competition brief, Neighbourhood Parks Manual, site DWG, master plan",
+      "publisher": "Dubai Municipality",
+      "period": "2026",
+      "measurement_type": "PRIMARY SOURCE DOCUMENT",
+      "used_for": "Brief compliance, capacity benchmarks (150-400 users per 10,000 sqm), design standards, site boundary.",
+      "limitations": "The DWG has not yet been opened and dimensioned; see site_zoning_schedule.csv limitation."
+    }
+  ],
+  "integrity_rules": [
+    "Every figure in every report traces to a file in data/raw or to a documented computation over one.",
+    "Any series that is modelled rather than measured is labelled MODELLED at the point of use, not only here.",
+    "Where a source has a known weakness it is stated in this file and repeated in DATA_SOURCES.md. Nothing is quietly smoothed over.",
+    "No dataset is generated to make a result look better. Where the data is weak the conclusion is stated as weak."
+  ]
+}
