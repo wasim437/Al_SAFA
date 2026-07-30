@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from matplotlib.patches import Circle, Rectangle
+from matplotlib.patches import Rectangle
 
 from . import config as C, viz
 

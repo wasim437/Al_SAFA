@@ -131,7 +131,6 @@ def downscale_to_hourly(normals: pd.DataFrame, solar: pd.DataFrame) -> pd.DataFr
         raise ValueError(f"expected 12 monthly normals, got {len(normals)}")
 
     idx = solar.index
-    month = idx.month
     hour = idx.hour + idx.minute / 60.0
 
     # Smooth the monthly normals around the year so December flows into January

@@ -313,3 +313,45 @@ HTML = f"""<!doctype html>
 
 (DOCS / "index.html").write_text(HTML, encoding="utf-8")
 print(f"wrote {DOCS / 'index.html'}  ({len(HTML):,} bytes)")
+
+
+# ---------------------------------------------------------------------------
+# Self-contained variant, for publishing before the repository exists.
+#
+# GitHub Pages can serve docs/index.html only after a push. Until then the site
+# has no URL at all, so this variant inlines every figure as a data URI and
+# drops the page wrapper, letting the same page be published directly. Links to
+# repository files are kept — they resolve the moment the push happens — and a
+# banner says plainly that they do not work yet.
+# ---------------------------------------------------------------------------
+import base64  # noqa: E402
+
+art = HTML[HTML.index("<style>"):]
+art = art.replace("</body>\n</html>", "").rstrip()
+
+inlined = 0
+for name in FIG_CAPTIONS:
+    p = ROOT / "figures" / f"{name}.png"
+    if not p.exists():
+        continue
+    uri = "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
+    before = art
+    art = art.replace(f'src="{RAW}/figures/{name}.png"', f'src="{uri}"')
+    if art != before:
+        inlined += 1
+
+banner = (
+    '<div style="background:var(--panel);border:1px solid var(--rule);'
+    'border-left:3px solid var(--accent-2);padding:14px 18px;margin:0 0 26px;'
+    'font-size:14px;line-height:1.6;color:var(--ink-2)">'
+    '<strong style="color:var(--ink)">This is the project site, published directly.</strong> '
+    f'The figures below are embedded in the page. Links to files in the repository '
+    f'(<code>{C.GITHUB_USER}/{C.GITHUB_REPO}</code>) resolve once it is pushed — '
+    'they will not open until then.</div>'
+)
+art = art.replace('<header><div class="wrap">', f'<div class="wrap">{banner}</div>\n<header><div class="wrap">', 1)
+art = f'<title>Al Safa 2 Park — The Shaded Spine</title>\n{art}\n'
+
+(DOCS / "index_selfcontained.html").write_text(art, encoding="utf-8")
+print(f"wrote {DOCS / 'index_selfcontained.html'}  "
+      f"({len(art)/1_048_576:.2f} MB, {inlined} figures inlined)")

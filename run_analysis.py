@@ -15,7 +15,6 @@ import argparse
 import json
 import time
 
-import numpy as np
 import pandas as pd
 
 from src import climate, config as C, dataset, models, solar, viz

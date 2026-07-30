@@ -42,7 +42,6 @@ import json
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import (
     HistGradientBoostingClassifier,
     RandomForestRegressor,
@@ -75,12 +74,9 @@ from . import config as C
 # is installed — it is not, on this machine, because TensorFlow publishes no
 # wheels for Python 3.14. The surrogate is small enough that this changes
 # nothing about the result.
-try:  # pragma: no cover - environment dependent
-    from tensorflow import keras  # type: ignore
+import importlib.util  # noqa: E402
 
-    HAS_KERAS = True
-except Exception:  # noqa: BLE001
-    HAS_KERAS = False
+HAS_KERAS = importlib.util.find_spec("tensorflow") is not None
 
 
 SURROGATE_FEATURES = [

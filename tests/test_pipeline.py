@@ -203,7 +203,7 @@ def test_no_leaky_features():
 
 def main() -> int:
     sol = test_solar_positions()
-    met = test_downscaling_reproduces_normals(sol)
+    test_downscaling_reproduces_normals(sol)
     test_heat_index()
     test_shade_model(sol)
     test_site_geometry()
