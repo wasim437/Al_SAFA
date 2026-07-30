@@ -90,12 +90,21 @@ def main() -> None:
     comfortable_exposed = float((day["heat_index_c"] < 32).mean() * 100)
     comfortable_shaded = float((day["heat_index_shaded_c"] < 32).mean() * 100)
 
+    # Two different questions, so two different numbers. Reporting them under
+    # labels that imply one supersedes the other was misleading: the per-m2
+    # figure is lower than the hours figure not because the trees hurt, but
+    # because it averages over every square metre and every hour rather than
+    # counting an hour once the walkway is half covered.
     headline = {
         "generated": pd.Timestamp.now().isoformat(timespec="seconds"),
         "site_area_sqm": C.SITE["area_sqm"],
         "annual_daylight_hours": int(sol["is_daylight"].sum()),
+        # Share of daylight hours in which at least half the walkway width is
+        # in shadow, from the canopy plane and its southern louvre alone.
         "spine_shade_canopy_only_pct": canopy_only["annual_shade_pct"],
-        "spine_shade_canopy_plus_trees_pct": round(combined_pct, 1),
+        # Mean annual shade of a square metre of walkway, canopy AND the tree
+        # avenue, from the ray-traced ground-plane model.
+        "spine_mean_per_sqm_shade_pct": round(combined_pct, 1),
         "site_mean_shade_pct": round(float(grid["shade_pct"].mean()), 1),
         "daylight_hours_comfortable_exposed_pct": round(comfortable_exposed, 1),
         "daylight_hours_comfortable_shaded_pct": round(comfortable_shaded, 1),
@@ -124,8 +133,8 @@ def main() -> None:
     print("\n" + "=" * 72)
     print("  HEADLINE RESULTS")
     print("=" * 72)
-    print(f"  Spine shade, canopy alone            {headline['spine_shade_canopy_only_pct']:>6.1f} %")
-    print(f"  Spine shade, canopy + tree avenue    {headline['spine_shade_canopy_plus_trees_pct']:>6.1f} %")
+    print(f"  Walkway shaded (hours, >=50% width)  {headline['spine_shade_canopy_only_pct']:>6.1f} %")
+    print(f"  Walkway mean shade per m2 (w/ trees) {headline['spine_mean_per_sqm_shade_pct']:>6.1f} %")
     print(f"  Site-wide mean shade                 {headline['site_mean_shade_pct']:>6.1f} %")
     print(f"  Comfortable daylight hours, exposed  {headline['daylight_hours_comfortable_exposed_pct']:>6.1f} %")
     print(f"  Comfortable daylight hours, shaded   {headline['daylight_hours_comfortable_shaded_pct']:>6.1f} %")

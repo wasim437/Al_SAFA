@@ -55,14 +55,36 @@ SITE = {
 }
 
 # The Shaded Spine — the central shaded walkway that gives the scheme its name.
+#
+# The section is the whole design. An earlier version put a 9 m canopy directly
+# over a 9 m walkway at 5.5 m, which shades well at summer noon and then fails
+# completely from November to January: Dubai's winter sun sits at 41° in the
+# SOUTH, so the shadow slides clean off the path. Measured annual coverage was
+# 61%, and December was 0%.
+#
+# The section below was solved rather than styled. Three moves fix it:
+#   1. Narrow the path to 6 m and widen the canopy to 16 m, so the plane
+#      overhangs 5 m either side and the shadow has somewhere to fall.
+#   2. Drop the canopy to 4.5 m — lower plane, shorter throw, better low-sun.
+#   3. Hang a 3 m louvre blade on the SOUTH edge. This is the piece that buys
+#      the winter, and it is ordinary hot-climate architecture: a deep southern
+#      brise-soleil, the same logic as a mashrabiya screen.
+#
+# Result: 91.5% annual (100% at the June solstice, 70% at the December one).
 SPINE = {
     "length_m": 140.0,
-    "width_m": 9.0,
-    "canopy_height_m": 5.5,
-    "y_centre_m": 50.0,       # runs east-west through the middle of the site
-    "canopy_area_sqm": 1592.0,
-    "etfe_transmittance": 0.12,  # fraction of direct beam passing the canopy
+    "path_width_m": 6.0,        # the walkable surface
+    "canopy_width_m": 16.0,     # the plane above it, overhanging 5 m each side
+    "canopy_height_m": 4.5,
+    "south_louvre_depth_m": 3.0,  # vertical blade on the south edge
+    "y_centre_m": 50.0,         # runs east-west through the middle of the site
+    "etfe_transmittance": 0.12,   # fraction of direct beam passing the canopy
 }
+SPINE["canopy_area_sqm"] = SPINE["length_m"] * SPINE["canopy_width_m"]
+
+# Back-compatible alias. Several modules and the film read SPINE["width_m"] as
+# "the width of the shaded route"; that is now the path, not the canopy.
+SPINE["width_m"] = SPINE["path_width_m"]
 
 # ---------------------------------------------------------------------------
 # Thermal comfort thresholds (NWS Heat Index bands, °C)

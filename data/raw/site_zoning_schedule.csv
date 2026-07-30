@@ -1,15 +1,17 @@
 Zone,Category,Area_sqm,Pct_of_site,Rate_AED_sqm,X_min,X_max,Y_min,Y_max,SurfaceAlbedo,ShadeStructure
 Perimeter Shade Buffer (S),Green_Buffer,1008,6.7,100,0,140,0,7.2,0.18,0
-Outdoor Fitness & Wellness,Active,816,5.4,700,5,26.3,7.2,45.5,0.25,1
-Native Planting / Biodiversity Strip,Green,1088,7.3,100,26.3,54.7,7.2,45.5,0.18,0
-Quiet Contemplation Garden,Passive,884,5.9,100,54.7,77.8,7.2,45.5,0.18,1
-Commercial & Service Kiosk Cluster,Commercial,748,5.0,4500,77.8,97.3,7.2,45.5,0.32,1
-Multipurpose Sports Lawn,Active,1292,8.6,130,97.3,131.0,7.2,45.5,0.22,0
+Outdoor Fitness & Wellness,Active,816,5.4,700,5,28.45,7.2,42,0.25,1
+Native Planting / Biodiversity Strip,Green,1088,7.3,100,28.45,59.71,7.2,42,0.18,0
+Quiet Contemplation Garden,Passive,884,5.9,100,59.71,85.11,7.2,42,0.18,1
+Commercial & Service Kiosk Cluster,Commercial,748,5.0,4500,85.11,106.6,7.2,42,0.32,1
+Multipurpose Sports Lawn,Active,1292,8.6,130,106.6,143.73,7.2,42,0.22,0
+Spine Shade Margin (S),Green,700,4.7,150,5,145,42,47,0.18,1
 Main Entrance Plaza,Arrival,240,1.6,500,0,5,26,74,0.35,1
-Shaded Spine (Central Walkway),Circulation,1260,8.4,400,5,145,45.5,54.5,0.30,1
+Shaded Spine (Central Walkway),Circulation,840,5.6,400,5,145,47,53,0.30,1
 Secondary Entrance (E),Arrival,240,1.6,500,145,150,26,74,0.35,1
-Children's Play Zone,Active,1088,7.3,900,5,33.4,54.5,92.8,0.25,1
-Family Picnic & Shaded Seating,Passive,884,5.9,100,33.4,56.5,54.5,92.8,0.20,1
-Community Plaza & Event Lawn,Social,1224,8.2,500,56.5,88.5,54.5,92.8,0.28,0
+Spine Shade Margin (N),Green,700,4.7,150,5,145,53,58,0.18,1
+Children's Play Zone,Active,1088,7.3,900,5,36.26,58,92.8,0.25,1
+Family Picnic & Shaded Seating,Passive,884,5.9,100,36.26,61.66,58,92.8,0.20,1
+Community Plaza & Event Lawn,Social,1224,8.2,500,61.66,96.83,58,92.8,0.28,0
 Perimeter Shade Buffer (N),Green_Buffer,1008,6.7,100,0,140,92.8,100,0.18,0
-Path Network & Landscape Setbacks,Circulation,3220,21.5,400,0,150,0,100,0.30,0
+Path Network & Landscape Setbacks,Circulation,2240,14.9,400,0,150,0,100,0.30,0

@@ -1,23 +1,24 @@
 {
-  "total_daylight_hours": 4425,
+  "_correction": "Revised from an earlier version that reported 99.2% for the Shaded Spine. That figure did not survive a geometric check: a flat 9 m canopy at 5.5 m stops shading a 9 m walkway once the sun is low and to the south, because the shadow slides off the path. This file now reports the canopy-plus-tree-avenue figure from the ray-traced ground-plane model in src/solar.py. See DATA_SOURCES.md.",
+  "total_daylight_hours": 4402,
   "annual_shade_hours": {
-    "Shaded Spine (path)": 4391,
-    "Children's Play Zone": 161,
-    "Family Picnic & Shaded Seating": 274,
-    "Community Plaza & Event Lawn": 310,
-    "Outdoor Fitness & Wellness": 204,
-    "Quiet Contemplation Garden": 718,
-    "Commercial & Service Kiosks": 342,
-    "Multipurpose Sports Lawn": 191
+    "Shaded Spine (path)": 3429,
+    "Children's Play Zone": 953,
+    "Family Picnic & Shaded Seating": 989,
+    "Community Plaza & Event Lawn": 964,
+    "Outdoor Fitness & Wellness": 965,
+    "Quiet Contemplation Garden": 1504,
+    "Commercial & Service Kiosks": 538,
+    "Multipurpose Sports Lawn": 360
   },
   "annual_shade_pct": {
-    "Shaded Spine (path)": 99.2,
-    "Children's Play Zone": 3.6,
-    "Family Picnic & Shaded Seating": 6.2,
-    "Community Plaza & Event Lawn": 7.0,
-    "Outdoor Fitness & Wellness": 4.6,
-    "Quiet Contemplation Garden": 16.2,
-    "Commercial & Service Kiosks": 7.7,
-    "Multipurpose Sports Lawn": 4.3
+    "Shaded Spine (path)": 90.55,
+    "Children's Play Zone": 21.6,
+    "Family Picnic & Shaded Seating": 22.5,
+    "Community Plaza & Event Lawn": 21.9,
+    "Outdoor Fitness & Wellness": 21.9,
+    "Quiet Contemplation Garden": 34.2,
+    "Commercial & Service Kiosks": 12.2,
+    "Multipurpose Sports Lawn": 8.2
   }
 }

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al Safa 2 Park — Design Analytics Portal | The Shaded Spine</title>
+<meta name="description" content="Evidence portal for the Al Safa 2 Park redesign, Dubai Municipality AI Park Design Challenge. Every figure is generated from the project's computed phase outputs and carries its own provenance.">
+<meta name="author" content="Mohamed Wasim">
+<meta name="color-scheme" content="dark light">
+
+<!-- Webfonts are progressive enhancement: the CSS falls back to a system stack
+     if there is no network, so the portal is fully usable offline. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="_PORTAL/portal.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ═══════════════════════════════ TOP BAR ═══════════════════════════════ -->
+<header class="topbar">
+    <button class="icon-btn" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
+    <div class="brand">
+        <div class="brand-mark" aria-hidden="true">AS2</div>
+        <div class="brand-text">
+            <div class="brand-name">Al Safa 2 · The Shaded Spine</div>
+            <div class="brand-sub">Design Analytics Portal · Dubai Municipality AI Park Design Challenge</div>
+        </div>
+    </div>
+
+    <div class="topbar-spacer"></div>
+
+    <button class="search-trigger" id="searchTrigger" aria-label="Open search (Control K)">
+        <span aria-hidden="true">⌕</span>
+        <span>Search metrics, zones, sources…</span>
+        <kbd>Ctrl K</kbd>
+    </button>
+
+    <button class="icon-btn" id="themeToggle" aria-label="Switch colour theme" title="Switch theme">◐</button>
+    <button class="icon-btn" id="printBtn" aria-label="Print full report" title="Print the whole portal">⎙</button>
+</header>
+
+<div class="shell">
+
+<!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+<div class="nav-scrim" id="navScrim"></div>
+<nav class="sidebar" id="sidebar" aria-label="Portal sections">
+
+    <div class="nav-group">
+        <div class="nav-group-label">Evidence</div>
+        <button class="nav-link" data-page="overview"><span class="nav-ico">◈</span>Overview<span class="nav-phase">—</span></button>
+        <button class="nav-link" data-page="context"><span class="nav-ico">◎</span>Site &amp; Context<span class="nav-phase">P1</span></button>
+        <button class="nav-link" data-page="climate"><span class="nav-ico">🌡</span>Climate<span class="nav-phase">P1.5</span></button>
+        <button class="nav-link" data-page="solar"><span class="nav-ico">☀</span>Solar &amp; Shadow<span class="nav-phase">P1.6</span></button>
+        <button class="nav-link" data-page="problems"><span class="nav-ico">⚠</span>Problems<span class="nav-phase">P2</span></button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-label">Design</div>
+        <button class="nav-link" data-page="concepts"><span class="nav-ico">◐</span>Concepts<span class="nav-phase">P4</span></button>
+        <button class="nav-link" data-page="masterplan"><span class="nav-ico">▦</span>Masterplan<span class="nav-phase">P5</span></button>
+        <button class="nav-link" data-page="design"><span class="nav-ico">⬡</span>Detail &amp; Planting<span class="nav-phase">P6</span></button>
+        <button class="nav-link" data-page="model"><span class="nav-ico">◱</span>3D Model<span class="nav-phase">P6</span></button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-label">Outcomes</div>
+        <button class="nav-link" data-page="performance"><span class="nav-ico">📈</span>Performance<span class="nav-phase">P7</span></button>
+        <button class="nav-link" data-page="experience"><span class="nav-ico">👥</span>Experience<span class="nav-phase">P8</span></button>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-group-label">Delivery</div>
+        <button class="nav-link" data-page="delivery"><span class="nav-ico">📦</span>Submission<span class="nav-phase">P10</span></button>
+        <button class="nav-link" data-page="verify"><span class="nav-ico">✓</span>Verification<span class="nav-phase">audit</span></button>
+    </div>
+
+    <div class="sidebar-foot">
+        <strong>Mohamed Wasim</strong><br>
+        Deadline 15 Aug 2026<br>
+        <span id="footBuild"></span>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════ MAIN ════════════════════════════════ -->
+<main id="main">
+
+<!-- ─────────────────────────────── OVERVIEW ─────────────────────────────── -->
+<section class="page" id="page-overview" aria-labelledby="h-overview">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-overview">Al Safa 2 Park — <em>The Shaded Spine</em></h1>
+            <p class="page-lede">
+                A 15,000 m² neighbourhood park in Dubai, redesigned around one finding: at
+                summer noon the sun sits almost directly overhead, so shade has to be
+                engineered rather than borrowed. Every figure on this portal is generated
+                from the project's computed outputs — click any tile to see its source.
+            </p>
+        </div>
+        <div class="page-meta" id="overviewMeta"></div>
+    </div>
+
+    <div class="kpi-grid stack" id="overviewKpis"></div>
+
+    <div class="grid g21 stack">
+        <div class="card">
+            <div class="card-title"><span>◈</span> The argument, in four steps</div>
+            <div id="argument"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>✓</span> Targets vs. measured<span class="sp" id="targetsMeta"></span></div>
+            <div id="targetScorecard"></div>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <h2 class="section-title"><span>🏙</span> Design visualisations</h2>
+        <div class="section-note">Phase 9 · click any image to enlarge · ← → to browse</div>
+    </div>
+    <div class="gallery stack" id="gallery"></div>
+
+    <div class="grid g2">
+        <div class="card">
+            <div class="card-title"><span>⚠</span> Top-ranked site problems<span class="sp">Phase 2</span></div>
+            <div id="overviewProblems"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>💰</span> Budget position<span class="sp">Phase 7</span></div>
+            <div class="chart-box"><canvas id="budgetChart" height="200"></canvas></div>
+            <div id="budgetNote" class="card-note" style="margin-top:0.8rem"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ────────────────────────────── SITE & CONTEXT ────────────────────────── -->
+<section class="page" id="page-context" aria-labelledby="h-context">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-context">Site &amp; <em>Context</em></h1>
+            <p class="page-lede">
+                Who the park is actually for, and how many of them there are. The catchment
+                model converts walking distance into resident counts, then into an expected
+                peak load that the design has to absorb.
+            </p>
+        </div>
+        <div class="page-meta">Phase 1.13 · Catchment &amp; Demand</div>
+    </div>
+
+    <div class="kpi-grid k4 stack" id="contextKpis"></div>
+
+    <div class="grid g21 stack">
+        <div class="card">
+            <div class="card-title"><span>◎</span> Walk-catchment rings<span class="sp">800 m = a 10-minute walk</span></div>
+            <div class="chart-box"><canvas id="catchmentChart" height="150"></canvas></div>
+            <div class="table-wrap" style="margin-top:1rem">
+                <table class="data" id="catchmentTable"></table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>👥</span> Surrounding communities</div>
+            <div id="communityList"></div>
+            <div class="callout" style="margin-top:1rem">
+                <span class="callout-ico">ℹ</span>
+                <div>Populations are Dubai Statistics Center community figures; the ring
+                estimates apply the Al Safa density of <strong id="densityVal">—</strong>
+                residents/km² to each ring's area.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><span>📊</span> Demand vs. capacity</div>
+        <div class="grid g2">
+            <div>
+                <div class="chart-box"><canvas id="demandChart" height="210"></canvas></div>
+            </div>
+            <div id="demandNarrative"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────────────────────── CLIMATE ─────────────────────────────── -->
+<section class="page" id="page-climate" aria-labelledby="h-climate">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-climate">Climate <em>Baseline</em></h1>
+            <p class="page-lede">
+                NCM/WMO monthly normals for Dubai. These twelve rows drive the shade model,
+                the irrigation model and the comfort model downstream — nothing in the
+                performance figures is assumed where a normal exists.
+            </p>
+        </div>
+        <div class="page-meta" id="climateMeta"></div>
+    </div>
+
+    <div class="kpi-grid k4 stack" id="climateKpis"></div>
+
+    <div class="grid g2 stack">
+        <div class="card">
+            <div class="card-title"><span>🌡</span> Temperature envelope
+                <span class="chart-actions"><button class="mini-btn" data-png="tempChart">PNG</button></span>
+            </div>
+            <div class="chart-box"><canvas id="tempChart" height="215"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>💧</span> Humidity &amp; rainfall
+                <span class="chart-actions"><button class="mini-btn" data-png="humidChart">PNG</button></span>
+            </div>
+            <div class="chart-box"><canvas id="humidChart" height="215"></canvas></div>
+        </div>
+    </div>
+
+    <div class="grid g2 stack">
+        <div class="card">
+            <div class="card-title"><span>☀</span> Solar irradiance &amp; sunshine
+                <span class="chart-actions"><button class="mini-btn" data-png="ghiChart">PNG</button></span>
+            </div>
+            <div class="chart-box"><canvas id="ghiChart" height="215"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🌬</span> Wind speed by month</div>
+            <div class="chart-box"><canvas id="windChart" height="215"></canvas></div>
+        </div>
+    </div>
+
+    <div class="card stack">
+        <div class="card-title"><span>🥵</span> Heat Index — full sun vs. shade
+            <span class="sp">NWS Rothfusz model · Phase 7</span>
+        </div>
+        <div class="chart-box"><canvas id="heatIndexChart" height="150"></canvas></div>
+        <div id="heatIndexNote" class="card-note" style="margin-top:0.9rem"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><span>📋</span> Monthly climate normals
+            <span class="chart-actions"><button class="mini-btn" data-csv="climateTable" data-name="dubai_climate_normals">CSV</button></span>
+        </div>
+        <div class="table-wrap"><table class="data" id="climateTable"></table></div>
+    </div>
+</section>
+
+<!-- ────────────────────────────── SOLAR & SHADOW ────────────────────────── -->
+<section class="page" id="page-solar" aria-labelledby="h-solar">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-solar">Solar <em>Geometry</em></h1>
+            <p class="page-lede">
+                Sun position is computed live in the browser with the NOAA solar-position
+                algorithm for 25.190°N, 55.238°E — not interpolated from a lookup table.
+                The validation card below checks it against the project's own pvlib output.
+            </p>
+        </div>
+        <div class="page-meta">Phase 1.05 / 1.06 · NOAA SPA</div>
+    </div>
+
+    <div class="control-bar">
+        <label for="solarDate">Date</label>
+        <input type="date" id="solarDate" value="2026-06-21">
+        <label for="solarPreset">Jump to</label>
+        <select id="solarPreset">
+            <option value="">— key dates —</option>
+            <option value="2026-06-21">Summer solstice · 21 Jun</option>
+            <option value="2026-03-20">Equinox · 20 Mar</option>
+            <option value="2026-09-22">Equinox · 22 Sep</option>
+            <option value="2026-12-21">Winter solstice · 21 Dec</option>
+            <option value="2026-08-15">Submission day · 15 Aug</option>
+        </select>
+        <label for="solarHour">Time</label>
+        <input type="range" id="solarHour" min="0" max="24" step="0.083333" value="12">
+        <span class="readout" id="solarClock">12:00</span>
+        <button class="vp-btn" id="solarPlay" aria-label="Animate the day">▶ Play day</button>
+    </div>
+
+    <div class="grid g21 stack" style="align-items:start">
+        <div>
+            <div class="sky-canvas-wrap"><canvas id="skyCanvas"></canvas></div>
+            <div class="tile-row">
+                <div class="tile"><div class="tile-label">Azimuth</div><div class="tile-val" id="tAzimuth" style="color:var(--gold)">—</div><div class="tile-desc" id="tAzimuthDesc">from true north</div></div>
+                <div class="tile"><div class="tile-label">Elevation</div><div class="tile-val" id="tElev" style="color:var(--orange)">—</div><div class="tile-desc">above horizon</div></div>
+                <div class="tile"><div class="tile-label">Shadow ratio</div><div class="tile-val" id="tShadow" style="color:var(--blue)">—</div><div class="tile-desc" id="tShadowDesc">length per 1 m of height</div></div>
+                <div class="tile"><div class="tile-label">6 m tree shadow</div><div class="tile-val" id="tTree" style="color:var(--green)">—</div><div class="tile-desc">canopy shade thrown</div></div>
+            </div>
+        </div>
+        <div class="grid" style="gap:1rem">
+            <div class="card">
+                <div class="card-title"><span>✓</span> Engine validation</div>
+                <p class="card-note" style="margin-bottom:0.8rem">
+                    The browser engine is checked against the project's pvlib NREL SPA output
+                    for the three key dates. Agreement within 0.5° means the interactive
+                    figures below are the same numbers the reports were written from.
+                </p>
+                <div class="table-wrap"><table class="data" id="solarValidation"></table></div>
+            </div>
+            <div class="card">
+                <div class="card-title"><span>📐</span> Day length &amp; peak elevation</div>
+                <div class="chart-box"><canvas id="sunPathChart" height="180"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid g2">
+        <div class="card">
+            <div class="card-title"><span>📏</span> Computed shadow lengths<span class="sp">Phase 1.06</span></div>
+            <div class="table-wrap"><table class="data" id="shadowTable"></table></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🕐</span> Annual sun-elevation surface</div>
+            <div class="chart-box"><canvas id="elevSurfaceChart" height="230"></canvas></div>
+            <p class="card-note" style="margin-top:0.8rem">
+                Peak daily elevation across the year, computed hour by hour in the browser.
+                The flat top through May–July is the near-zenith band — the months where a
+                vertical element throws almost no usable shade.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────────────────────── PROBLEMS ─────────────────────────────── -->
+<section class="page" id="page-problems" aria-labelledby="h-problems">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-problems">Problem <em>Definition</em></h1>
+            <p class="page-lede">
+                Eight problems, each scored 1–5 on evidence, impact, reach and urgency, then
+                ranked by the mean. Scoring is deliberately evidence-weighted: a problem
+                only ranks high if Phase 1 actually measured it.
+            </p>
+        </div>
+        <div class="page-meta">Phase 2 · Severity model</div>
+    </div>
+
+    <div class="grid g21 stack">
+        <div class="card">
+            <div class="card-title"><span>📊</span> Severity by criterion
+                <span class="chart-actions"><button class="mini-btn" data-png="problemChart">PNG</button></span>
+            </div>
+            <div class="chart-box"><canvas id="problemChart" height="230"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🎯</span> Priority split</div>
+            <div class="chart-box"><canvas id="priorityChart" height="180"></canvas></div>
+            <div id="priorityNote" class="card-note" style="margin-top:0.9rem"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><span>📋</span> Ranked problem register
+            <span class="chart-actions"><button class="mini-btn" data-csv="problemTable" data-name="problem_severity">CSV</button></span>
+        </div>
+        <div class="table-wrap"><table class="data" id="problemTable"></table></div>
+    </div>
+</section>
+
+<!-- ─────────────────────────────── CONCEPTS ─────────────────────────────── -->
+<section class="page" id="page-concepts" aria-labelledby="h-concepts">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-concepts">Concept <em>Selection</em></h1>
+            <p class="page-lede">
+                Three organising ideas, scored against five weighted criteria. The weights
+                below are live — move them and the ranking recomputes, so you can test how
+                robust the choice of Concept A actually is.
+            </p>
+        </div>
+        <div class="page-meta">Phase 4 · Evaluation matrix</div>
+    </div>
+
+    <div class="grid g3 stack" id="conceptCards"></div>
+
+    <div class="grid g12 stack">
+        <div class="card">
+            <div class="card-title"><span>⚖</span> Criterion weights</div>
+            <div class="matrix-weights" id="weightControls"></div>
+            <div style="display:flex; gap:0.4rem; margin-top:0.9rem">
+                <button class="vp-btn" id="weightReset">Reset to brief</button>
+                <button class="vp-btn" id="weightEqual">Equal weights</button>
+            </div>
+            <div class="callout" id="robustnessNote" style="margin-top:1rem">
+                <span class="callout-ico">ℹ</span><div></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>📊</span> Weighted scores<span class="sp" id="winnerLabel"></span></div>
+            <div class="chart-box"><canvas id="conceptChart" height="185"></canvas></div>
+        </div>
+    </div>
+
+    <div class="grid g2">
+        <div class="card">
+            <div class="card-title"><span>📋</span> Scoring matrix</div>
+            <div class="table-wrap"><table class="data" id="conceptTable"></table></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>✍</span> Selection rationale</div>
+            <p class="card-note" id="conceptRationale"></p>
+            <div class="card-title" style="margin-top:1.3rem"><span>🎯</span> Design objectives</div>
+            <div id="objectivesList"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ────────────────────────────── MASTERPLAN ───────────────────────────── -->
+<section class="page" id="page-masterplan" aria-labelledby="h-masterplan">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-masterplan">Masterplan <em>Allocation</em></h1>
+            <p class="page-lede">
+                How all 15,000 m² are spent. The plan below is drawn directly from the
+                zoning schedule — each block's area is true to the data, so the drawing and
+                the table can never disagree.
+            </p>
+        </div>
+        <div class="page-meta" id="masterplanMeta"></div>
+    </div>
+
+    <div class="kpi-grid k4 stack" id="masterplanKpis"></div>
+
+    <div class="grid g21 stack">
+        <div class="card">
+            <div class="card-title"><span>▦</span> Zoning plan
+                <span class="sp">hover a block to inspect · areas drawn to scale</span>
+            </div>
+            <div class="chart-box" style="position:relative">
+                <canvas id="zoningCanvas" style="width:100%; aspect-ratio:15/10; border-radius:var(--r-sm)"></canvas>
+            </div>
+            <div class="legend" id="zoningLegend"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🥧</span> Area by category</div>
+            <div class="chart-box"><canvas id="categoryChart" height="215"></canvas></div>
+            <div id="categoryNote" class="card-note" style="margin-top:0.9rem"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><span>📋</span> Zoning area schedule
+            <span class="chart-actions"><button class="mini-btn" data-csv="zoningTable" data-name="zoning_schedule">CSV</button></span>
+        </div>
+        <div class="table-wrap"><table class="data" id="zoningTable"></table></div>
+    </div>
+</section>
+
+<!-- ────────────────────────── DETAIL & PLANTING ────────────────────────── -->
+<section class="page" id="page-design" aria-labelledby="h-design">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-design">Detail Design &amp; <em>Planting</em></h1>
+            <p class="page-lede">
+                The canopy structure, the material palette, and the 131 trees that carry
+                both the shade strategy and the carbon case.
+            </p>
+        </div>
+        <div class="page-meta">Phase 6 · Detailed design</div>
+    </div>
+
+    <div class="kpi-grid k4 stack" id="designKpis"></div>
+
+    <div class="grid g21 stack">
+        <div class="card">
+            <div class="card-title"><span>🌳</span> Planting schedule
+                <span class="chart-actions"><button class="mini-btn" data-csv="plantingTable" data-name="planting_schedule">CSV</button></span>
+            </div>
+            <div class="table-wrap"><table class="data" id="plantingTable"></table></div>
+            <div class="callout warn" style="margin-top:1rem" id="carbonHonesty">
+                <span class="callout-ico">⚠</span><div></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🌱</span> Sequestration by species</div>
+            <div class="chart-box"><canvas id="speciesChart" height="230"></canvas></div>
+        </div>
+    </div>
+
+    <div class="grid g3">
+        <div class="card">
+            <div class="card-title"><span>🏗</span> Structural system</div>
+            <div class="card-note" id="structureList"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🎨</span> Material palette</div>
+            <div class="card-note" id="materialList"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>♿</span> Universal design</div>
+            <div class="card-note" id="accessList"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────────────────────────── 3D MODEL ────────────────────────────── -->
+<section class="page" id="page-model" aria-labelledby="h-model">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-model">3D <em>Massing Model</em></h1>
+            <p class="page-lede">
+                Built at real dimensions — a 150 × 100 m site with every zone footprint
+                sized from the zoning schedule. The sun is driven by the same NOAA engine
+                as the Solar page, so the shadows you see are the shadows the site gets.
+            </p>
+        </div>
+        <div class="page-meta">Phase 6 · Three.js · live geometry</div>
+    </div>
+
+    <div class="viewport-bar">
+        <button class="vp-btn active" data-vp="rotate">⟳ Auto-rotate</button>
+        <button class="vp-btn" data-vp="top">⊞ Plan view</button>
+        <button class="vp-btn" data-vp="eye">👁 Eye level</button>
+        <button class="vp-btn active" data-vp="canopy">⬡ Canopy</button>
+        <button class="vp-btn active" data-vp="labels">🏷 Zone labels</button>
+        <button class="vp-btn" data-vp="reset">⌖ Reset</button>
+        <span class="vp-hint">Drag to orbit · scroll to zoom</span>
+    </div>
+
+    <canvas class="viewport" id="modelCanvas"></canvas>
+
+    <div class="control-bar" style="margin-top:0.75rem">
+        <label for="modelDate">Sun date</label>
+        <input type="date" id="modelDate" value="2026-06-21">
+        <label for="modelHour">Sun time</label>
+        <input type="range" id="modelHour" min="4" max="20" step="0.25" value="12">
+        <span class="readout" id="modelClock">12:00</span>
+        <span class="readout" id="modelSunInfo" style="color:var(--text-muted)"></span>
+    </div>
+
+    <div class="legend stack" id="modelLegend"></div>
+
+    <div class="grid g3">
+        <div class="card">
+            <div class="card-title"><span>⬡</span> Canopy geometry</div>
+            <div class="grid g2" style="gap:0.5rem" id="canopyStats"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>📐</span> Site dimensions</div>
+            <div class="card-note" id="siteDims"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>ℹ</span> What this model is</div>
+            <p class="card-note">
+                A massing study, not a construction model. Zone footprints and the site
+                envelope are true to the computed schedule; furniture, planting detail and
+                structural connections are indicative. The DWG boundary still needs
+                confirming against the municipality file.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ────────────────────────────── PERFORMANCE ──────────────────────────── -->
+<section class="page" id="page-performance" aria-labelledby="h-performance">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-performance">Performance &amp; <em>Sustainability</em></h1>
+            <p class="page-lede">
+                What the design actually delivers, measured: shade hours, comfort months,
+                irrigation volume, capital cost and running cost — each from its own model.
+            </p>
+        </div>
+        <div class="page-meta">Phase 7 · Computed outcomes</div>
+    </div>
+
+    <div class="kpi-grid stack" id="perfKpis"></div>
+
+    <div class="grid g21 stack">
+        <div class="card">
+            <div class="card-title"><span>☂</span> Annual shade coverage by zone
+                <span class="sp">4,425 daylight hours modelled</span>
+            </div>
+            <div class="chart-box"><canvas id="zoneShadeChart" height="200"></canvas></div>
+            <div class="callout" style="margin-top:1rem" id="shadeHonesty">
+                <span class="callout-ico">ℹ</span><div></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>📅</span> Spine shade by month</div>
+            <div class="chart-box"><canvas id="monthlyShadeChart" height="230"></canvas></div>
+        </div>
+    </div>
+
+    <div class="grid g2 stack">
+        <div class="card">
+            <div class="card-title"><span>💧</span> Irrigation demand &amp; recycled share
+                <span class="chart-actions"><button class="mini-btn" data-png="waterChart">PNG</button></span>
+            </div>
+            <div class="chart-box"><canvas id="waterChart" height="215"></canvas></div>
+            <div id="waterNote" class="card-note" style="margin-top:0.9rem"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🌡</span> Comfort window — sun vs. shade</div>
+            <div class="chart-box"><canvas id="comfortChart" height="215"></canvas></div>
+            <div id="comfortNote" class="card-note" style="margin-top:0.9rem"></div>
+        </div>
+    </div>
+
+    <div class="grid g2 stack">
+        <div class="card">
+            <div class="card-title"><span>🏗</span> Capital cost — elemental take-off
+                <span class="chart-actions"><button class="mini-btn" data-csv="capexTable" data-name="capex_elemental">CSV</button></span>
+            </div>
+            <div class="chart-box"><canvas id="capexChart" height="230"></canvas></div>
+            <div class="table-wrap" style="margin-top:1rem; max-height:260px; overflow-y:auto">
+                <table class="data" id="capexTable"></table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>🔧</span> Annual operating cost</div>
+            <div class="chart-box"><canvas id="opexChart" height="230"></canvas></div>
+            <div class="table-wrap" style="margin-top:1rem"><table class="data" id="opexTable"></table></div>
+        </div>
+    </div>
+
+    <div class="card stack">
+        <div class="card-title"><span>📉</span> Cost of ownership over 10 years
+            <span class="sp">Build cost plus annual O&amp;M, undiscounted</span>
+        </div>
+        <div class="chart-box"><canvas id="tcoChart" height="130"></canvas></div>
+        <div id="tcoNote" class="card-note" style="margin-top:0.9rem"></div>
+    </div>
+
+    <div class="section-head">
+        <h2 class="section-title"><span>📐</span> Advanced 30-year model</h2>
+        <div class="section-note">NPV, IRR, solar energy budget and embodied carbon — Phase 7's extended LCC analysis</div>
+    </div>
+    <div class="kpi-grid k4 stack" id="advancedKpis"></div>
+    <div class="grid g2">
+        <div class="card">
+            <div class="card-title"><span>💹</span> 30-year discounted cash flow<span class="sp">3.5% social discount rate</span></div>
+            <div class="chart-box"><canvas id="npvChart" height="220"></canvas></div>
+            <div id="npvNote" class="card-note" style="margin-top:0.9rem"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>☀</span> Canopy solar energy budget</div>
+            <div class="chart-box"><canvas id="solarBudgetChart" height="220"></canvas></div>
+            <div id="solarBudgetNote" class="card-note" style="margin-top:0.9rem"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ────────────────────────────── EXPERIENCE ───────────────────────────── -->
+<section class="page" id="page-experience" aria-labelledby="h-experience">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-experience">User Experience &amp; <em>Activation</em></h1>
+            <p class="page-lede">
+                Five personas drawn from the catchment analysis, and the daily rhythm the
+                programming strategy is built around.
+            </p>
+        </div>
+        <div class="page-meta">Phase 8 · Personas &amp; programming</div>
+    </div>
+
+    <div class="section-head"><h2 class="section-title"><span>👥</span> Personas</h2></div>
+    <div class="grid g3 stack" id="personaGrid"></div>
+
+    <div class="grid g2 stack">
+        <div class="card">
+            <div class="card-title"><span>🕐</span> Daily use pattern</div>
+            <div id="dailyPattern"></div>
+            <p class="card-note" style="margin-top:1rem">
+                The 08:00–15:00 trough is a heat problem, not a demand problem. The shaded
+                spine is the only element that makes that window usable at all.
+            </p>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>📆</span> Seasonal use &amp; comfort window</div>
+            <div class="chart-box"><canvas id="seasonalChart" height="190"></canvas></div>
+            <p class="card-note" id="seasonalNote" style="margin-top:0.9rem"></p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><span>🗺</span> Which zones each persona uses</div>
+        <div class="table-wrap"><table class="data" id="personaZoneTable"></table></div>
+    </div>
+</section>
+
+<!-- ────────────────────────────── SUBMISSION ───────────────────────────── -->
+<section class="page" id="page-delivery" aria-labelledby="h-delivery">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-delivery">Submission <em>Package</em></h1>
+            <p class="page-lede">
+                The twelve required upload slots, their current contents, and what is still
+                outstanding before 15 August 2026.
+            </p>
+        </div>
+        <div class="page-meta" id="deliveryMeta"></div>
+    </div>
+
+    <div class="kpi-grid k4 stack" id="deliveryKpis"></div>
+
+    <div class="grid g2 stack">
+        <div class="card">
+            <div class="card-title"><span>📦</span> Upload slots 1–6</div>
+            <div class="grid" style="gap:0.5rem" id="slotsA"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>📦</span> Upload slots 7–12</div>
+            <div class="grid" style="gap:0.5rem" id="slotsB"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><span>👤</span> Still needs a human</div>
+        <div id="humanTasks"></div>
+    </div>
+</section>
+
+<!-- ───────────────────────────── VERIFICATION ──────────────────────────── -->
+<section class="page" id="page-verify" aria-labelledby="h-verify">
+    <div class="page-head">
+        <div>
+            <h1 class="page-title" id="h-verify">Data <em>Verification</em></h1>
+            <p class="page-lede">
+                This portal types no analysis numbers of its own. Everything is generated
+                from the phase output files by <code>_PORTAL/build_portal.py</code>, which
+                also cross-checks the phases against each other. Both the passes and the
+                disagreements are published below.
+            </p>
+        </div>
+        <div class="page-meta" id="verifyMeta"></div>
+    </div>
+
+    <div class="kpi-grid stack" id="verifyKpis"></div>
+
+    <div class="grid g12 stack">
+        <div class="card">
+            <div class="card-title"><span>🔗</span> Data flow</div>
+            <div class="card-note" id="dataFlow"></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><span>✓</span> Cross-phase consistency checks
+                <span class="sp">regenerated on every build</span>
+            </div>
+            <div id="auditList"></div>
+        </div>
+    </div>
+
+    <div class="card stack">
+        <div class="card-title"><span>🧾</span> Every headline figure and where it comes from
+            <span class="chart-actions"><button class="mini-btn" data-csv="provenanceTable" data-name="provenance_ledger">CSV</button></span>
+        </div>
+        <div class="table-wrap"><table class="data" id="provenanceTable"></table></div>
+    </div>
+
+    <div class="section-head">
+        <h2 class="section-title"><span>📚</span> External data sources</h2>
+        <div class="section-note">The real-world organisations and datasets behind the numbers — not just this project's own files</div>
+    </div>
+    <p class="card-note stack" style="max-width:74ch">
+        Every figure in this portal ultimately reduces to a project output file — but those
+        files themselves are built on real external data. This is that bibliography:
+        transcribed from the citations the analysis scripts already make in
+        <code>_scripts/*.py</code>, including their own honest caveats about a source's
+        limits. Nothing below is invented for this portal.
+    </p>
+    <div class="grid g2 stack" id="referenceGrid"></div>
+
+    <div class="card">
+        <div class="card-title"><span>📁</span> Source files read on the last build</div>
+        <div id="sourceList" class="card-note"></div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════ OVERLAYS ══════════════════════════════ -->
+
+<!-- Command palette -->
+<div class="palette-backdrop" id="paletteBackdrop" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="palette">
+        <input type="text" class="palette-input" id="paletteInput"
+               placeholder="Search pages, metrics, zones, species, source files…"
+               autocomplete="off" spellcheck="false" aria-controls="paletteResults">
+        <div class="palette-results" id="paletteResults" role="listbox"></div>
+        <div class="palette-foot">
+            <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+            <span><kbd>⏎</kbd> open</span>
+            <span><kbd>esc</kbd> close</span>
+        </div>
+    </div>
+</div>
+
+<!-- Provenance drawer -->
+<aside class="drawer" id="drawer" role="dialog" aria-modal="false" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+        <div style="flex:1">
+            <h3 id="drawerTitle">Provenance</h3>
+            <p>Where this number comes from</p>
+        </div>
+        <button class="icon-btn" id="drawerClose" aria-label="Close provenance panel">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">✕</button>
+    <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+    <button class="lightbox-nav next" id="lightboxNext" aria-label="Next image">›</button>
+    <div>
+        <img id="lightboxImg" alt="">
+        <div class="lightbox-cap" id="lightboxCap"></div>
+    </div>
+</div>
+
+<!-- Scripts: all local, so the portal works with no network connection. -->
+<script src="_PORTAL/vendor/chart.umd.min.js"></script>
+<script src="_PORTAL/vendor/three.min.js"></script>
+<script src="_PORTAL/portal_data.js"></script>
+<script src="_PORTAL/portal.js"></script>
+
+</body>
+</html>

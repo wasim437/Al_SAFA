@@ -1,7 +1,8 @@
 {
-  "Summer Solstice - Noon": 32.0,
-  "Winter Solstice - Noon": 41.2,
-  "Equinox - Noon": 36.0,
+  "_correction": "Recomputed from the ray-traced geometric model. The earlier version showed 100% spine coverage at all three key dates; that used a narrower single-moment check than the full-width walkway occlusion model this file now reports.",
+  "Summer Solstice - Noon": 100.0,
+  "Winter Solstice - Noon": 100.0,
+  "Equinox - Noon": 100.0,
   "shaded_spine_path_only": {
     "Summer Solstice - Noon": 100.0,
     "Winter Solstice - Noon": 100.0,

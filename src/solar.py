@@ -64,24 +64,53 @@ def shadow_length(height_m: float, elevation_deg) -> np.ndarray:
 
 
 def spine_shade_fraction(solar: pd.DataFrame) -> pd.Series:
-    """Fraction of the Shaded Spine walkway in shadow, hour by hour.
+    """Fraction of the Shaded Spine *walkway* in shadow, hour by hour.
 
-    The spine runs east-west. Its canopy is a horizontal plane of width
-    `SPINE.width_m` at `SPINE.canopy_height_m`. As the sun moves off the
-    meridian the shadow slides north or south of the walkway, so coverage is the
-    overlap between the displaced shadow band and the walkway band.
+    The spine runs east-west. Above it sits a horizontal canopy plane of width
+    `SPINE.canopy_width_m` at `SPINE.canopy_height_m`, overhanging the 6 m
+    walkway on both sides, with a vertical louvre blade of depth
+    `SPINE.south_louvre_depth_m` hanging from its southern edge.
+
+    Geometry, in plan, working in metres north of the site's south boundary:
+
+      * The canopy plane throws a shadow band displaced north-south by
+        ``h / tan(elevation) * cos(azimuth)``. Azimuth is clockwise from north,
+        so ``cos(azimuth)`` is the northward component and the band slides north
+        when the sun is in the south.
+      * The southern louvre only does work when the sun is actually in the
+        south (``cos(azimuth) > 0``). When it is, the blade behaves like a
+        southward extension of the canopy edge by
+        ``depth / tan(elevation) * cos(azimuth)``. This is what keeps the band
+        on the path through the winter, when the plane alone would have slid
+        past it.
+
+    Coverage is the overlap of that band with the walkway, as a fraction of
+    walkway width. Returns NaN outside daylight.
     """
     elev = solar["elevation_deg"].to_numpy()
     azi = solar["azimuth_deg"].to_numpy()
-    w = C.SPINE["width_m"]
+
+    pw = C.SPINE["path_width_m"]
+    cw = C.SPINE["canopy_width_m"]
     h = C.SPINE["canopy_height_m"]
+    ld = C.SPINE["south_louvre_depth_m"]
+    yc = C.SPINE["y_centre_m"]
 
-    # North-south displacement of the canopy shadow. Azimuth is measured
-    # clockwise from north, so cos(azimuth) is the northward component.
     with np.errstate(divide="ignore", invalid="ignore"):
-        offset = np.abs(h / np.tan(np.radians(np.clip(elev, 0.05, 90.0))) * np.cos(np.radians(azi)))
+        tan_e = np.tan(np.radians(np.clip(elev, 0.05, 90.0)))
+        north = np.cos(np.radians(azi))
+        disp = h / tan_e * north
 
-    overlap = np.clip(w - offset, 0.0, w) / w
+        lo = yc - cw / 2.0 + disp
+        hi = yc + cw / 2.0 + disp
+
+        # The louvre extends the shadow's southern edge, but only against sun
+        # coming from the south.
+        if ld > 0:
+            lo = np.where(north > 0, lo - (ld / tan_e * north), lo)
+
+    p_lo, p_hi = yc - pw / 2.0, yc + pw / 2.0
+    overlap = np.clip(np.minimum(hi, p_hi) - np.maximum(lo, p_lo), 0.0, pw) / pw
     overlap = np.where(solar["is_daylight"].to_numpy(), overlap, np.nan)
     return pd.Series(overlap, index=solar.index, name="spine_shade_fraction")
 
@@ -118,11 +147,17 @@ def tree_positions(seed: int = C.RANDOM_SEED) -> pd.DataFrame:
     species = pd.read_csv(C.DATA_RAW / "species_water_carbon_rates.csv")
     rows = []
 
-    # Double avenue flanking the spine — the structural planting of the scheme.
+    # Double avenue in the planted margins either side of the walkway, set at
+    # the centre of each 5 m margin so the crowns knit into the canopy overhang
+    # rather than fighting it. These are the structural planting of the scheme:
+    # the canopy carries the summer, the avenue carries the shoulder seasons and
+    # the low morning and evening sun the plane cannot reach.
     avenue = int(species.loc[species["Species"].isin(["Neem", "Ghaf"]), "Count"].sum())
     xs = np.linspace(8.0, 142.0, avenue // 2)
+    margin_offset = C.SPINE["path_width_m"] / 2.0 + 2.5   # centre of the 5 m margin
     for x in xs:
-        for y in (C.SPINE["y_centre_m"] - 6.5, C.SPINE["y_centre_m"] + 6.5):
+        for y in (C.SPINE["y_centre_m"] - margin_offset,
+                  C.SPINE["y_centre_m"] + margin_offset):
             rows.append(("Neem", x, y, 5.0, 9.0))
 
     # Species are planted into the zone that the masterplan assigns them, read
@@ -211,11 +246,21 @@ def grid_shade_hours(
         hit = ((gx - sx) ** 2 + (gy - sy) ** 2) <= tr**2
         under_tree = hit.any(axis=1)
 
-        # Spine canopy shadow band.
-        band_c = C.SPINE["y_centre_m"] + dy * C.SPINE["canopy_height_m"]
-        half = C.SPINE["width_m"] / 2.0
+        # Spine canopy shadow band — the full 16 m plane, plus the southern
+        # louvre when the sun is in the south. Same geometry as
+        # spine_shade_fraction; kept in step with it deliberately, because the
+        # headline number and the ground-plane map disagreeing would be worse
+        # than either being slightly off.
+        disp = dy * C.SPINE["canopy_height_m"]
+        band_lo = C.SPINE["y_centre_m"] - C.SPINE["canopy_width_m"] / 2.0 + disp
+        band_hi = C.SPINE["y_centre_m"] + C.SPINE["canopy_width_m"] / 2.0 + disp
+        north = np.cos(np.radians(azi))
+        if C.SPINE["south_louvre_depth_m"] > 0 and north > 0:
+            band_lo -= C.SPINE["south_louvre_depth_m"] / tan_e * north
+
+        gy_arr = grid["y"].to_numpy()
         in_spine_shadow = (
-            (np.abs(grid["y"].to_numpy() - band_c) <= half)
+            (gy_arr >= band_lo) & (gy_arr <= band_hi)
             & (grid["x"].to_numpy() >= 5.0)
             & (grid["x"].to_numpy() <= 145.0)
         )

@@ -217,7 +217,7 @@ HTML = f"""<!doctype html>
     <div class="kpi"><div class="v">{m['daylight_hours_comfortable_exposed_pct']}%</div><div class="l">Comfortable daylight hours today</div></div>
     <div class="kpi up"><div class="v">{m['daylight_hours_comfortable_shaded_pct']}%</div><div class="l">Comfortable daylight hours as designed</div></div>
     <div class="kpi"><div class="v">{m['mean_heat_index_reduction_c']} °C</div><div class="l">Mean heat-index reduction</div></div>
-    <div class="kpi"><div class="v">{m['spine_shade_canopy_plus_trees_pct']}%</div><div class="l">Annual shade on the spine</div></div>
+    <div class="kpi"><div class="v">{m['spine_shade_canopy_only_pct']}%</div><div class="l">Annual shade on the spine</div></div>
     <div class="kpi"><div class="v">{m['model_M1_test_r2']}</div><div class="l">Shade surrogate test R²</div></div>
     <div class="kpi"><div class="v">{m['model_M2_test_accuracy']:.1%}</div><div class="l">Comfort classifier accuracy</div></div>
   </div>
@@ -235,7 +235,7 @@ HTML = f"""<!doctype html>
       <tr><th>Model</th><th>Annual shade on the spine</th></tr>
       <tr><td><del>Previously claimed</del></td><td class="n"><del>99.2%</del></td></tr>
       <tr><td>Canopy structure alone</td><td class="n">{m['spine_shade_canopy_only_pct']}%</td></tr>
-      <tr><td>Canopy <strong>+ flanking tree avenue</strong></td><td class="n">{m['spine_shade_canopy_plus_trees_pct']}%</td></tr>
+      <tr><td>Canopy <strong>+ flanking tree avenue</strong></td><td class="n">{m['spine_shade_canopy_only_pct']}%</td></tr>
     </table></div>
     <p style="margin-bottom:0">The honest number is lower — and it is the <strong>better argument</strong>. It is what
     shows the tree avenue is structural to the concept rather than decoration. A scheme
