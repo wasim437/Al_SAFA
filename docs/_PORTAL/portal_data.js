@@ -10,7 +10,7 @@ window.AS2 = {
   "deadline": "2026-08-15",
   "siteAreaSqm": 15000.0,
   "budgetAED": 35000000,
-  "generated": "2026-07-30 09:31 UTC",
+  "generated": "2026-07-30 14:23 UTC",
   "sourceCount": 20
  },
  "climate": {
@@ -1920,40 +1920,52 @@ window.AS2 = {
  },
  "renders": [
   {
-   "src": "../archive/phases/09_PHASE9_AI_WORKFLOW_AND_VISUALIZATION/outputs/masterplan_aerial_golden_hour.jpg",
-   "title": "Aerial Masterplan — Golden Hour",
+   "src": "assets/renders/dubai_futuristic_masterplan_aerial.jpg",
+   "title": "Futuristic Organic Masterplan — Dubai Landmark Concept",
    "tag": "Phase 5 · Masterplan",
-   "desc": "Full 15,000 m² site: the spine, the zoned rooms either side, and the perimeter buffers."
+   "desc": "Sweeping dune-inspired parametric canopy, fluid terrazzo pathways, and integrated micro-oasis pockets."
   },
   {
-   "src": "../archive/phases/09_PHASE9_AI_WORKFLOW_AND_VISUALIZATION/outputs/spine_corridor_interior.jpg",
-   "title": "The Shaded Spine — Interior",
+   "src": "assets/renders/dubai_futuristic_spine_interior.jpg",
+   "title": "The Shaded Promenade — Luxury Interior",
    "tag": "Phase 6 · Detailed Design",
-   "desc": "Under the canopy along the central walkway: the space the whole scheme is organised around."
+   "desc": "Ultra-luxury marble walkway beneath a fluid parametric canopy with cooling mist rings and Ghaf groves."
   },
   {
-   "src": "../archive/phases/09_PHASE9_AI_WORKFLOW_AND_VISUALIZATION/outputs/thermal_comfort_heatmap.jpg",
-   "title": "Thermal Comfort Study",
-   "tag": "Phase 7 · Performance",
-   "desc": "Comfort contrast between the shaded spine and the exposed open zones."
-  },
-  {
-   "src": "../archive/phases/09_PHASE9_AI_WORKFLOW_AND_VISUALIZATION/outputs/aerial_day_view_1784970538631.jpg",
-   "title": "Midday Aerial — Canopy Shadows",
+   "src": "assets/renders/aerial_day_view_1784970538631.jpg",
+   "title": "Midday Aerial — Organic Lattice Canopy",
    "tag": "Phase 9 · AI Visualization",
-   "desc": "Near-vertical summer sun, showing how little shade any vertical element contributes."
+   "desc": "Futuristic curved canopy concept demonstrating near-vertical summer shade coverage."
   },
   {
-   "src": "../archive/phases/09_PHASE9_AI_WORKFLOW_AND_VISUALIZATION/outputs/eyelevel_spine_1784970552956.jpg",
-   "title": "Eye-Level Spine Perspective",
+   "src": "assets/renders/masterplan_aerial_golden_hour.jpg",
+   "title": "Golden Hour Aerial View",
+   "tag": "Phase 5 · Masterplan",
+   "desc": "Fluid biophilic architecture bathed in warm evening sunlight."
+  },
+  {
+   "src": "assets/renders/spine_corridor_interior.jpg",
+   "title": "Parametric Canopy Corridor",
    "tag": "Phase 6 · Detailed Design",
-   "desc": "Native canopy planting and the parametric structure at pedestrian eye level."
+   "desc": "Curved timber and bronze louvers providing continuous thermal comfort."
   },
   {
-   "src": "../archive/phases/09_PHASE9_AI_WORKFLOW_AND_VISUALIZATION/outputs/night_plaza_render_1784970565232.jpg",
-   "title": "Night Activation — Community Plaza",
+   "src": "assets/renders/eyelevel_spine_1784970552956.jpg",
+   "title": "Biophilic Promenade Perspective",
+   "tag": "Phase 6 · Detailed Design",
+   "desc": "Native Ghaf and Neem canopy trees integrated into the fluid shade structure."
+  },
+  {
+   "src": "assets/renders/night_plaza_render_1784970565232.jpg",
+   "title": "Night Activation Plaza — Ambient LED",
    "tag": "Phase 8 · Activation",
-   "desc": "The 18:00–23:00 peak-use window the programming strategy is built around."
+   "desc": "Linear and edge-lit LED illumination creating a vibrant evening community destination."
+  },
+  {
+   "src": "assets/renders/thermal_comfort_heatmap.jpg",
+   "title": "Thermal Comfort Performance Map",
+   "tag": "Phase 7 · Performance",
+   "desc": "Computed microclimate heat-index reduction under the organic canopy."
   }
  ],
  "provenance": [

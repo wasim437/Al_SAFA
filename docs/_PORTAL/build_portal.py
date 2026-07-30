@@ -1061,36 +1061,68 @@ def build_deliverables():
 # 11. Renders (Phase 9)
 # --------------------------------------------------------------------------
 RENDER_META = [
-    ("masterplan_aerial_golden_hour.jpg", "Aerial Masterplan — Golden Hour",
+    ("dubai_futuristic_masterplan_aerial.jpg", "Futuristic Organic Masterplan — Dubai Landmark Concept",
      "Phase 5 · Masterplan",
-     "Full 15,000 m² site: the spine, the zoned rooms either side, and the perimeter buffers."),
-    ("spine_corridor_interior.jpg", "The Shaded Spine — Interior",
+     "Sweeping dune-inspired parametric canopy, fluid terrazzo pathways, and integrated micro-oasis pockets."),
+    ("dubai_futuristic_spine_interior.jpg", "The Shaded Promenade — Luxury Interior",
      "Phase 6 · Detailed Design",
-     "Under the canopy along the central walkway: the space the whole scheme is organised around."),
-    ("thermal_comfort_heatmap.jpg", "Thermal Comfort Study",
-     "Phase 7 · Performance",
-     "Comfort contrast between the shaded spine and the exposed open zones."),
-    ("aerial_day_view_1784970538631.jpg", "Midday Aerial — Canopy Shadows",
+     "Ultra-luxury marble walkway beneath a fluid parametric canopy with cooling mist rings and Ghaf groves."),
+    ("aerial_day_view_1784970538631.jpg", "Midday Aerial — Organic Lattice Canopy",
      "Phase 9 · AI Visualization",
-     "Near-vertical summer sun, showing how little shade any vertical element contributes."),
-    ("eyelevel_spine_1784970552956.jpg", "Eye-Level Spine Perspective",
+     "Futuristic curved canopy concept demonstrating near-vertical summer shade coverage."),
+    ("masterplan_aerial_golden_hour.jpg", "Golden Hour Aerial View",
+     "Phase 5 · Masterplan",
+     "Fluid biophilic architecture bathed in warm evening sunlight."),
+    ("spine_corridor_interior.jpg", "Parametric Canopy Corridor",
      "Phase 6 · Detailed Design",
-     "Native canopy planting and the parametric structure at pedestrian eye level."),
-    ("night_plaza_render_1784970565232.jpg", "Night Activation — Community Plaza",
+     "Curved timber and bronze louvers providing continuous thermal comfort."),
+    ("eyelevel_spine_1784970552956.jpg", "Biophilic Promenade Perspective",
+     "Phase 6 · Detailed Design",
+     "Native Ghaf and Neem canopy trees integrated into the fluid shade structure."),
+    ("night_plaza_render_1784970565232.jpg", "Night Activation Plaza — Ambient LED",
      "Phase 8 · Activation",
-     "The 18:00–23:00 peak-use window the programming strategy is built around."),
+     "Linear and edge-lit LED illumination creating a vibrant evening community destination."),
+    ("thermal_comfort_heatmap.jpg", "Thermal Comfort Performance Map",
+     "Phase 7 · Performance",
+     "Computed microclimate heat-index reduction under the organic canopy."),
 ]
 
 
 def build_renders():
+    """Collect the renders, copying each into docs/assets/renders/.
+
+    The src path MUST stay inside the published site directory. It previously
+    pointed at ../archive/..., which resolves fine on disk but escapes the web
+    root — so a browser refused every one of them and the gallery rendered
+    empty, locally and on GitHub Pages alike. Copying into the site directory
+    and referencing relatively fixes both.
+    """
+    import shutil
+
+    site_dir = os.path.dirname(HERE)                      # docs/
+    assets = os.path.join(site_dir, "assets", "renders")
+    os.makedirs(assets, exist_ok=True)
+
+    visuals_dir = os.path.join(site_dir, "..", "design", "visuals")
     renders = []
     for filename, title, tag, desc in RENDER_META:
-        path = os.path.join(P9, filename)
-        if not os.path.exists(path):
-            WARNINGS.append(f"missing render: {rel(path)}")
+        cand_paths = [
+            os.path.join(assets, filename),
+            os.path.join(visuals_dir, filename),
+            os.path.join(RENDER_ROOT, filename),
+            os.path.join(P9, filename),
+        ]
+        found_path = next((p for p in cand_paths if os.path.exists(p)), None)
+        if not found_path:
+            WARNINGS.append(f"missing render: {filename}")
             continue
+
+        dest = os.path.join(assets, filename)
+        if os.path.abspath(found_path) != os.path.abspath(dest):
+            shutil.copy2(found_path, dest)
+
         renders.append({
-            "src": rel(path),
+            "src": f"assets/renders/{filename}",
             "title": title,
             "tag": tag,
             "desc": desc,

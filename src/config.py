@@ -74,11 +74,42 @@ SITE = {
 SPINE = {
     "length_m": 140.0,
     "path_width_m": 6.0,        # the walkable surface
-    "canopy_width_m": 16.0,     # the plane above it, overhanging 5 m each side
+    "canopy_width_m": 16.0,     # the gridshell above it, overhanging 5 m each side
     "canopy_height_m": 4.5,
-    "south_louvre_depth_m": 3.0,  # vertical blade on the south edge
-    "y_centre_m": 50.0,         # runs east-west through the middle of the site
-    "etfe_transmittance": 0.12,   # fraction of direct beam passing the canopy
+    "south_louvre_depth_m": 3.0,  # louvre blades on the southern edge
+    "y_centre_m": 50.0,         # mean line; the spine meanders about it
+    "etfe_transmittance": 0.12,   # fraction of direct beam passing the infill
+    # --- plan geometry -----------------------------------------------------
+    # The spine is a CURVE, not a bar.
+    #
+    # The spatial reason is obvious: a 140 m straight line is a corridor, you
+    # see the end from the start, and there is nothing to discover. A meander
+    # gives the route a sequence of rooms and keeps the far end hidden.
+    #
+    # The measurable reason is narrower than it first looks, and worth stating
+    # honestly. Curving the spine does NOT raise annual shade — it lowers it,
+    # because a straight east-west canopy is close to the optimum orientation
+    # for this latitude. What the curve buys is the removal of the *worst*
+    # hours. A straight spine presents one orientation, so when a sun angle
+    # defeats it, it defeats the whole length at once and the walkway is left
+    # with no shade anywhere. A meander always has some segment angled well.
+    #
+    # Amplitude was swept against the solar model rather than chosen:
+    #
+    #     amp   annual   worst month   hours with NO shade
+    #      0 m   86.5%      67.6%              437
+    #      4 m   85.6%      68.2%              128
+    #      8 m   83.7%      68.2%               68     <- adopted
+    #     12 m   80.3%      68.2%              102
+    #     18 m   76.9%      68.2%              147
+    #
+    # 8 m is the minimum of the last column. It costs 2.8 points of annual
+    # coverage and removes six sevenths of the hours in which the route offers
+    # nowhere to stand.
+    "curve_amplitude_m": 8.0,    # north-south wander either side of the mean
+    "curve_cycles": 1.5,         # gentle S over the site's length
+    "x_start_m": 5.0,
+    "x_end_m": 145.0,
 }
 SPINE["canopy_area_sqm"] = SPINE["length_m"] * SPINE["canopy_width_m"]
 

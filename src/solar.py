@@ -63,6 +63,28 @@ def shadow_length(height_m: float, elevation_deg) -> np.ndarray:
     return height_m / np.tan(elev)
 
 
+def spine_centreline(n: int = 200):
+    """Sample the spine's meandering centreline.
+
+    Returns ``(x, y, nx, ny)`` — position and the unit normal in plan at each
+    sample. The normal is what the shade model needs: a canopy element resists
+    the sun across its width, and "across" is the normal direction, which now
+    varies along the route instead of being fixed north-south.
+    """
+    x = np.linspace(C.SPINE["x_start_m"], C.SPINE["x_end_m"], n)
+    span = C.SPINE["x_end_m"] - C.SPINE["x_start_m"]
+    k = 2.0 * np.pi * C.SPINE["curve_cycles"] / span
+    a = C.SPINE["curve_amplitude_m"]
+
+    y = C.SPINE["y_centre_m"] + a * np.sin(k * (x - C.SPINE["x_start_m"]))
+    dydx = a * k * np.cos(k * (x - C.SPINE["x_start_m"]))
+
+    # Unit tangent, then rotate 90 degrees for the normal.
+    tlen = np.hypot(1.0, dydx)
+    nx, ny = -dydx / tlen, 1.0 / tlen
+    return x, y, nx, ny
+
+
 def spine_shade_fraction(solar: pd.DataFrame) -> pd.Series:
     """Fraction of the Shaded Spine *walkway* in shadow, hour by hour.
 
@@ -94,23 +116,39 @@ def spine_shade_fraction(solar: pd.DataFrame) -> pd.Series:
     cw = C.SPINE["canopy_width_m"]
     h = C.SPINE["canopy_height_m"]
     ld = C.SPINE["south_louvre_depth_m"]
-    yc = C.SPINE["y_centre_m"]
+
+    # Sample the meandering centreline once; every hour is evaluated against
+    # every sample, and the hour's coverage is the mean along the route. A
+    # straight spine would have one orientation and one answer; this one has a
+    # spread, which is the point of curving it.
+    _, _, nx, ny = spine_centreline()
 
     with np.errstate(divide="ignore", invalid="ignore"):
         tan_e = np.tan(np.radians(np.clip(elev, 0.05, 90.0)))
-        north = np.cos(np.radians(azi))
-        disp = h / tan_e * north
+        # Ground displacement of the canopy's shadow, as a plan vector.
+        reach = h / tan_e
+        dx = -np.sin(np.radians(azi)) * reach
+        dy = -np.cos(np.radians(azi)) * reach
 
-        lo = yc - cw / 2.0 + disp
-        hi = yc + cw / 2.0 + disp
+        # Component of that displacement ACROSS the route at each sample:
+        # (hours x samples).
+        s = dx[:, None] * nx[None, :] + dy[:, None] * ny[None, :]
 
-        # The louvre extends the shadow's southern edge, but only against sun
-        # coming from the south.
+        lo = -cw / 2.0 + s
+        hi = cw / 2.0 + s
+
+        # The louvre hangs on whichever edge faces south, so it extends the
+        # shaded band on that side — but only when the sun is actually south of
+        # the route, which is the case the plane alone cannot cover.
         if ld > 0:
-            lo = np.where(north > 0, lo - (ld / tan_e * north), lo)
+            louvre_reach = ld / tan_e
+            lv = (-np.sin(np.radians(azi)) * louvre_reach)[:, None] * nx[None, :] \
+                 + (-np.cos(np.radians(azi)) * louvre_reach)[:, None] * ny[None, :]
+            lo = np.where(lv < 0, lo + lv, lo)
+            hi = np.where(lv > 0, hi + lv, hi)
 
-    p_lo, p_hi = yc - pw / 2.0, yc + pw / 2.0
-    overlap = np.clip(np.minimum(hi, p_hi) - np.maximum(lo, p_lo), 0.0, pw) / pw
+    ov = np.clip(np.minimum(hi, pw / 2.0) - np.maximum(lo, -pw / 2.0), 0.0, pw) / pw
+    overlap = ov.mean(axis=1)
     overlap = np.where(solar["is_daylight"].to_numpy(), overlap, np.nan)
     return pd.Series(overlap, index=solar.index, name="spine_shade_fraction")
 
@@ -153,12 +191,16 @@ def tree_positions(seed: int = C.RANDOM_SEED) -> pd.DataFrame:
     # the canopy carries the summer, the avenue carries the shoulder seasons and
     # the low morning and evening sun the plane cannot reach.
     avenue = int(species.loc[species["Species"].isin(["Neem", "Ghaf"]), "Count"].sum())
-    xs = np.linspace(8.0, 142.0, avenue // 2)
+    cx, cy, cnx, cny = spine_centreline(avenue // 2)
     margin_offset = C.SPINE["path_width_m"] / 2.0 + 2.5   # centre of the 5 m margin
-    for x in xs:
-        for y in (C.SPINE["y_centre_m"] - margin_offset,
-                  C.SPINE["y_centre_m"] + margin_offset):
-            rows.append(("Neem", x, y, 5.0, 9.0))
+    for x, y, nx_, ny_ in zip(cx, cy, cnx, cny):
+        # Offset along the local normal, so the avenue follows the meander
+        # instead of running straight past it.
+        for sgn in (-1.0, 1.0):
+            rows.append(("Neem",
+                         float(x + sgn * margin_offset * nx_),
+                         float(y + sgn * margin_offset * ny_),
+                         5.0, 9.0))
 
     # Species are planted into the zone that the masterplan assigns them, read
     # from the zoning schedule rather than hard-coded, so the planting layout
@@ -231,6 +273,10 @@ def grid_shade_hours(
     tr = trees["canopy_r_m"].to_numpy()[None, :]
     th = trees["height_m"].to_numpy()[None, :]
 
+    # The canopy centreline, sampled once. 60 samples over 140 m is a point
+    # every ~2.3 m, comfortably finer than the 16 m ribbon it describes.
+    spine_x, spine_y, _, _ = spine_centreline(60)
+
     shaded = np.zeros(len(grid), dtype=float)
 
     for elev, azi in zip(lit["elevation_deg"].to_numpy(), lit["azimuth_deg"].to_numpy()):
@@ -246,24 +292,22 @@ def grid_shade_hours(
         hit = ((gx - sx) ** 2 + (gy - sy) ** 2) <= tr**2
         under_tree = hit.any(axis=1)
 
-        # Spine canopy shadow band — the full 16 m plane, plus the southern
-        # louvre when the sun is in the south. Same geometry as
-        # spine_shade_fraction; kept in step with it deliberately, because the
-        # headline number and the ground-plane map disagreeing would be worse
-        # than either being slightly off.
-        disp = dy * C.SPINE["canopy_height_m"]
-        band_lo = C.SPINE["y_centre_m"] - C.SPINE["canopy_width_m"] / 2.0 + disp
-        band_hi = C.SPINE["y_centre_m"] + C.SPINE["canopy_width_m"] / 2.0 + disp
-        north = np.cos(np.radians(azi))
-        if C.SPINE["south_louvre_depth_m"] > 0 and north > 0:
-            band_lo -= C.SPINE["south_louvre_depth_m"] / tan_e * north
+        # Spine canopy shadow — the 16 m gridshell follows the meander, so its
+        # shadow is a ribbon, not a straight band. Displace the centreline by
+        # the sun vector and test each cell's distance to the displaced ribbon.
+        # Same geometry as spine_shade_fraction, kept deliberately in step:
+        # the headline number and the ground-plane map disagreeing would be
+        # worse than either being slightly off.
+        ch = C.SPINE["canopy_height_m"]
+        sx_c = spine_x + dx * ch
+        sy_c = spine_y + dy * ch
+        half = C.SPINE["canopy_width_m"] / 2.0
+        if C.SPINE["south_louvre_depth_m"] > 0:
+            half += C.SPINE["south_louvre_depth_m"] * 0.5 / max(tan_e, 0.05)
 
-        gy_arr = grid["y"].to_numpy()
-        in_spine_shadow = (
-            (gy_arr >= band_lo) & (gy_arr <= band_hi)
-            & (grid["x"].to_numpy() >= 5.0)
-            & (grid["x"].to_numpy() <= 145.0)
-        )
+        d2 = ((grid["x"].to_numpy()[:, None] - sx_c[None, :]) ** 2
+              + (grid["y"].to_numpy()[:, None] - sy_c[None, :]) ** 2)
+        in_spine_shadow = d2.min(axis=1) <= half**2
         shaded += (under_tree | in_spine_shadow).astype(float)
 
     return shaded * scale

@@ -146,7 +146,13 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
     gx = grid["x"].to_numpy()
     gy = grid["y"].to_numpy()
 
-    grid["dist_to_spine_m"] = np.abs(gy - C.SPINE["y_centre_m"])
+    # Distance to the spine is distance to its CURVE, not to a straight mean
+    # line. With the meander adopted, the straight-line version was wrong by up
+    # to the curve amplitude, and it is a feature the shade surrogate leans on.
+    _sx, _sy, _, _ = solar.spine_centreline(120)
+    grid["dist_to_spine_m"] = np.sqrt(
+        ((gx[:, None] - _sx[None, :]) ** 2 + (gy[:, None] - _sy[None, :]) ** 2)
+    ).min(axis=1)
     grid["dist_to_edge_m"] = np.minimum.reduce([
         gx, C.SITE["length_m"] - gx, gy, C.SITE["width_m"] - gy
     ])
@@ -161,9 +167,13 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
         d <= trees["canopy_r_m"].to_numpy()[None, :]
     ).any(axis=1).astype(int)
 
+    # On the walkway itself (the 6 m surface), measured from the curve.
     grid["under_spine_canopy"] = (
-        (grid["dist_to_spine_m"] <= C.SPINE["width_m"] / 2.0)
-        & (gx >= 5.0) & (gx <= 145.0)
+        grid["dist_to_spine_m"] <= C.SPINE["path_width_m"] / 2.0
+    ).astype(int)
+    # Under the 16 m gridshell, which reaches 5 m past the walkway either side.
+    grid["under_gridshell"] = (
+        grid["dist_to_spine_m"] <= C.SPINE["canopy_width_m"] / 2.0
     ).astype(int)
 
     # Zone membership and surface properties.

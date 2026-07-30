@@ -1,10 +1,10 @@
 {
-  "generated": "2026-07-30T13:24:38",
+  "generated": "2026-07-30T18:17:59",
   "site_area_sqm": 15000.0,
   "annual_daylight_hours": 4402,
-  "spine_shade_canopy_only_pct": 90.55,
-  "spine_mean_per_sqm_shade_pct": 77.9,
-  "site_mean_shade_pct": 27.4,
+  "spine_shade_canopy_only_pct": 83.69,
+  "spine_mean_per_sqm_shade_pct": 88.4,
+  "site_mean_shade_pct": 33.3,
   "daylight_hours_comfortable_exposed_pct": 44.5,
   "daylight_hours_comfortable_shaded_pct": 64.6,
   "comfort_hours_gained_pct_points": 20.1,
@@ -24,7 +24,7 @@
     "Danger": 8.4
   },
   "trees": 131,
-  "model_M1_test_r2": 0.9956,
+  "model_M1_test_r2": 0.9964,
   "model_M2_test_accuracy": 0.9749,
   "model_M3_regimes": 2
 }

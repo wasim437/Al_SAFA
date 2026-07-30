@@ -46,7 +46,7 @@ vm.runInContext(fs.readFileSync(path.join(HERE, 'portal_data.js'), 'utf8'), sand
 const D = sandbox.window.AS2;
 
 const portalSrc = fs.readFileSync(path.join(HERE, 'portal.js'), 'utf8');
-const htmlSrc = fs.readFileSync(path.join(ROOT, 'portal.html'), 'utf8');
+const htmlSrc = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 /* -------------------------------------------------------------------------
    1. Solar engine — re-declared here from portal.js so the test exercises the

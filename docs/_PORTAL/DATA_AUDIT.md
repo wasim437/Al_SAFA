@@ -1,6 +1,6 @@
 # Data Audit — Al Safa 2 Park
 
-Generated 2026-07-30 09:31 UTC by `_PORTAL/build_portal.py`.
+Generated 2026-07-30 14:23 UTC by `_PORTAL/build_portal.py`.
 
 This report cross-checks the computed outputs of every phase against each other. It is regenerated on every build, so it always describes the current state of the data — not a past one.
 

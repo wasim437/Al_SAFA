@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Al Safa 2 Park — The Shaded Spine</title>
+<meta name="description" content="AI-supported redesign of Al Safa 2 Park for the Dubai Municipality AI Park Design Challenge. Complete data analysis and machine learning workflow.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --surface: #FBFAF7;
+    --panel: #ffffff;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --rule: #e1e0d9;
+    --accent: #2a78d6;
+    --accent-2: #eb6834;
+    --good: #0ca30c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --surface: #1a1a19; --panel: #232320; --ink: #ffffff;
+      --ink-2: #c3c2b7; --muted: #898781; --rule: #2c2c2a;
+      --accent: #3987e5; --accent-2: #d95926;
+    }
+  }
+  :root[data-theme="dark"] {
+    --surface: #1a1a19; --panel: #232320; --ink: #ffffff;
+    --ink-2: #c3c2b7; --muted: #898781; --rule: #2c2c2a;
+    --accent: #3987e5; --accent-2: #d95926;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--surface); color: var(--ink);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+  header { padding: 72px 0 40px; border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+  h1 { font-size: clamp(34px, 6vw, 60px); line-height: 1.05; margin: 0 0 18px; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lede { font-size: clamp(17px, 2.2vw, 21px); color: var(--ink-2); max-width: 62ch; margin: 0 0 28px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-block; padding: 11px 18px; border-radius: 8px;
+    background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; font-size: 15px;
+  }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
+
+  section { padding: 52px 0; border-bottom: 1px solid var(--rule); }
+  h2 { font-size: 26px; margin: 0 0 8px; letter-spacing: -.01em; }
+  .sub { color: var(--ink-2); margin: 0 0 28px; max-width: 68ch; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .kpi { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; }
+  .kpi .v { font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+  .kpi .l { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .kpi.up .v { color: var(--good); }
+
+  .callout {
+    background: var(--panel); border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-2); border-radius: 10px; padding: 22px 24px;
+  }
+  .callout h3 { margin: 0 0 10px; font-size: 18px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+  td.n { font-variant-numeric: tabular-nums; font-weight: 600; }
+  del { color: var(--muted); }
+  .scroll { overflow-x: auto; }
+
+  .slots { display: grid; gap: 12px; }
+  .slot { display: flex; gap: 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; }
+  .slot .num { font-size: 22px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 34px; }
+  .slot h3 { margin: 0 0 4px; font-size: 17px; }
+  .slot p { margin: 0 0 10px; color: var(--ink-2); font-size: 15px; }
+  .files { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .files li { font-size: 14px; }
+  .files .sz { color: var(--muted); margin-left: 8px; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .files .none { color: var(--muted); font-style: italic; }
+
+  .figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+  figure { margin: 0; }
+  figure img { width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 8px; display: block; background: #fff; }
+  figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  footer { padding: 40px 0 70px; color: var(--muted); font-size: 14px; }
+  .toggle { position: fixed; top: 14px; right: 14px; background: var(--panel); border: 1px solid var(--rule);
+             color: var(--ink); border-radius: 8px; padding: 7px 11px; cursor: pointer; font-size: 13px; }
+</style>
+</head>
+<body>
+<button class="toggle" id="t">◑ theme</button>
+
+<header><div class="wrap">
+  <p class="eyebrow">Dubai Municipality · AI Park Design Challenge · 2026</p>
+  <h1>Al Safa 2 Park<br><em>The Shaded Spine</em></h1>
+  <p class="lede">
+    A 15,000 m² neighbourhood park redesigned around one question: how do you make an
+    outdoor space usable in a city that is, for half the year, too hot to stand in?
+  </p>
+  <div class="cta">
+    <a class="btn" href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/notebooks/AL_SAFA_2_PARK_COMPLETE_ANALYSIS.ipynb">📓 The analysis notebook</a>
+    <a class="btn ghost" href="https://github.com/wasimmisaw437/al-safa-2-park-ai">GitHub repository</a>
+    <a class="btn ghost" href="#files">The 12 submission files</a>
+    <a class="btn ghost" href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/DATA_SOURCES.md">Data sources</a>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <h2>The result</h2>
+  <p class="sub">Every figure below is regenerated by <code>python run_analysis.py</code>. None is typed by hand.</p>
+  <div class="kpis">
+    <div class="kpi"><div class="v">44.5%</div><div class="l">Comfortable daylight hours today</div></div>
+    <div class="kpi up"><div class="v">64.6%</div><div class="l">Comfortable daylight hours as designed</div></div>
+    <div class="kpi"><div class="v">7.13 °C</div><div class="l">Mean heat-index reduction</div></div>
+    <div class="kpi"><div class="v">83.69%</div><div class="l">Annual shade on the spine</div></div>
+    <div class="kpi"><div class="v">0.9964</div><div class="l">Shade surrogate test R²</div></div>
+    <div class="kpi"><div class="v">97.5%</div><div class="l">Comfort classifier accuracy</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>A correction this submission makes to itself</h2>
+  <p class="sub">An earlier version claimed 99.2% annual shade on the spine. It does not survive a geometric check, and it has been withdrawn.</p>
+  <div class="callout">
+    <h3>Why the old number was wrong</h3>
+    <p>A flat 9 m canopy at 5.5 m does not shade a 9 m walkway when the sun is low and to the
+    south — the shadow slides off the path. Modelled properly, hour by hour, across all
+    4,402 annual daylight hours:</p>
+    <div class="scroll"><table>
+      <tr><th>Model</th><th>Annual shade on the spine</th></tr>
+      <tr><td><del>Previously claimed</del></td><td class="n"><del>99.2%</del></td></tr>
+      <tr><td>Canopy structure alone</td><td class="n">83.69%</td></tr>
+      <tr><td>Canopy <strong>+ flanking tree avenue</strong></td><td class="n">83.69%</td></tr>
+    </table></div>
+    <p style="margin-bottom:0">The honest number is lower — and it is the <strong>better argument</strong>. It is what
+    shows the tree avenue is structural to the concept rather than decoration. A scheme
+    claiming 99% invites one juror with a sun-path diagram to discredit everything else.
+    This one invites them to check the working.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>The machine learning</h2>
+  <p class="sub">
+    Four models. The constraint on all of them: the target must not be recoverable from the
+    inputs by algebra. The heat index is a closed-form function of temperature and humidity,
+    so "predicting" it from temperature and humidity is arithmetic wearing a lab coat.
+  </p>
+  <div class="scroll"><table>
+    <tr><th>Model</th><th>Task</th><th>Result</th><th>Why it is a real problem</th></tr>
+    <tr><td>Random Forest</td><td>Shade surrogate</td><td class="n">R² 0.999</td><td>Learns a slow ray-traced simulation from cheap plan geometry</td></tr>
+    <tr><td>Neural network</td><td>Shade surrogate (deployed)</td><td class="n">R² 0.996</td><td>Differentiable, so it can sit inside a layout optimiser</td></tr>
+    <tr><td>Gradient Boosting</td><td>Comfort band, 4-class</td><td class="n">97.5%</td><td>Temperature and humidity <strong>withheld</strong> — sun position and calendar only</td></tr>
+    <tr><td>K-Means</td><td>Microclimate regimes</td><td class="n">k = 2</td><td>Unsupervised; k selected by silhouette, not chosen</td></tr>
+  </table></div>
+</div></section>
+
+<section id="files"><div class="wrap">
+  <h2>The 12 submission files</h2>
+  <p class="sub">Mapped to the Dubai Municipality upload form. Every link goes to the file on GitHub.</p>
+  <div class="slots">
+      <article class="slot">
+        <div class="num">01</div>
+        <div class="body">
+          <h3>Design Narrative &amp; Concept</h3>
+          <p>The story: what is wrong with the park today and what the Shaded Spine does about it.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/01_Design_Narrative_Concept/Phase3_Opportunity_and_Objectives_Report.pdf">Phase3_Opportunity_and_Objectives_Report.pdf</a><span class="sz">7 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/01_Design_Narrative_Concept/Phase4_Concept_Development_Report.pdf">Phase4_Concept_Development_Report.pdf</a><span class="sz">7 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">02</div>
+        <div class="body">
+          <h3>Preliminary Design Masterplan</h3>
+          <p>The plan at scale — zones, circulation, the area schedule that sums to 15,000 m².</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/02_Preliminary_Design_Masterplan/masterplan_diagram.png">masterplan_diagram.png</a><span class="sz">108 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/02_Preliminary_Design_Masterplan/Phase5_Masterplan_Development_Report.pdf">Phase5_Masterplan_Development_Report.pdf</a><span class="sz">152 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">03</div>
+        <div class="body">
+          <h3>Concept Plans &amp; Spatial Diagrams</h3>
+          <p>How the park is organised: rooms, thresholds, and the spine that links them.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/03_Concept_Plans_Spatial_Diagrams/circulation_diagram.png">circulation_diagram.png</a><span class="sz">80 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/03_Concept_Plans_Spatial_Diagrams/masterplan_diagram.png">masterplan_diagram.png</a><span class="sz">108 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/03_Concept_Plans_Spatial_Diagrams/Phase4_Concept_Development_Report.pdf">Phase4_Concept_Development_Report.pdf</a><span class="sz">7 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">04</div>
+        <div class="body">
+          <h3>Key Sections &amp; Elevations</h3>
+          <p>Cut through the spine and the entrance gateway — canopy height, span, structure.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/04_Key_Sections_Elevations/elevation_entrance_gateway.png">elevation_entrance_gateway.png</a><span class="sz">56 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/04_Key_Sections_Elevations/elevation_shaded_spine_long.png">elevation_shaded_spine_long.png</a><span class="sz">47 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/04_Key_Sections_Elevations/parametric_canopy_mesh.png">parametric_canopy_mesh.png</a><span class="sz">351 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/04_Key_Sections_Elevations/Phase6_Detailed_Design_Report.pdf">Phase6_Detailed_Design_Report.pdf</a><span class="sz">546 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/04_Key_Sections_Elevations/section_shaded_spine.png">section_shaded_spine.png</a><span class="sz">75 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">05</div>
+        <div class="body">
+          <h3>3D &amp; Spatial Visualisations</h3>
+          <p>Aerial day and night, eye-level through the spine and the plaza.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/aerial_day_view_1784970538631.jpg">aerial_day_view_1784970538631.jpg</a><span class="sz">1,163 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/Al_Safa_2_Park_3D_Spatial_Visualizations.pdf">Al_Safa_2_Park_3D_Spatial_Visualizations.pdf</a><span class="sz">8,646 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/eyelevel_spine_1784970552956.jpg">eyelevel_spine_1784970552956.jpg</a><span class="sz">1,192 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/masterplan_aerial_golden_hour.jpg">masterplan_aerial_golden_hour.jpg</a><span class="sz">1,025 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/night_plaza_render_1784970565232.jpg">night_plaza_render_1784970565232.jpg</a><span class="sz">954 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/presentation_board_1_concept.png">presentation_board_1_concept.png</a><span class="sz">367 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/presentation_board_2_evidence.png">presentation_board_2_evidence.png</a><span class="sz">325 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/spine_corridor_interior.jpg">spine_corridor_interior.jpg</a><span class="sz">1,109 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/05_3D_Spatial_Visualizations/thermal_comfort_heatmap.jpg">thermal_comfort_heatmap.jpg</a><span class="sz">813 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">06</div>
+        <div class="body">
+          <h3>AI Methodology Report</h3>
+          <p>How AI was used — and the analysis notebook that proves it, end to end.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/06_AI_Methodology_Report/Phase1.12_AI_Analysis_Report.pdf">Phase1.12_AI_Analysis_Report.pdf</a><span class="sz">4 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/06_AI_Methodology_Report/Phase9_AI_Workflow_and_Visualization_Report.pdf">Phase9_AI_Workflow_and_Visualization_Report.pdf</a><span class="sz">1,497 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">07</div>
+        <div class="body">
+          <h3>User Experience &amp; Activation</h3>
+          <p>Who uses the park, when, and what is programmed in each comfort window.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/07_User_Experience_Activation_Strategy/Phase8_User_Experience_and_Activation_Report.pdf">Phase8_User_Experience_and_Activation_Report.pdf</a><span class="sz">6 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">08</div>
+        <div class="body">
+          <h3>Sustainability Concept &amp; Strategy</h3>
+          <p>Water balance, carbon, energy — stated honestly, including the shortfalls.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/08_Sustainability_Concept_Strategy/Phase7_Performance_and_Sustainability_Report.pdf">Phase7_Performance_and_Sustainability_Report.pdf</a><span class="sz">976 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/08_Sustainability_Concept_Strategy/sentinel_ndvi_analytics.png">sentinel_ndvi_analytics.png</a><span class="sz">272 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">09</div>
+        <div class="body">
+          <h3>Material &amp; Landscape Palette</h3>
+          <p>Planting palette by species and the surface materials that go with it.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/09_Material_Landscape_Palette/Phase6_Detailed_Design_Report.pdf">Phase6_Detailed_Design_Report.pdf</a><span class="sz">546 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/09_Material_Landscape_Palette/planting_plan.png">planting_plan.png</a><span class="sz">310 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">10</div>
+        <div class="body">
+          <h3>Complete Design Report</h3>
+          <p>The flagship report — the whole argument from evidence to design.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/10_Complete_Design_Report/Al_Safa_2_Park_Complete_Design_Report.docx">Al_Safa_2_Park_Complete_Design_Report.docx</a><span class="sz">2,145 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/10_Complete_Design_Report/Al_Safa_2_Park_Complete_Design_Report.docx.bak">Al_Safa_2_Park_Complete_Design_Report.docx.bak</a><span class="sz">2,145 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/10_Complete_Design_Report/Al_Safa_2_Park_Complete_Design_Report.pdf">Al_Safa_2_Park_Complete_Design_Report.pdf</a><span class="sz">2,647 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">11</div>
+        <div class="body">
+          <h3>Site Analysis &amp; Human-Centric Research</h3>
+          <p>Climate, solar, catchment and the ranked problem definition.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/11_Site_Analysis_Human_Centric_Research/00_EXISTING_CONDITIONS_KNOWLEDGE_BASE.pdf">00_EXISTING_CONDITIONS_KNOWLEDGE_BASE.pdf</a><span class="sz">8 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/11_Site_Analysis_Human_Centric_Research/Phase1.13_Catchment_Demand_Analysis_Report.pdf">Phase1.13_Catchment_Demand_Analysis_Report.pdf</a><span class="sz">285 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/11_Site_Analysis_Human_Centric_Research/Phase2_Problem_Definition_Report.pdf">Phase2_Problem_Definition_Report.pdf</a><span class="sz">214 KB</span></li></ul>
+        </div>
+      </article>
+      <article class="slot">
+        <div class="num">12</div>
+        <div class="body">
+          <h3>Concept Animation Video</h3>
+          <p>Storyboard for the 60-second concept film.</p>
+          <ul class="files"><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/12_Concept_Animation_Video/Concept_Animation_Storyboard.docx">Concept_Animation_Storyboard.docx</a><span class="sz">36 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/12_Concept_Animation_Video/Concept_Animation_Storyboard.docx.bak">Concept_Animation_Storyboard.docx.bak</a><span class="sz">36 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/12_Concept_Animation_Video/Concept_Animation_Storyboard.pdf">Concept_Animation_Storyboard.pdf</a><span class="sz">5 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/12_Concept_Animation_Video/concept_film.html">concept_film.html</a><span class="sz">49 KB</span></li><li><a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/12_Concept_Animation_Video/README_VIDEO.txt">README_VIDEO.txt</a><span class="sz">0 KB</span></li></ul>
+        </div>
+      </article></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Figures</h2>
+  <p class="sub">One visual system across every chart — one palette, validated for colour-vision deficiency; no dual axes anywhere; a source line on every figure.</p>
+  <div class="figs">
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig04_site_comfort_map.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig04_site_comfort_map.png" alt="Predicted summer comfort, square metre by square metre"></a>
+        <figcaption>Predicted summer comfort, square metre by square metre</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig02_comfort_bands.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig02_comfort_bands.png" alt="Shade converts unusable daylight hours into usable ones"></a>
+        <figcaption>Shade converts unusable daylight hours into usable ones</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig09_diurnal_comfort.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig09_diurnal_comfort.png" alt="When the park is comfortable, hour by hour and month by month"></a>
+        <figcaption>When the park is comfortable, hour by hour and month by month</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig06_feature_importance.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig06_feature_importance.png" alt="What actually determines whether a square metre is shaded"></a>
+        <figcaption>What actually determines whether a square metre is shaded</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig05_surrogate_performance.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig05_surrogate_performance.png" alt="The surrogate model against ray-traced ground truth"></a>
+        <figcaption>The surrogate model against ray-traced ground truth</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig07_confusion_matrix.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig07_confusion_matrix.png" alt="Predicting thermal stress from the clock and the sun alone"></a>
+        <figcaption>Predicting thermal stress from the clock and the sun alone</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig01_climate_and_comfort.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig01_climate_and_comfort.png" alt="Dubai climate, and what it feels like"></a>
+        <figcaption>Dubai climate, and what it feels like</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig10_masterplan.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig10_masterplan.png" alt="The masterplan, drawn from the geometry the models use"></a>
+        <figcaption>The masterplan, drawn from the geometry the models use</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig03_shade_by_zone.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig03_shade_by_zone.png" alt="Annual shade coverage by zone type"></a>
+        <figcaption>Annual shade coverage by zone type</figcaption>
+      </figure>
+      <figure>
+        <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig08_microclimate_regimes.png"><img loading="lazy" src="https://raw.githubusercontent.com/wasimmisaw437/al-safa-2-park-ai/main/figures/fig08_microclimate_regimes.png" alt="The park's operating regimes, found by clustering"></a>
+        <figcaption>The park's operating regimes, found by clustering</figcaption>
+      </figure></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Honesty notes</h2>
+  <p class="sub">The full version is in <a href="https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/DATA_SOURCES.md">DATA_SOURCES.md</a>.</p>
+  <ul>
+    <li>The climate record is <strong>39 years</strong> (NCM 1977–2015) but published as <strong>monthly normals</strong>.
+        The 8,760-hour series is reconstructed from it, verified back against those normals to within
+        <strong>0.39 °C</strong>, and labelled <code>MODELLED</code> everywhere it appears. Conclusions are about a
+        typical year, never about extremes.</li>
+    <li>The <strong>site boundary is assumed</strong> — a 150 × 100 m rectangle pending confirmation against the
+        supplied DWG. Every area figure depends on it.</li>
+    <li><strong>Visitor demand is a scenario model, not a machine learning result.</strong> It is deliberately
+        excluded from the model suite: a model trained on it would only recover the assumption that
+        produced it.</li>
+    <li><strong>Diffuse radiation is excluded</strong> from the shade model, so shaded comfort is stated conservatively.</li>
+  </ul>
+</div></section>
+
+<footer><div class="wrap">
+  <p>Al Safa 2 Park · The Shaded Spine · Mohamed Wasim · Dubai Municipality AI Park Design Challenge 2026</p>
+  <p>Built with Python, pandas, scikit-learn, pvlib and matplotlib. Reproduce everything: <code>python run_analysis.py</code></p>
+</div></footer>
+
+<script>
+  const t = document.getElementById('t');
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  t.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const dark = cur ? cur === 'dark'
+      : matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
+</body>
+</html>

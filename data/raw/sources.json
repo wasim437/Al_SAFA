@@ -67,6 +67,7 @@
     },
     {
       "file": "site_zoning_schedule.csv",
+      "_geometry_note": "The X/Y bounds in this file are the AREA ACCOUNTING footprint of each zone: tight, non-overlapping rectangles that sum exactly to the 15,000 m2 site. They are not the drawn shape. The spine and its two planted margins are built on a meandering centreline (src/config.py SPINE.curve_amplitude_m), and the shade model, the planting layout and the drawn plans all use that curve. Rectangle areas and curve areas agree (140 m x 6 m walkway, 140 m x 5 m each margin); only the outline differs.",
       "title": "Masterplan zoning schedule with geometry",
       "publisher": "This project - Phase 5 masterplan",
       "period": "2026",

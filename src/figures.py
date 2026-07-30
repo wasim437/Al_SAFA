@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.patches import Rectangle
 
-from . import config as C, viz
+from . import config as C, solar, viz
 
 NCM = "NCM Dubai climate normals 1977-2015 (39-year record)"
 SPA = "NREL Solar Position Algorithm via pvlib, 25.190N 55.238E"
@@ -140,11 +140,9 @@ def fig_site_comfort_map(grid: pd.DataFrame, trees: pd.DataFrame):
     ax.scatter(trees["x"], trees["y"], s=7, color="white", alpha=0.85,
                linewidths=0, zorder=3, label="Tree (131)")
 
-    ax.add_patch(Rectangle(
-        (5, C.SPINE["y_centre_m"] - C.SPINE["width_m"] / 2),
-        140, C.SPINE["width_m"], facecolor="none",
-        edgecolor="white", linewidth=1.4, linestyle=(0, (6, 4)), zorder=4))
-    ax.annotate("The Shaded Spine", xy=(75, C.SPINE["y_centre_m"] + 7.5),
+    sx, sy, _, _ = solar.spine_centreline(240)
+    ax.plot(sx, sy, color="white", linewidth=1.4, linestyle=(0, (6, 4)), zorder=4)
+    ax.annotate("The Shaded Spine", xy=(75, float(np.interp(75, sx, sy)) + 10),
                 ha="center", va="bottom", color="white",
                 fontsize=10, fontweight="semibold", zorder=5)
     ax.legend(loc="lower right", labelcolor="white", framealpha=0)
@@ -371,8 +369,12 @@ def fig_site_plan(grid: pd.DataFrame, trees: pd.DataFrame):
         "Drawn from site_zoning_schedule.csv, the same geometry the models use",
         width=11.0, height=6.6,
     )
+    # The spine and its margins are drawn from their real curve below, so their
+    # accounting rectangles are not drawn and their labels are suppressed —
+    # otherwise three labels sit on top of the curve they describe.
+    CURVED = ("Shaded Spine", "Spine Shade Margin")
     for _, z in zones.iterrows():
-        if z["Zone"].startswith("Path Network"):
+        if z["Zone"].startswith("Path Network") or z["Zone"].startswith(CURVED):
             continue
         w, h = z["X_max"] - z["X_min"], z["Y_max"] - z["Y_min"]
         ax.add_patch(Rectangle(
@@ -386,10 +388,13 @@ def fig_site_plan(grid: pd.DataFrame, trees: pd.DataFrame):
                 ha="center", va="center", fontsize=8,
                 color=C.PALETTE["ink_secondary"], linespacing=1.25)
 
-    ax.add_patch(Rectangle(
-        (5, C.SPINE["y_centre_m"] - C.SPINE["width_m"] / 2), 140, C.SPINE["width_m"],
-        facecolor=C.SERIES[0], alpha=0.75, edgecolor=C.SERIES[0], linewidth=1.5,
-        zorder=3, label="The Shaded Spine"))
+    # The spine is a curve. Drawn as a thick line along its real centreline,
+    # with the 16 m gridshell footprint washed in behind it.
+    sx, sy, _, _ = solar.spine_centreline(240)
+    ax.plot(sx, sy, color=C.SERIES[0], linewidth=C.SPINE["canopy_width_m"] * 1.05,
+            solid_capstyle="round", alpha=0.16, zorder=2)
+    ax.plot(sx, sy, color=C.SERIES[0], linewidth=C.SPINE["path_width_m"] * 1.05,
+            solid_capstyle="round", alpha=0.85, zorder=3, label="The Shaded Spine")
     ax.scatter(trees["x"], trees["y"], s=11, color=C.SERIES[5],
                linewidths=0, zorder=4, label=f"Tree ({len(trees)})")
 

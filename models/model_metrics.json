@@ -12,6 +12,7 @@
       "trees_within_20m",
       "canopy_overhead",
       "under_spine_canopy",
+      "under_gridshell",
       "albedo",
       "sky_view_factor"
     ],
@@ -20,84 +21,89 @@
     "n_test": 2250,
     "models": {
       "random_forest": {
-        "val_r2": 0.998706815450702,
-        "val_rmse": 42.06133901549534,
-        "test_r2": 0.9988179068856875,
-        "test_rmse": 41.156302669506296,
-        "test_mae": 22.725403947821242,
-        "cv_r2_mean": 0.9983702208474357,
-        "cv_r2_std": 3.44058274752364e-05
+        "val_r2": 0.998584006064091,
+        "val_rmse": 50.71066569896887,
+        "test_r2": 0.9987175503229881,
+        "test_rmse": 49.05645721744724,
+        "test_mae": 29.73907252303822,
+        "cv_r2_mean": 0.9983910244612082,
+        "cv_r2_std": 0.00013947948940215064
       },
       "neural_network_best_params": {
-        "mlp__alpha": "0.0001",
+        "mlp__alpha": "0.001",
         "mlp__hidden_layer_sizes": "(128, 64, 32)"
       },
       "neural_network": {
-        "val_r2": 0.9951054680649083,
-        "val_rmse": 81.82922234785454,
-        "test_r2": 0.9955857811591261,
-        "test_rmse": 79.53118230412302,
-        "test_mae": 54.39892907231936,
+        "val_r2": 0.995931720093973,
+        "val_rmse": 85.95557063516587,
+        "test_r2": 0.9963705918165098,
+        "test_rmse": 82.52659404703947,
+        "test_mae": 56.33497470818525,
         "backend": "sklearn MLPRegressor",
         "architecture": "(128, 64, 32)",
-        "n_iter": 149
+        "n_iter": 202
       }
     },
     "permutation_importance": [
       {
-        "feature": "sky_view_factor",
-        "importance": 0.39711005387627873,
-        "std": 0.009599554252432866
+        "feature": "dist_to_spine_m",
+        "importance": 0.20113314668913365,
+        "std": 0.002344375396840534
       },
       {
         "feature": "y",
-        "importance": 0.2194682025762411,
-        "std": 0.006102420339648677
-      },
-      {
-        "feature": "dist_to_spine_m",
-        "importance": 0.10401027392848912,
-        "std": 0.0025008155203032362
-      },
-      {
-        "feature": "trees_within_20m",
-        "importance": 0.06157972001125543,
-        "std": 0.0017892789322730383
-      },
-      {
-        "feature": "x",
-        "importance": 0.03534767463593358,
-        "std": 0.0014781188062080754
-      },
-      {
-        "feature": "dist_to_tree_m",
-        "importance": 0.024402608996981635,
-        "std": 0.0006903850490234122
-      },
-      {
-        "feature": "dist_to_edge_m",
-        "importance": 0.018302764360797162,
-        "std": 0.0009440517034215571
-      },
-      {
-        "feature": "albedo",
-        "importance": 0.006585217082958605,
-        "std": 0.0011457686361449715
+        "importance": 0.12748810202853,
+        "std": 0.0032114876749011587
       },
       {
         "feature": "trees_within_10m",
-        "importance": 0.0004696304661553463,
-        "std": 1.3287250226217864e-05
+        "importance": 0.07758859946201709,
+        "std": 0.0022265744108351353
+      },
+      {
+        "feature": "dist_to_edge_m",
+        "importance": 0.06568428762342178,
+        "std": 0.0025390706987324647
+      },
+      {
+        "feature": "x",
+        "importance": 0.05308897009903592,
+        "std": 0.0016299222841110361
+      },
+      {
+        "feature": "trees_within_20m",
+        "importance": 0.048866846580359835,
+        "std": 0.0009760010821066253
+      },
+      {
+        "feature": "sky_view_factor",
+        "importance": 0.023022101517625782,
+        "std": 0.0006454841313826558
+      },
+      {
+        "feature": "dist_to_tree_m",
+        "importance": 0.005684679171077511,
+        "std": 0.00027616367985797634
+      },
+      {
+        "feature": "albedo",
+        "importance": 0.00258327046596899,
+        "std": 0.00023968555334984978
       },
       {
         "feature": "canopy_overhead",
-        "importance": 0.0001842259979582872,
-        "std": 1.7154981769525827e-05
+        "importance": 6.343834981692442e-05,
+        "std": 1.219115875585321e-05
       },
       {
         "feature": "under_spine_canopy",
-        "importance": 4.954451669625382e-06,
-        "std": 3.69193785742e-07
+        "importance": 2.923075864802449e-07,
+        "std": 2.9949485452400896e-07
+      },
+      {
+        "feature": "under_gridshell",
+        "importance": -1.7552749433380477e-06,
+        "std": 1.3983613992147494e-06
       }
     ],
     "_name": "M1_shade_surrogate"
@@ -214,7 +220,7 @@
       {
         "k": 2,
         "silhouette": 0.34527829310641606,
-        "inertia": 12803.769787279456
+        "inertia": 12803.769787279452
       },
       {
         "k": 3,
@@ -229,7 +235,7 @@
       {
         "k": 5,
         "silhouette": 0.328483160577076,
-        "inertia": 6664.570269245395
+        "inertia": 6664.570269245394
       },
       {
         "k": 6,
@@ -273,6 +279,6 @@
     ],
     "_name": "M3_microclimate_regimes"
   },
-  "_generated": "2026-07-30T13:24:38",
+  "_generated": "2026-07-30T18:17:59",
   "_random_seed": 42
 }

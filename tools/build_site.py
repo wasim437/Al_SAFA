@@ -311,8 +311,8 @@ HTML = f"""<!doctype html>
 </html>
 """
 
-(DOCS / "index.html").write_text(HTML, encoding="utf-8")
-print(f"wrote {DOCS / 'index.html'}  ({len(HTML):,} bytes)")
+(DOCS / "summary.html").write_text(HTML, encoding="utf-8")
+print(f"wrote {DOCS} summary.html  ({len(HTML):,} bytes)")
 
 
 # ---------------------------------------------------------------------------
@@ -352,6 +352,6 @@ banner = (
 art = art.replace('<header><div class="wrap">', f'<div class="wrap">{banner}</div>\n<header><div class="wrap">', 1)
 art = f'<title>Al Safa 2 Park — The Shaded Spine</title>\n{art}\n'
 
-(DOCS / "index_selfcontained.html").write_text(art, encoding="utf-8")
-print(f"wrote {DOCS / 'index_selfcontained.html'}  "
+(DOCS / "summary_offline.html").write_text(art, encoding="utf-8")
+print(f"wrote {DOCS} summary_offline.html  ({len(art)/1e6:.2f} MB)")
       f"({len(art)/1_048_576:.2f} MB, {inlined} figures inlined)")

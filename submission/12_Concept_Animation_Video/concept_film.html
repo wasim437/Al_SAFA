@@ -342,7 +342,24 @@
   // THE PARK — real geometry from the masterplan
   // ======================================================================
   const SITE = { w:150, d:100 };
-  const SPINE = { x0:5, x1:145, y0:45.5, y1:54.5, hSpring:3.6, hCrown:5.5 };
+  // Geometry mirrors src/config.py SPINE. The route meanders: amplitude was
+  // swept against the solar model and 8 m minimises the hours in which the
+  // walkway has no shade anywhere (437 straight -> 68 curved).
+  const SPINE = {
+    x0:5, x1:145, yc:50,
+    pathW:6, canopyW:16, h:4.5, louvre:3,
+    amp:8, cycles:1.5,
+    hSpring:3.4, hCrown:4.5,
+  };
+  const spineY = x => SPINE.yc + SPINE.amp *
+    Math.sin(2*Math.PI*SPINE.cycles*(x - SPINE.x0)/(SPINE.x1 - SPINE.x0));
+  // Unit normal in plan at x — the direction the canopy spans across.
+  function spineNormal(x) {
+    const k = 2*Math.PI*SPINE.cycles/(SPINE.x1 - SPINE.x0);
+    const dy = SPINE.amp * k * Math.cos(k*(x - SPINE.x0));
+    const L = Math.hypot(1, dy);
+    return [-dy/L, 1/L];
+  }
 
   const TREES = (() => {
     let s = 7; const rnd = () => (s = (s*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
@@ -386,9 +403,23 @@
   const HIDX = [24.9,27.9,26.5,39.4,46.4,53.7,56.8,56.8,54.3,47.4,37.0,29.1];
 
   // Canopy surface: a shallow vault over the walkway. z(y) is an arch.
-  function canopyZ(y) {
-    const u = (y - SPINE.y0) / (SPINE.y1 - SPINE.y0);      // 0..1 across
-    return SPINE.hSpring + (SPINE.hCrown - SPINE.hSpring) * Math.sin(Math.PI*u);
+  // A point on the gridshell. x runs along the route; u runs 0..1 across it.
+  // The shell springs low at both edges and crowns over the walkway, and it
+  // rides the meander rather than sitting on a straight axis.
+  function canopyPt(x, u) {
+    const [nx, ny] = spineNormal(x);
+    const off = (u - 0.5) * SPINE.canopyW;
+    const z = SPINE.hSpring + (SPINE.hCrown - SPINE.hSpring) * Math.sin(Math.PI*u);
+    return [x + nx*off, spineY(x) + ny*off, z];
+  }
+  // Nearest distance from a plan point to the route, for "am I on the path?"
+  function distToSpine(px, py) {
+    let best = 1e9;
+    for (let x = SPINE.x0; x <= SPINE.x1; x += 2.5) {
+      const d = Math.hypot(px - x, py - spineY(x));
+      if (d < best) best = d;
+    }
+    return best;
   }
 
   // ======================================================================
@@ -519,11 +550,17 @@
     if (!sd || sd[2] >= -0.02) return;
     ctx.fillStyle = `rgba(8,12,14,${alpha})`;
     // Canopy shadow: project the vault's outline.
-    const a = shadowOf([SPINE.x0, SPINE.y0, canopyZ(SPINE.y0)+0.6], sd);
-    const b = shadowOf([SPINE.x1, SPINE.y0, canopyZ(SPINE.y0)+0.6], sd);
-    const c = shadowOf([SPINE.x1, SPINE.y1, canopyZ(SPINE.y1)+0.6], sd);
-    const d = shadowOf([SPINE.x0, SPINE.y1, canopyZ(SPINE.y1)+0.6], sd);
-    if (a&&b&&c&&d) poly([a,b,c,d], `rgba(8,12,14,${alpha})`, null);
+    // The shell's shadow is a ribbon, so it is cast segment by segment along
+    // the route rather than as one quad.
+    for (let x = SPINE.x0; x < SPINE.x1 - 6; x += 6) {
+      const q = [
+        shadowOf(canopyPt(x, 0), sd),
+        shadowOf(canopyPt(x + 6, 0), sd),
+        shadowOf(canopyPt(x + 6, 1), sd),
+        shadowOf(canopyPt(x, 1), sd),
+      ];
+      if (q.every(Boolean)) poly(q, `rgba(8,12,14,${alpha})`, null);
+    }
     // Tree shadows: an ellipse where the crown centre lands.
     const n = treeCount === undefined ? TREES.length : treeCount;
     for (let i = 0; i < n; i++) {
@@ -549,13 +586,13 @@
     const quads = [];
     for (let x = SPINE.x0; x < xEnd - step; x += step) {
       for (let j = 0; j < cross; j++) {
-        const ya = SPINE.y0 + (SPINE.y1-SPINE.y0)*(j/cross);
-        const yb = SPINE.y0 + (SPINE.y1-SPINE.y0)*((j+1)/cross);
-        const zc = canopyZ((ya+yb)/2);
+        const ua = j/cross, ub = (j+1)/cross;
+        const mid = canopyPt(x + step/2, (ua+ub)/2);
         quads.push({
-          pts: [[x,ya,canopyZ(ya)],[x+step,ya,canopyZ(ya)],[x+step,yb,canopyZ(yb)],[x,yb,canopyZ(yb)]],
-          d: camDist(x+step/2, (ya+yb)/2, zc),
-          // The vault catches more light at its crown than at the springing.
+          pts: [canopyPt(x, ua), canopyPt(x+step, ua),
+                canopyPt(x+step, ub), canopyPt(x, ub)],
+          d: camDist(mid[0], mid[1], mid[2]),
+          // The shell catches more light at its crown than at the springing.
           f: 0.42 + 0.58*Math.sin(Math.PI*((j+.5)/cross)),
         });
       }
@@ -568,27 +605,26 @@
       ctx.globalAlpha = 1;
     }
 
-    // Transverse ribs and columns, also far-to-near.
+    // Timber arch ribs and their branching columns, far-to-near.
     const ribs = [];
-    for (let x = SPINE.x0; x < xEnd; x += 7) ribs.push({ x, d: camDist(x, 50, 4.5) });
+    for (let x = SPINE.x0; x < xEnd; x += 7) ribs.push({ x, d: camDist(x, spineY(x), 4.5) });
     ribs.sort((a,b) => b.d - a.d);
     for (const { x, d } of ribs) {
       const pts = [];
-      for (let j = 0; j <= cross; j++) {
-        const y = SPINE.y0 + (SPINE.y1-SPINE.y0)*(j/cross);
-        pts.push([x, y, canopyZ(y)]);
-      }
+      for (let j = 0; j <= cross; j++) pts.push(canopyPt(x, j/cross));
       const col = fog("#D8D2C4", d);
       for (let j = 0; j < cross; j++) line3(pts[j], pts[j+1], col, 2);
-      line3([x,SPINE.y0,0],[x,SPINE.y0,canopyZ(SPINE.y0)], fog("#B9B3A6", d), 2);
-      line3([x,SPINE.y1,0],[x,SPINE.y1,canopyZ(SPINE.y1)], fog("#B9B3A6", d), 2);
+      // Columns drop from the springing points, branching as they meet the arch.
+      const colCol = fog("#B9B3A6", d);
+      for (const u of [0, 1]) {
+        const top = canopyPt(x, u);
+        line3([top[0], top[1], 0], top, colCol, 2);
+      }
     }
 
     if (progress < 1) {
       for (let j = 0; j < cross; j++) {
-        const ya = SPINE.y0 + (SPINE.y1-SPINE.y0)*(j/cross);
-        const yb = SPINE.y0 + (SPINE.y1-SPINE.y0)*((j+1)/cross);
-        line3([xEnd,ya,canopyZ(ya)],[xEnd,yb,canopyZ(yb)], C.bone, 3);
+        line3(canopyPt(xEnd, j/cross), canopyPt(xEnd, (j+1)/cross), C.bone, 3);
       }
     }
   }
@@ -822,8 +858,13 @@
   // ---------- 04 BENEATH (43–52s): eye level, dollying the spine --------
   function s4(t) {
     const e = easeIO(t);
-    cam.pos = [lerp(12,96,e), 50, 1.72];
-    cam.tgt = [lerp(60,150,e), 50, 3.2];
+    // Walk the route, not a straight line through it. The camera rides the
+    // centreline and looks a little way ahead along it, so the meander reveals
+    // itself the way it would on foot — the far end stays hidden until you
+    // round the bend, which is the entire spatial argument for curving it.
+    const cxp = lerp(10, 92, e), ctp = Math.min(cxp + 34, SPINE.x1);
+    cam.pos = [cxp, spineY(cxp), 1.72];
+    cam.tgt = [ctp, spineY(ctp), 3.0];
     cam.fov = 52; camSetup();
 
     const s = solar(172, 13.4), sd = sunDir(s);
@@ -835,7 +876,7 @@
     // 130 m — beyond that the cells are sub-pixel and only cost time.
     drawGround(16, () => "rgb(40,34,29)", 200);
     drawSiteGround(3, (x,y) => {
-      const onPath = y > SPINE.y0-1 && y < SPINE.y1+1;
+      const onPath = distToSpine(x, y) <= SPINE.pathW/2 + 1;
       const band = (Math.floor(x/3) + Math.floor(y/3)) % 2;
       if (onPath) return band ? "rgb(96,90,79)" : "rgb(90,84,74)";
       return y > 20 && y < 80 ? "rgb(62,78,58)" : "rgb(44,38,32)";
@@ -875,7 +916,7 @@
       if (x/SITE.w > reveal) return "#2C231B";
       let near = 99;
       for (const tr of TREES) { const d = Math.hypot(x-tr.x, y-tr.y); if (d<near) near=d; }
-      const onSpine = y>SPINE.y0 && y<SPINE.y1 && x>SPINE.x0 && x<SPINE.x1;
+      const onSpine = distToSpine(x, y) <= SPINE.canopyW/2 && x>SPINE.x0 && x<SPINE.x1;
       const cool = clamp(clamp(1-near/16,0,1)*.72 + (onSpine?.58:0), 0, 1);
       const hot = `rgb(${lerp(190,46,cool)|0},${lerp(78,118,cool)|0},${lerp(30,116,cool)|0})`;
       return eve > 0 ? mix(hot, cool>.5 ? "#22303A" : "#241A18", eve*.8) : hot;
@@ -946,11 +987,17 @@
 
   // ======================================================================
   const SCENES = [
-    { t0:0,  t1:11, name:"The site",   fn:s1 },
-    { t0:11, t1:25, name:"The heat",   fn:s2 },
-    { t0:25, t1:43, name:"The spine",  fn:s3 },
-    { t0:43, t1:52, name:"Beneath it", fn:s4 },
-    { t0:52, t1:60, name:"The proof",  fn:s5 },
+    // Re-cut for pace. The first version front-loaded eleven seconds on an
+    // establishing shot and fourteen on a rising number, which is a long time
+    // to watch very little change. Time is moved into the two movements that
+    // actually carry the argument — the spine building itself, and the day
+    // passing over it — and the opening is trimmed to the point where the
+    // title has landed.
+    { t0:0,  t1:7,  name:"The site",   fn:s1 },
+    { t0:7,  t1:18, name:"The heat",   fn:s2 },
+    { t0:18, t1:38, name:"The spine",  fn:s3 },
+    { t0:38, t1:48, name:"Beneath it", fn:s4 },
+    { t0:48, t1:60, name:"The proof",  fn:s5 },
   ];
 
   function draw(time) {
@@ -961,7 +1008,9 @@
     s.fn(clamp((time - s.t0)/(s.t1 - s.t0), 0, 1));
     vignette(); grain();
     const into = time - s.t0;
-    if (into < 1.1) { ctx.fillStyle = `rgba(0,0,0,${1-into/1.1})`; ctx.fillRect(0,FT,W,FH); }
+    // 0.55 s cut, not 1.1 s. A long dip to black between every movement was
+    // costing five seconds of a sixty-second film and reading as hesitation.
+    if (into < 0.55) { ctx.fillStyle = `rgba(0,0,0,${1-into/0.55})`; ctx.fillRect(0,FT,W,FH); }
     if (time > DUR-.8) { ctx.fillStyle = `rgba(0,0,0,${(time-(DUR-.8))/.8})`; ctx.fillRect(0,FT,W,FH); }
     ctx.restore();
     bars();
