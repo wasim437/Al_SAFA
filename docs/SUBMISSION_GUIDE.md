@@ -1,6 +1,6 @@
 # The 12 submission files — detailed guide
 
-*Al Safa 2 Park · The Shaded Spine · Dubai Municipality AI Park Design Challenge*
+*Al Safa 2 Park · Falaj Al Safa · Dubai Municipality AI Park Design Challenge*
 **Deadline: 15 August 2026**
 
 This is the reference for what goes into each of the twelve upload slots on the
@@ -28,7 +28,7 @@ answer is a file path, not an opinion.
 ## 01 · Design Narrative & Concept
 **Portal accepts:** PDF · **Status:** ✅ ready
 
-The argument. What is wrong with Al Safa 2 Park today, and what the Shaded Spine
+The argument. What is wrong with Al Safa 2 Park today, and what Falaj Al Safa
 does about it.
 
 | | |
@@ -65,7 +65,7 @@ The plan at scale.
 ## 03 · Concept Plans & Spatial Organisation Diagrams
 **Portal accepts:** PDF, DWG · **Status:** ✅ ready
 
-How the park is organised — rooms, thresholds, and the spine that links them.
+How the park is organised — the crescent, the radial alleys, and the rooms between them.
 
 | | |
 |---|---|
@@ -80,7 +80,7 @@ How the park is organised — rooms, thresholds, and the spine that links them.
 
 | | |
 |---|---|
-| **Files** | `section_shaded_spine.png`, `elevation_shaded_spine_long.png`, `elevation_entrance_gateway.png`, `parametric_canopy_mesh.png`, `Phase6_Detailed_Design_Report.pdf` |
+| **Files** | `section_crescent.png`, `elevation_crescent.png`, `Phase6_Detailed_Design_Report.pdf`, `MANIFEST.md` |
 | **Backed by** | Canopy height 5.5 m and width 9 m, driven by the shadow geometry in [`src/solar.py`](../src/solar.py) |
 | **Key relationship** | Shadow length = height ÷ tan(solar elevation). At Dubai's 87.4° summer noon a 6 m tree casts a 0.19 m shadow; at 20° it casts 16.5 m — which is *why* the canopy alone cannot carry winter shade, and why the tree avenue exists |
 
@@ -91,23 +91,32 @@ How the park is organised — rooms, thresholds, and the spine that links them.
 
 | | |
 |---|---|
-| **Files** | `Al_Safa_2_Park_3D_Spatial_Visualizations.pdf` (8.6 MB) plus aerial day/night, eye-level spine and plaza, thermal comfort heatmap |
+| **Files** | `Al_Safa_2_Park_3D_Spatial_Visualizations.pdf` (8.6 MB), the two presentation boards, and three photoreal renders |
 | **Backed by** | Renders are AI-generated illustrations; the **thermal comfort heatmap is computed**, not illustrated — see [`figures/fig04_site_comfort_map.png`](../figures/fig04_site_comfort_map.png) |
 
-> ### ⚠️ The renders show a different park from the plans
+> ### The render/plan mismatch — mostly resolved, and worth reading
 >
-> This is the most serious unresolved issue in the submission. The photoreal JPGs
-> show a **curved, oval park with a large water lagoon** under a hexagonal lattice
-> shell. The plans, the diagrams and **every number in the analysis** describe a
-> **rectangular 150 × 100 m site with a straight 140 m spine and no water**.
+> This used to be the most serious unresolved issue in the submission. The
+> photoreal JPGs showed a **curved park with a sweeping shell and standing water**;
+> the plans and every number in the analysis described a **rectangular grid of
+> rooms with a straight spine and no water at all**. They were not two views of one
+> design, and a juror would have seen it immediately.
 >
-> They are not two views of one design. A juror will see it immediately — and the
-> lagoon also contradicts the water-scarcity argument in slot 08 (5,700 m³/yr
-> irrigation, 43% recycled).
+> The design was changed rather than the renders. The plan is now a single
+> crescent with a sunken palm court and a running water channel, which is the same
+> language the renders speak. `masterplan_aerial_golden_hour.jpg` in particular
+> now reads as the scheme rather than as a different project.
 >
-> **Also:** `aerial_day.png`, `aerial_night.png` and the `eyelevel_*.png` files are
-> script-drawn diagrams sitting next to photoreal renders of the same subject.
-> They are the weakest images in the submission and they make the mismatch louder.
+> **What is still not reconciled, and should be said out loud:**
+>
+> - The renders show **more standing water** than the design has. Al Falaj is a
+>   0.9 m recirculating channel — about 105 m² of water surface, deliberately set
+>   under the canopy's drip line to cut evaporation. It is not a lagoon, and the
+>   water-scarcity argument in slot 08 depends on it not being one.
+> - The site is still drawn as a **rectangle**; the renders imply a curved
+>   boundary. That is pending the DWG.
+> - The renders remain **AI-generated illustrations**. They should be captioned as
+>   such. Nothing in slot 05 is presented as analysis.
 >
 > **Three ways out, in order of strength:**
 > 1. Regenerate the photoreal renders to match the analysed scheme, so plans,
@@ -147,8 +156,11 @@ an image generator. This submission can show a reproducible analysis pipeline.
    humidity, because the heat index is a closed-form function of them and
    including them would make the task algebra. It reaches 97.5% from sun position
    and the calendar alone — which means park operations need no sensor network.
-3. **The correction.** The project revised its own headline shade figure downward
-   from 99.2% to 69.6% when a geometric check contradicted it. Say so explicitly.
+3. **The corrections.** The project revised its own headline shade figure downward
+   from 99.2% when a geometric check contradicted it, then re-solved the section
+   and re-measured it at 87.3%. It also withdrew three images that presented
+   invented data as measurement. Say both out loud — a submission that audits
+   itself in public is more credible than one that never had to.
 
 ---
 
@@ -206,10 +218,18 @@ an image generator. This submission can show a reproducible analysis pipeline.
 | **Files** | `Al_Safa_2_Park_Complete_Design_Report.pdf` (2.6 MB) + editable `.docx` |
 | **Backed by** | Everything above |
 
-> **Update before submitting.** This report still carries the withdrawn **99.2%**
-> shade figure. Replace it with **69.6% (canopy + tree avenue)** and add a line
-> explaining the revision. The `.docx` is editable — open it in Word and change the
-> text directly. The corrected reasoning is in [`README.md`](../README.md).
+> ### ⚠️ This report describes the superseded scheme
+>
+> The park was redesigned: a straight spine through rectangular rooms became a
+> single crescent with radial rooms, a water channel and a sunken palm court. The
+> code, the drawings, the portal and the film are all on the new scheme. **The
+> Word documents in `reports/` are not.**
+>
+> Before submitting, the `.docx` needs: the concept renamed to **Falaj Al Safa**,
+> the shade figure changed from the withdrawn **99.2%** to **87.3%** (canopy and
+> louvre) / **88.5%** (per m² with the tree avenue), and the room schedule replaced
+> with the one in [`data/raw/site_zoning_schedule.csv`](../data/raw/site_zoning_schedule.csv).
+> The corrected reasoning is in [`README.md`](../README.md).
 
 ---
 
@@ -232,9 +252,13 @@ an image generator. This submission can show a reproducible analysis pipeline.
 | **Files** | `concept_film.html` — the 60-second film, `Concept_Animation_Storyboard.pdf` / `.docx` |
 | **Backed by** | Every frame is drawn from the project's own analysis: the same 8,760-hour solar model, the same 150 × 100 m plan geometry, the same 131 trees |
 
-The film runs exactly 60 seconds across five scenes: the heat (0–10s), the spine
-building itself (10–25s), a walk beneath the canopy (25–40s), the computed
-comfort map resolving (40–50s), and the park in evening use (50–60s).
+The film runs exactly 60 seconds across five scenes: the site (0–7s), the heat
+(7–18s), the crescent building and planting itself while a full computed day
+passes over it (18–38s), a walk beneath the canopy at eye level (38–48s), and the
+measured comfort result as the park fills at dusk (48–60s).
+
+Its geometry is regenerated from `src/plan.py` by `python tools/sync_film.py`, so
+the film cannot drift away from the drawings the way the previous one did.
 
 **To turn it into the MP4 the portal wants:**
 
@@ -248,8 +272,9 @@ This slot is **optional** on the portal, but it is the highest-leverage item you
 have: the shortlist goes to a **community vote**, and a community votes on what
 it can see, not on an R² score.
 
-> The film deliberately shows the *analysed* scheme — straight spine, rectangular
-> site, no water feature. See the note under slot 05 about why that matters.
+> The film shows the *analysed* scheme exactly: the same arc, the same 131 trees,
+> the same solar model. `node tests/test_film.js` renders every frame and fails on
+> any NaN, so a geometry change that breaks it cannot ship quietly.
 
 ---
 
@@ -258,7 +283,8 @@ it can see, not on an R² score.
 | | Item |
 |---|---|
 | ☐ | **Open the DWG** and confirm the site boundary — every area figure depends on it |
-| ☐ | Replace **99.2% → 69.6%** in the Complete Design Report and anywhere else it appears |
+| ☐ | **Rewrite the Word reports** — they still describe the superseded straight-spine scheme |
+| ☐ | Replace **99.2% → 87.3%** in the Complete Design Report and anywhere else it appears |
 | ☐ | Label renders as *illustrative* and analysis outputs as *computed* in slot 05 |
 | ☐ | State the concept-scoring weights explicitly in slot 01 |
 | ☐ | Confirm the solar array **deficit** wording in slot 08 |

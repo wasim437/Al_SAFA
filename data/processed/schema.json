@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-30T18:16:08",
+  "generated": "2026-07-31T16:51:06",
   "hourly": {
     "file": "hourly_climate_comfort_8760.csv",
     "rows": 8760,
@@ -13,7 +13,7 @@
       "wind_kmh": "MEASURED (monthly) \u2014 NCM normals, held flat within the month",
       "ghi_wh_m2": "MODELLED \u2014 NCM daily GHI distributed by solar geometry",
       "heat_index_c": "DERIVED \u2014 NWS Rothfusz on modelled temp/RH",
-      "spine_shade_fraction": "COMPUTED \u2014 geometric canopy occlusion",
+      "crescent_shade_fraction": "COMPUTED \u2014 geometric canopy occlusion",
       "temp_shaded_c": "DERIVED \u2014 measured shade relief applied to modelled temp",
       "rh_shaded_pct": "DERIVED \u2014 Magnus relation on the shaded temperature",
       "heat_index_shaded_c": "DERIVED \u2014 NWS Rothfusz on the shaded condition",

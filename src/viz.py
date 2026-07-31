@@ -173,11 +173,16 @@ def stacked_panels(
     return fig, axes
 
 
-def finish(fig, name: str, *, source: str, note: str | None = None, save: bool = True):
-    """Add the mandatory source strip and write the figure to figures/.
+def finish(fig, name: str, *, source: str, note: str | None = None,
+           save: bool = True, save_to=None):
+    """Add the mandatory source strip and write the figure out.
 
     `source` is not optional. A figure whose provenance cannot be stated in one
     line has no business in the submission.
+
+    `save_to` overrides the destination directory. Charts go to figures/; the
+    technical drawings in `src.drawings` go to design/visuals/, but they are
+    held to the same rule about carrying their source.
     """
     strip = f"Source: {source}   ·   {C.PROJECT_STAMP}"
     if note:
@@ -194,7 +199,8 @@ def finish(fig, name: str, *, source: str, note: str | None = None, save: bool =
     )
     fig.tight_layout(rect=(0, 0.035, 1, 0.93))
     if save:
-        out = C.FIGURES / f"{name}.png"
+        out = (save_to or C.FIGURES) / f"{name}.png"
+        out.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(out)
         plt.close(fig)
         return out

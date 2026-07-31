@@ -17,9 +17,9 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Circle, Polygon
 
-from . import config as C, solar, viz
+from . import config as C, plan, solar, viz
 
 NCM = "NCM Dubai climate normals 1977-2015 (39-year record)"
 SPA = "NREL Solar Position Algorithm via pvlib, 25.190N 55.238E"
@@ -134,17 +134,24 @@ def fig_site_comfort_map(grid: pd.DataFrame, trees: pd.DataFrame):
         extent=(0, C.SITE["length_m"], 0, C.SITE["width_m"]),
     )
     # Trunk positions only. Drawing 131 mature canopy circles at true radius
-    # produces an overlapping band along the spine that obscures the very
+    # produces an overlapping band along the crescent that obscures the very
     # surface the figure exists to show — the shade pattern already reads the
     # canopy, so the outlines were redundant as well as noisy.
     ax.scatter(trees["x"], trees["y"], s=7, color="white", alpha=0.85,
                linewidths=0, zorder=3, label="Tree (131)")
 
-    sx, sy, _, _ = solar.spine_centreline(240)
+    sx, sy, _, _ = solar.crescent_centreline(240)
     ax.plot(sx, sy, color="white", linewidth=1.4, linestyle=(0, (6, 4)), zorder=4)
-    ax.annotate("The Shaded Spine", xy=(75, float(np.interp(75, sx, sy)) + 10),
-                ha="center", va="bottom", color="white",
-                fontsize=10, fontweight="semibold", zorder=5)
+    # Labelled on the light band itself, in ink — white type on the pale end of
+    # the ramp is the one place this palette cannot carry a label.
+    cx, cy = plan.arc_point(-16.0, 0.0)
+    ax.annotate("Al Hilal — the Crescent Canopy", xy=(float(cx), float(cy)),
+                ha="center", va="center", color=C.PALETTE["ink"],
+                fontsize=9.5, fontweight="semibold", zorder=5)
+    bx, by = plan.arc_point(0.0, -24.0)
+    ax.annotate("Al Nakhil\nthe Oasis Basin", xy=(float(bx), float(by)),
+                ha="center", va="center", color="white", linespacing=1.3,
+                fontsize=9, zorder=5)
     ax.legend(loc="lower right", labelcolor="white", framealpha=0)
 
     ax.set_xlabel("metres (east →)")
@@ -157,9 +164,10 @@ def fig_site_comfort_map(grid: pd.DataFrame, trees: pd.DataFrame):
     return viz.finish(
         fig, "fig04_site_comfort_map",
         source=f"{SPA}; {NCM}",
-        note="Lighter is cooler. The spine reads as the coolest continuous "
-             "route across the site; the biodiversity strip is the second "
-             "cool pocket. White dots mark the 131 tree positions.",
+        note="Lighter is cooler. The crescent reads as the coolest continuous "
+             "route across the site, and its concave side is measurably cooler "
+             "than its convex one — which is why the rooms people are asked to "
+             "linger in are all placed there. White dots are the 131 trees.",
     )
 
 
@@ -210,8 +218,9 @@ def fig_feature_importance(m1: dict):
         "y": "North–south position",
         "x": "East–west position",
         "dist_to_edge_m": "Distance to site edge",
-        "dist_to_spine_m": "Distance to the spine",
-        "under_spine_canopy": "Under the spine canopy",
+        "dist_to_crescent_m": "Distance to the crescent",
+        "under_crescent_walk": "On the crescent walk",
+        "under_gridshell": "Under the gridshell",
         "canopy_overhead": "Canopy directly overhead",
         "sky_view_factor": "Sky view factor",
         "albedo": "Surface albedo",
@@ -228,11 +237,22 @@ def fig_feature_importance(m1: dict):
     ax.set_xlabel("Importance (drop in R² when shuffled)")
     ax.grid(axis="y", visible=False)
 
+    # The note states whatever the model actually found, rather than repeating a
+    # conclusion from a previous run. Under the superseded straight-spine layout
+    # the top feature was tree density; under the crescent it is distance to the
+    # structure. Hard-coding either would have made this figure lie the moment
+    # the design moved — which is exactly what happened once already.
+    top = imp.iloc[-1]
+    rest = imp.iloc[:-1]["importance"].max()
     return viz.finish(
         fig, "fig06_feature_importance",
         source=MODEL,
-        note="Tree density within 20 m dominates: the design lever that matters "
-             "most is planting density, not canopy width.",
+        note=f"{labels.get(top['feature'], top['feature'])} dominates at "
+             f"{top['importance']:.2f}, {top['importance'] / max(rest, 1e-9):.1f}× "
+             f"the next feature. Planting density still ranks above canopy width, "
+             f"so trees remain the cheaper lever — but on this layout the single "
+             f"strongest predictor of whether a square metre is shaded is simply "
+             f"how far it is from the crescent.",
     )
 
 
@@ -315,7 +335,7 @@ def fig_diurnal_heatmap(hourly: pd.DataFrame):
     )
     for ax, col, title in (
         (ax1, "heat_index_c", "Exposed (today)"),
-        (ax2, "heat_index_shaded_c", "Under the Shaded Spine"),
+        (ax2, "heat_index_shaded_c", "Under the Crescent Canopy"),
     ):
         piv = hourly.pivot_table(index="hour", columns="month", values=col, aggfunc="mean")
         im = ax.imshow(piv.to_numpy(), origin="lower", cmap=viz.HEAT_CMAP,
@@ -341,76 +361,138 @@ def fig_diurnal_heatmap(hourly: pd.DataFrame):
 
 
 def fig_site_plan(grid: pd.DataFrame, trees: pd.DataFrame):
-    """The masterplan, drawn from the same geometry the analysis used."""
-    zones = pd.read_csv(C.DATA_RAW / "site_zoning_schedule.csv")
+    """The masterplan, drawn from the same geometry the analysis used.
 
-    # Fourteen zones across eight categories is more than any categorical palette
-    # can carry — the validated ramp holds six, and a seventh hue is never
-    # generated. So this plan does what an architectural drawing does: it names
-    # the rooms on the drawing. Fill is a single neutral, and identity comes from
-    # the label, not from colour. The spine is the one element given a colour,
-    # because it is the one element the whole scheme is about.
-    short = {
-        "Perimeter Shade Buffer (S)": "Shade buffer (S)",
-        "Perimeter Shade Buffer (N)": "Shade buffer (N)",
-        "Outdoor Fitness & Wellness": "Fitness",
-        "Native Planting / Biodiversity Strip": "Biodiversity\nstrip",
-        "Quiet Contemplation Garden": "Quiet\ngarden",
-        "Commercial & Service Kiosk Cluster": "Kiosks",
-        "Multipurpose Sports Lawn": "Sports lawn",
-        "Main Entrance Plaza": "Entry\nW",
-        "Secondary Entrance (E)": "Entry\nE",
-        "Children's Play Zone": "Children's play",
-        "Family Picnic & Shaded Seating": "Family picnic",
-        "Community Plaza & Event Lawn": "Community plaza",
-    }
-    fig, ax = viz.open_figure(
-        "Masterplan — zones, planting and the spine",
-        "Drawn from site_zoning_schedule.csv, the same geometry the models use",
-        width=11.0, height=6.6,
+    Eighteen rooms across nine categories is far more than any categorical
+    palette can carry — the validated ramp holds six, and a seventh hue is never
+    generated. So this drawing does what an architectural plan does: the rooms
+    are numbered on the drawing and named in a key beside it. Fill is a single
+    neutral. Only the crescent, the falaj and the trees are given colour,
+    because they are the three things the scheme is about.
+    """
+    # Numbered in the order the plan is built: the armature first, then the
+    # rooms of the concave side, then the convex side, then the perimeter. That
+    # is how an architect numbers a drawing — by how the scheme is assembled,
+    # not by where the labels happen to sit.
+    zones = [z for z in plan.build() if not z.get("is_residual")]
+
+    fig, (ax, key) = viz.open_figure(
+        "Masterplan — Falaj Al Safa",
+        "One arc, and every room struck off its centre. Drawn from src/plan.py, "
+        "the same geometry the models use",
+        width=13.0, height=7.2, ncols=2,
+        gridspec_kw={"width_ratios": [3.05, 1]},
     )
-    # The spine and its margins are drawn from their real curve below, so their
-    # accounting rectangles are not drawn and their labels are suppressed —
-    # otherwise three labels sit on top of the curve they describe.
-    CURVED = ("Shaded Spine", "Spine Shade Margin")
-    for _, z in zones.iterrows():
-        if z["Zone"].startswith("Path Network") or z["Zone"].startswith(CURVED):
-            continue
-        w, h = z["X_max"] - z["X_min"], z["Y_max"] - z["Y_min"]
-        ax.add_patch(Rectangle(
-            (z["X_min"], z["Y_min"]), w, h,
-            facecolor=C.PALETTE["rule"], alpha=0.55,
-            edgecolor=C.PALETTE["baseline"], linewidth=1.0))
-        if w * h > 400:
-            ax.annotate(
-                short.get(z["Zone"], z["Zone"]),
-                xy=(z["X_min"] + w / 2, z["Y_min"] + h / 2),
-                ha="center", va="center", fontsize=8,
-                color=C.PALETTE["ink_secondary"], linespacing=1.25)
 
-    # The spine is a curve. Drawn as a thick line along its real centreline,
-    # with the 16 m gridshell footprint washed in behind it.
-    sx, sy, _, _ = solar.spine_centreline(240)
-    ax.plot(sx, sy, color=C.SERIES[0], linewidth=C.SPINE["canopy_width_m"] * 1.05,
-            solid_capstyle="round", alpha=0.16, zorder=2)
-    ax.plot(sx, sy, color=C.SERIES[0], linewidth=C.SPINE["path_width_m"] * 1.05,
-            solid_capstyle="round", alpha=0.85, zorder=3, label="The Shaded Spine")
-    ax.scatter(trees["x"], trees["y"], s=11, color=C.SERIES[5],
-               linewidths=0, zorder=4, label=f"Tree ({len(trees)})")
+    # Fill is a single neutral. Three things are given colour, because they are
+    # the three the scheme is about: the crescent (structure), the falaj and the
+    # basin (water), and the trees.
+    STRUCTURE = {"crescent_walk", "gate_w", "gate_e"}
+    WATER = {"falaj", "basin"}
+    for i, z in enumerate(zones, start=1):
+        z["_no"] = i
+        if z["key"] in WATER:
+            fc = ec = C.SERIES[2]
+            alpha, lw = (0.90 if z["key"] == "falaj" else 0.22), 0.9
+        elif z["key"] in STRUCTURE:
+            fc = ec = C.SERIES[0]
+            alpha, lw = 0.30, 0.9
+        else:
+            fc, ec, alpha, lw = C.PALETTE["rule"], C.PALETTE["baseline"], 0.60, 0.9
+        for part in z["parts"]:
+            if len(part) >= 3:
+                ax.add_patch(Polygon(part, closed=True, facecolor=fc, alpha=alpha,
+                                     edgecolor=ec, linewidth=lw, zorder=2))
 
-    ax.set_xlim(-4, C.SITE["length_m"] + 4)
-    ax.set_ylim(-4, C.SITE["width_m"] + 4)
+    # The gridshell footprint, washed in over the walk it covers.
+    ax.add_patch(Polygon(plan.canopy_outline(), closed=True, facecolor=C.SERIES[0],
+                         alpha=0.13, edgecolor="none", zorder=1))
+
+    # The perimeter running loop and the radial alleys, as lines.
+    lx, ly = plan.loop_polyline()
+    ax.plot(lx, ly, color=C.PALETTE["muted"], linewidth=1.1,
+            linestyle=(0, (5, 3)), zorder=3)
+    for seg in plan.sikka_lines():
+        ax.plot(seg[:, 0], seg[:, 1], color=C.PALETTE["baseline"],
+                linewidth=0.8, zorder=3)
+    for pod in plan.majlis_pods():
+        ax.add_patch(Circle((pod["x"], pod["y"]), pod["r"], facecolor=C.SERIES[3],
+                            alpha=0.30, edgecolor=C.SERIES[3], linewidth=1.1, zorder=5))
+
+    ax.scatter(trees["x"], trees["y"], s=10, color=C.SERIES[5],
+               linewidths=0, zorder=6)
+
+    # Room numbers, at the anchor each room declares in src/plan.py.
+    for z in zones:
+        cx, cy = z["label_xy"]
+        ax.text(cx, cy, str(z["_no"]), ha="center", va="center", zorder=7,
+                fontsize=8.5, fontweight="semibold",
+                color=C.PALETTE["canvas"] if z["key"] in STRUCTURE else C.PALETTE["ink"],
+                bbox=dict(boxstyle="circle,pad=0.26", linewidth=0,
+                          facecolor=C.SERIES[0] if z["key"] in STRUCTURE
+                          else C.PALETTE["paper"], alpha=0.92))
+
+    ax.add_patch(Polygon([(0, 0), (C.SITE["length_m"], 0),
+                          (C.SITE["length_m"], C.SITE["width_m"]),
+                          (0, C.SITE["width_m"])], closed=True, fill=False,
+                         edgecolor=C.PALETTE["ink"], linewidth=1.4, zorder=8))
+
+    # North point and a graphic scale — this is a plan, not a scatter chart.
+    ax.annotate("N", xy=(145, 96), ha="center", va="center", fontsize=10,
+                fontweight="semibold", color=C.PALETTE["ink_secondary"], zorder=9)
+    ax.annotate("", xy=(145, 94), xytext=(145, 84), zorder=9,
+                arrowprops=dict(arrowstyle="<|-", color=C.PALETTE["ink_secondary"], lw=1.2))
+    ax.plot([6, 26], [-6.5, -6.5], color=C.PALETTE["ink"], lw=2.2, zorder=9,
+            clip_on=False, solid_capstyle="butt")
+    ax.text(16, -9.5, "20 m", ha="center", va="top", fontsize=8,
+            color=C.PALETTE["muted"], clip_on=False)
+
+    ax.set_xlim(-6, C.SITE["length_m"] + 6)
+    ax.set_ylim(-13, C.SITE["width_m"] + 6)
     ax.set_aspect("equal")
-    ax.set_xlabel("metres (east →)")
-    ax.set_ylabel("metres (north ↑)")
-    ax.grid(False)
-    ax.legend(loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.20))
+    ax.axis("off")
+
+    # --- the key ----------------------------------------------------------
+    key.axis("off")
+    key.set_xlim(0, 1)
+    key.set_ylim(0, 1)
+    y = 0.995
+    key.text(0, y, "ROOM SCHEDULE", fontsize=8.5, fontweight="semibold",
+             va="top", color=C.PALETTE["ink"], transform=key.transAxes)
+    y -= 0.045
+    for z in zones:
+        key.text(0.0, y, f"{z['_no']:>2}", fontsize=7.6, va="top", ha="left",
+                 fontweight="semibold", color=C.PALETTE["ink_secondary"],
+                 transform=key.transAxes)
+        key.text(0.075, y, z["name"], fontsize=7.6, va="top",
+                 color=C.PALETTE["ink"], transform=key.transAxes)
+        key.text(1.0, y, f"{z['area']:,.0f} m²", fontsize=7.6, va="top", ha="right",
+                 color=C.PALETTE["muted"], transform=key.transAxes)
+        y -= 0.0495
+    y -= 0.012
+    res = next(z for z in plan.build() if z.get("is_residual"))
+    key.text(0.075, y, res["name"], fontsize=7.6, va="top",
+             color=C.PALETTE["muted"], transform=key.transAxes)
+    key.text(1.0, y, f"{res['area']:,.0f} m²", fontsize=7.6, va="top", ha="right",
+             color=C.PALETTE["muted"], transform=key.transAxes)
+    y -= 0.058
+    key.plot([0, 1], [y + 0.028, y + 0.028], color=C.PALETTE["rule"], lw=0.8,
+             transform=key.transAxes, clip_on=False)
+    key.text(0.075, y, "Total", fontsize=7.8, va="top", fontweight="semibold",
+             color=C.PALETTE["ink"], transform=key.transAxes)
+    key.text(1.0, y, f"{C.SITE['area_sqm']:,.0f} m²", fontsize=7.8, va="top",
+             ha="right", fontweight="semibold", color=C.PALETTE["ink"],
+             transform=key.transAxes)
 
     return viz.finish(
         fig, "fig10_masterplan",
-        source="Phase 5 masterplan geometry; 131 trees from the Phase 6 schedule",
-        note=f"Site boundary is an ASSUMED {C.SITE['length_m']:.0f}×"
-             f"{C.SITE['width_m']:.0f} m rectangle pending DWG confirmation.",
+        source="src/plan.py — areas are the shoelace area of each drawn polygon",
+        note=f"Crescent radius {plan.ARC_R:.0f} m, sagitta "
+             f"{C.CRESCENT['sagitta_m']:.0f} m. Green dots are the 131 trees; "
+             f"circles are the majlis pavilions; the dashed line is Al Madar, "
+             f"the running loop. Site boundary is an ASSUMED "
+             f"{C.SITE['length_m']:.0f}×{C.SITE['width_m']:.0f} m rectangle "
+             f"pending DWG confirmation.",
     )
 
 

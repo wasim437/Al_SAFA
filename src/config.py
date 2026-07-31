@@ -7,7 +7,7 @@ report disagrees with a figure in the notebook, it is a bug in the code that
 consumes this file — not a difference of opinion between two scripts.
 
 Project : Dubai Municipality AI Park Design Challenge — Al Safa 2 Park
-Concept : "The Shaded Spine"
+Concept : "Falaj Al Safa" — the crescent and the channel
 Author  : Mohamed Wasim
 """
 
@@ -36,7 +36,8 @@ for _p in (DATA_RAW, DATA_INTERIM, DATA_PROCESSED, FIGURES, MODELS):
 # ---------------------------------------------------------------------------
 SITE = {
     "name": "Al Safa 2 Park",
-    "concept": "The Shaded Spine",
+    "concept": "Falaj Al Safa",
+    "concept_subtitle": "a crescent of shade over a channel of water",
     "city": "Dubai, United Arab Emirates",
     # Coordinates used for every solar computation (NREL SPA via pvlib).
     "latitude": 25.190,
@@ -54,68 +55,80 @@ SITE = {
     "budget_aed": 35_000_000,
 }
 
-# The Shaded Spine — the central shaded walkway that gives the scheme its name.
+# AL HILAL — the Crescent Canopy. The single arc the whole park is built on.
 #
-# The section is the whole design. An earlier version put a 9 m canopy directly
-# over a 9 m walkway at 5.5 m, which shades well at summer noon and then fails
-# completely from November to January: Dubai's winter sun sits at 41° in the
-# SOUTH, so the shadow slides clean off the path. Measured annual coverage was
-# 61%, and December was 0%.
+# THE SECTION
+# -----------
+# An earlier version put a 9 m canopy directly over a 9 m walkway at 5.5 m,
+# which shades well at summer noon and then fails completely from November to
+# January: Dubai's winter sun sits at 41° in the SOUTH, so the shadow slides
+# clean off the path. Measured annual coverage was 61%, and December was 0%.
 #
-# The section below was solved rather than styled. Three moves fix it:
-#   1. Narrow the path to 6 m and widen the canopy to 16 m, so the plane
-#      overhangs 5 m either side and the shadow has somewhere to fall.
-#   2. Drop the canopy to 4.5 m — lower plane, shorter throw, better low-sun.
+# The section was solved rather than styled. Three moves fix it:
+#   1. Narrow the walk and widen the canopy, so the plane overhangs 5.5 m either
+#      side and the shadow has somewhere to fall.
+#   2. Drop the canopy to 4.5 m — lower plane, shorter throw, better low sun.
 #   3. Hang a 3 m louvre blade on the SOUTH edge. This is the piece that buys
 #      the winter, and it is ordinary hot-climate architecture: a deep southern
 #      brise-soleil, the same logic as a mashrabiya screen.
 #
-# Result: 91.5% annual (100% at the June solstice, 70% at the December one).
-SPINE = {
-    "length_m": 140.0,
-    "path_width_m": 6.0,        # the walkable surface
-    "canopy_width_m": 16.0,     # the gridshell above it, overhanging 5 m each side
+# THE PLAN
+# --------
+# The route is a single circular arc — a crescent — not a bar and not a wave.
+#
+# A straight route presents ONE orientation, so when a sun angle defeats it, it
+# defeats the whole length at once and the walk has no shade anywhere along it.
+# That is 330 hours a year. An arc changes heading continuously, so some segment
+# is always angled well.
+#
+# The depth of the bow was swept against the 8,760-hour solar model, not chosen.
+# Every row below was measured at the section fixed above, over all 4,402
+# daylight hours of the year:
+#
+#     plan form                 mean cover   worst month   hours with NO shade
+#     straight east-west bar       87.4%        68.7%              330
+#     sine meander (superseded)    85.0%        73.1%               63
+#     arc, sagitta 10 m            87.1%        70.2%              116
+#     arc, sagitta 14 m            86.6%        71.3%               62
+#     arc, sagitta 18 m            85.9%        72.1%               52   <- adopted
+#     arc, sagitta 22 m            84.9%        72.3%               61
+#     closed elliptical loop       79.1%        69.8%               89
+#
+# 18 m is the minimum of the last column. Deeper bows and closed loops both
+# lose, for the same reason: they force more of the route to run north-south,
+# and a canopy over a north-south route can only work when the sun is low in the
+# east or west.
+#
+# Be careful reading the first column. The straight bar has the HIGHEST mean
+# coverage of anything tested — an east-west canopy is near the optimum
+# orientation for 25°N, and curving it costs a point. The crescent is not
+# claimed to shade more ground on average. It is claimed to remove the hours in
+# which the route offers nowhere at all to stand, and it removes six sevenths of
+# them. That is the trade, stated in the direction that is not flattering.
+#
+# The route actually built runs between the two gate majlis, so it is slightly
+# shorter than the full arc and its heading spread slightly narrower:
+# 86.4% mean, 71.6% worst month, 56 hours with no shade.
+#
+# The arc bows convex-SOUTH. The solar model is indifferent to that sign — the
+# louvre swaps to whichever edge faces the sun — so the choice was spatial:
+# bowing south puts the structure between the sun and the hollow it wraps, so
+# the concave side becomes the park's cool pocket instead of a south-facing
+# bowl. Every room people are asked to linger in sits in that hollow.
+#
+# The full plan — rooms, alleys, basin, berm — is generated from this arc in
+# src/plan.py. Nothing there is a hand-typed coordinate.
+CRESCENT = {
+    "chord_m": 138.0,             # east-west span, horn to horn
+    "sagitta_m": 18.0,            # depth of the bow at midspan
+    "y_ends_m": 59.0,             # northing of the two ends
+    "path_width_m": 7.0,          # Al Mamsha — the walkable surface
+    "canopy_width_m": 18.0,       # the gridshell, overhanging 5.5 m each side
     "canopy_height_m": 4.5,
     "south_louvre_depth_m": 3.0,  # louvre blades on the southern edge
-    "y_centre_m": 50.0,         # mean line; the spine meanders about it
     "etfe_transmittance": 0.12,   # fraction of direct beam passing the infill
-    # --- plan geometry -----------------------------------------------------
-    # The spine is a CURVE, not a bar.
-    #
-    # The spatial reason is obvious: a 140 m straight line is a corridor, you
-    # see the end from the start, and there is nothing to discover. A meander
-    # gives the route a sequence of rooms and keeps the far end hidden.
-    #
-    # The measurable reason is narrower than it first looks, and worth stating
-    # honestly. Curving the spine does NOT raise annual shade — it lowers it,
-    # because a straight east-west canopy is close to the optimum orientation
-    # for this latitude. What the curve buys is the removal of the *worst*
-    # hours. A straight spine presents one orientation, so when a sun angle
-    # defeats it, it defeats the whole length at once and the walkway is left
-    # with no shade anywhere. A meander always has some segment angled well.
-    #
-    # Amplitude was swept against the solar model rather than chosen:
-    #
-    #     amp   annual   worst month   hours with NO shade
-    #      0 m   86.5%      67.6%              437
-    #      4 m   85.6%      68.2%              128
-    #      8 m   83.7%      68.2%               68     <- adopted
-    #     12 m   80.3%      68.2%              102
-    #     18 m   76.9%      68.2%              147
-    #
-    # 8 m is the minimum of the last column. It costs 2.8 points of annual
-    # coverage and removes six sevenths of the hours in which the route offers
-    # nowhere to stand.
-    "curve_amplitude_m": 8.0,    # north-south wander either side of the mean
-    "curve_cycles": 1.5,         # gentle S over the site's length
-    "x_start_m": 5.0,
-    "x_end_m": 145.0,
+    "gate_sweep_deg": 4.0,        # angle at each end given to the arrival majlis
 }
-SPINE["canopy_area_sqm"] = SPINE["length_m"] * SPINE["canopy_width_m"]
-
-# Back-compatible alias. Several modules and the film read SPINE["width_m"] as
-# "the width of the shaded route"; that is now the path, not the canopy.
-SPINE["width_m"] = SPINE["path_width_m"]
 
 # ---------------------------------------------------------------------------
 # Thermal comfort thresholds (NWS Heat Index bands, °C)
@@ -221,7 +234,7 @@ FIGURE = {
     "caption_size": 8,
 }
 
-PROJECT_STAMP = "Al Safa 2 Park · The Shaded Spine · Dubai Municipality AI Design Challenge"
+PROJECT_STAMP = "Al Safa 2 Park · Falaj Al Safa · Dubai Municipality AI Design Challenge"
 
 # ---------------------------------------------------------------------------
 # Repository / publication

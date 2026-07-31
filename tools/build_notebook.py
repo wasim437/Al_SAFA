@@ -30,14 +30,14 @@ code = lambda s: cells.append(nbf.v4.new_code_cell(s.strip("\n")))
 md(r"""
 # Al Safa 2 Park — Complete Data Analysis & Machine Learning Workflow
 
-**Dubai Municipality AI Park Design Challenge** · Concept: *The Shaded Spine*
+**Dubai Municipality AI Park Design Challenge** · Concept: *Falaj Al Safa*
 Author: Mohamed Wasim · Site: Al Safa 2 Park, Dubai (15,000 m², 25.190°N 55.238°E)
 
 ---
 
 ## What this notebook is
 
-This is the complete analytical spine of the submission, end to end: raw data in
+This is the complete analytical backbone of the submission, end to end: raw data in
 at the top, design decisions out at the bottom. Every headline number quoted
 anywhere in the submission is produced here and nowhere else.
 
@@ -459,13 +459,13 @@ computational design, and it is the flagship model of this submission.
 
 The ground truth is the ray-tracer. The features are things you can measure off a
 plan: how many trees are within 10 and 20 m, distance to the nearest tree,
-distance to the spine, surface albedo, sky view factor.
+distance to the crescent, surface albedo, sky view factor.
 """)
 
 code(r"""
 grid, trees = dataset.build_spatial(step_m=1.0, sample_hours=400)
 grid[["x", "y", "shade_hours", "shade_pct", "dist_to_tree_m",
-      "trees_within_20m", "under_spine_canopy", "summer_heat_index_c"]].head()
+      "trees_within_20m", "under_crescent_walk", "summer_heat_index_c"]].head()
 """)
 
 code(r"""
@@ -567,15 +567,15 @@ for name in ["fig05_surrogate_performance", "fig06_feature_importance",
 
 code(r"""
 # Headline design metrics — the numbers the reports are allowed to quote.
-frac = solar.spine_shade_fraction(sol)
+frac = solar.crescent_shade_fraction(sol)
 canopy_only = solar.annual_shade_summary(frac)
-spine_cells = grid[grid["under_spine_canopy"] == 1]
+walk_cells = grid[grid["under_crescent_walk"] == 1]
 day = hourly[hourly["is_daylight"]]
 
 headline = {
     "Annual daylight hours":                     int(sol["is_daylight"].sum()),
-    "Spine shade — canopy alone (%)":            canopy_only["annual_shade_pct"],
-    "Spine shade — canopy + tree avenue (%)":    round(float(spine_cells["shade_pct"].mean()), 1),
+    "Crescent Walk shade — canopy + louvre (%)": canopy_only["annual_shade_pct"],
+    "The same walk per m², trees counted (%)":   round(float(walk_cells["shade_pct"].mean()), 1),
     "Site-wide mean shade (%)":                  round(float(grid["shade_pct"].mean()), 1),
     "Comfortable daylight hours — exposed (%)":  round(float((day["heat_index_c"] < 32).mean()*100), 1),
     "Comfortable daylight hours — shaded (%)":   round(float((day["heat_index_shaded_c"] < 32).mean()*100), 1),
@@ -597,12 +597,13 @@ data-science one. Analysis that does not change a drawing is decoration.
 
 | # | Model output | Design consequence |
 |---|---|---|
-| 1 | Permutation importance puts **tree density within 20 m** far above every other feature — well ahead of canopy width | Budget moved from widening the built canopy to **increasing planting density along the spine**. Trees buy more shade per dirham than structure. |
-| 2 | The canopy alone delivers materially **less shade than the flanking tree avenue adds** | The spine is designed as canopy **plus** a double tree avenue, not as a structure alone. Removing the trees would break the concept. |
-| 3 | The comfort classifier reaches ~97% from **sun position and calendar alone** | Programming can be scheduled from an almanac. **No sensor network is needed** — a real capital and maintenance saving. |
-| 4 | The diurnal comfort surface shows the gain concentrated in **late afternoon, spring and autumn** | Activation strategy targets those windows; summer midday is programmed indoors or not at all. |
-| 5 | The spatial comfort map shows the biodiversity strip as the **second cool pocket** | The quiet contemplation garden was placed there rather than in the exposed north-east corner. |
-| 6 | Site-wide mean shade is modest — the shade is **concentrated, not spread** | Stated plainly as a design position: this scheme makes a few places genuinely excellent rather than the whole site mildly better. |
+| 1 | A straight route has **no shade anywhere for 330 hours a year**; an 18 m arc has 52 | The plan is **an arc**. The sagitta is the value that minimises that column — not the one that maximises mean coverage, which a straight bar still wins. |
+| 2 | A **closed loop** scores worst on every measure, because half its length runs north–south | The circuit survives as **Al Madar**, an *unshaded* running loop. Shade goes where a canopy can actually work. |
+| 3 | Permutation importance now puts **distance to the crescent** far above every other feature | Confirms the shade budget belongs in one continuous element. Under the *superseded* rectangular layout the top feature was tree density — the finding moved when the design moved, which is why `fig06`'s caption is generated from the model rather than typed. |
+| 4 | The comfort classifier reaches ~97% from **sun position and calendar alone** | Programming can be scheduled from an almanac. **No sensor network is needed** — a real capital and maintenance saving. |
+| 5 | The diurnal comfort surface shows the gain concentrated in **late afternoon, spring and autumn** | Activation strategy targets those windows; summer midday is programmed indoors or not at all. |
+| 6 | The spatial comfort map shows the crescent's **concave side is measurably cooler** than its convex side | The basin, the quiet garden, the children's play and the picnic grove are all placed in the hollow; the sports lawn, the plaza and the souk take the convex face. |
+| 7 | Site-wide mean shade is modest — the shade is **concentrated, not spread** | Stated plainly as a design position: this scheme makes a few places genuinely excellent rather than the whole site mildly better. |
 
 ### Limitations — stated, not buried
 

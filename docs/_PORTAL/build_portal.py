@@ -1,7 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-build_portal.py — Al Safa 2 Park Analytics Portal · data pipeline
+build_portal.py — SUPERSEDED. Do not run this to rebuild the portal.
+=================================================================
+
+This script builds portal_data.js from the frozen phase folders under
+archive/phases/. Those describe the PREVIOUS scheme — a straight spine through
+rectangular rooms, sixteen zones, and a cost take-off priced against areas that
+no longer exist. Running it would overwrite the portal with a design the project
+has replaced, and would restore render captions for images that were withdrawn.
+
+The portal's design-dependent blocks are now generated from the live pipeline:
+
+    python tools/sync_portal.py
+
+which reads src/plan.py, src/solar.py and models/headline_metrics.json — the
+code that is actually run. This file is kept because the blocks sync_portal.py
+does not own (climate, catchment, references, the provenance scaffolding) were
+originally produced here, and it records where they came from.
+
+-----------------------------------------------------------------
+Original header follows.
+
+Al Safa 2 Park Analytics Portal · data pipeline
 =================================================================
 
 WHY THIS EXISTS

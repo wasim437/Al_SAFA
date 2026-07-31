@@ -24,11 +24,11 @@ BLOB = f"{C.GITHUB_URL}/blob/main"
 RAW = f"https://raw.githubusercontent.com/{C.GITHUB_USER}/{C.GITHUB_REPO}/main"
 
 SLOTS = {
-    "01_Design_Narrative_Concept": ("Design Narrative &amp; Concept", "The story: what is wrong with the park today and what the Shaded Spine does about it."),
+    "01_Design_Narrative_Concept": ("Design Narrative &amp; Concept", "The story: what is wrong with the park today, and what Falaj Al Safa does about it."),
     "02_Preliminary_Design_Masterplan": ("Preliminary Design Masterplan", "The plan at scale — zones, circulation, the area schedule that sums to 15,000 m²."),
-    "03_Concept_Plans_Spatial_Diagrams": ("Concept Plans &amp; Spatial Diagrams", "How the park is organised: rooms, thresholds, and the spine that links them."),
-    "04_Key_Sections_Elevations": ("Key Sections &amp; Elevations", "Cut through the spine and the entrance gateway — canopy height, span, structure."),
-    "05_3D_Spatial_Visualizations": ("3D &amp; Spatial Visualisations", "Aerial day and night, eye-level through the spine and the plaza."),
+    "03_Concept_Plans_Spatial_Diagrams": ("Concept Plans &amp; Spatial Diagrams", "How the park is organised: the crescent, the radial alleys, and the rooms between them."),
+    "04_Key_Sections_Elevations": ("Key Sections &amp; Elevations", "Cut through the Crescent Canopy — span, springing height, and the southern louvre."),
+    "05_3D_Spatial_Visualizations": ("3D &amp; Spatial Visualisations", "Aerial and eye-level, plus the two presentation boards."),
     "06_AI_Methodology_Report": ("AI Methodology Report", "How AI was used — and the analysis notebook that proves it, end to end."),
     "07_User_Experience_Activation_Strategy": ("User Experience &amp; Activation", "Who uses the park, when, and what is programmed in each comfort window."),
     "08_Sustainability_Concept_Strategy": ("Sustainability Concept &amp; Strategy", "Water balance, carbon, energy — stated honestly, including the shortfalls."),
@@ -46,7 +46,7 @@ FIG_CAPTIONS = {
     "fig05_surrogate_performance": "The surrogate model against ray-traced ground truth",
     "fig07_confusion_matrix": "Predicting thermal stress from the clock and the sun alone",
     "fig01_climate_and_comfort": "Dubai climate, and what it feels like",
-    "fig10_masterplan": "The masterplan, drawn from the geometry the models use",
+    "fig10_masterplan": "The masterplan — one arc, and every room struck off its centre",
     "fig03_shade_by_zone": "Annual shade coverage by zone type",
     "fig08_microclimate_regimes": "The park's operating regimes, found by clustering",
 }
@@ -102,7 +102,7 @@ HTML = f"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Al Safa 2 Park — The Shaded Spine</title>
+<title>Al Safa 2 Park — Falaj Al Safa</title>
 <meta name="description" content="AI-supported redesign of Al Safa 2 Park for the Dubai Municipality AI Park Design Challenge. Complete data analysis and machine learning workflow.">
 <style>
   :root {{
@@ -197,7 +197,7 @@ HTML = f"""<!doctype html>
 
 <header><div class="wrap">
   <p class="eyebrow">Dubai Municipality · AI Park Design Challenge · 2026</p>
-  <h1>Al Safa 2 Park<br><em>The Shaded Spine</em></h1>
+  <h1>Al Safa 2 Park<br><em>Falaj Al Safa</em></h1>
   <p class="lede">
     A 15,000 m² neighbourhood park redesigned around one question: how do you make an
     outdoor space usable in a city that is, for half the year, too hot to stand in?
@@ -217,30 +217,36 @@ HTML = f"""<!doctype html>
     <div class="kpi"><div class="v">{m['daylight_hours_comfortable_exposed_pct']}%</div><div class="l">Comfortable daylight hours today</div></div>
     <div class="kpi up"><div class="v">{m['daylight_hours_comfortable_shaded_pct']}%</div><div class="l">Comfortable daylight hours as designed</div></div>
     <div class="kpi"><div class="v">{m['mean_heat_index_reduction_c']} °C</div><div class="l">Mean heat-index reduction</div></div>
-    <div class="kpi"><div class="v">{m['spine_shade_canopy_only_pct']}%</div><div class="l">Annual shade on the spine</div></div>
+    <div class="kpi"><div class="v">{m['spine_shade_canopy_only_pct']}%</div><div class="l">Annual shade on the Crescent Walk</div></div>
     <div class="kpi"><div class="v">{m['model_M1_test_r2']}</div><div class="l">Shade surrogate test R²</div></div>
     <div class="kpi"><div class="v">{m['model_M2_test_accuracy']:.1%}</div><div class="l">Comfort classifier accuracy</div></div>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>A correction this submission makes to itself</h2>
-  <p class="sub">An earlier version claimed 99.2% annual shade on the spine. It does not survive a geometric check, and it has been withdrawn.</p>
+  <h2>Two corrections this submission makes to itself</h2>
+  <p class="sub">Both are recorded rather than quietly fixed, because a project that
+  cannot be checked is not evidence.</p>
   <div class="callout">
-    <h3>Why the old number was wrong</h3>
-    <p>A flat 9 m canopy at 5.5 m does not shade a 9 m walkway when the sun is low and to the
-    south — the shadow slides off the path. Modelled properly, hour by hour, across all
+    <h3>1 &middot; A withdrawn shade claim</h3>
+    <p>An earlier version claimed <strong>99.2%</strong> annual shade. A flat 9 m canopy at
+    5.5 m does not shade a 9 m walkway when the sun is low and to the south — the shadow
+    slides off the path. The section was re-solved: a narrower walk, a wider overhang, a
+    lower plane, and a deep southern louvre. Measured across all
     {m['annual_daylight_hours']:,} annual daylight hours:</p>
     <div class="scroll"><table>
-      <tr><th>Model</th><th>Annual shade on the spine</th></tr>
+      <tr><th>Model</th><th>Annual shade on the walk</th></tr>
       <tr><td><del>Previously claimed</del></td><td class="n"><del>99.2%</del></td></tr>
-      <tr><td>Canopy structure alone</td><td class="n">{m['spine_shade_canopy_only_pct']}%</td></tr>
-      <tr><td>Canopy <strong>+ flanking tree avenue</strong></td><td class="n">{m['spine_shade_canopy_only_pct']}%</td></tr>
+      <tr><td>Canopy and louvre alone</td><td class="n">{m['spine_shade_canopy_only_pct']}%</td></tr>
+      <tr><td>Per m&sup2;, <strong>with the tree avenue counted</strong></td><td class="n">{m['spine_mean_per_sqm_shade_pct']}%</td></tr>
     </table></div>
-    <p style="margin-bottom:0">The honest number is lower — and it is the <strong>better argument</strong>. It is what
-    shows the tree avenue is structural to the concept rather than decoration. A scheme
-    claiming 99% invites one juror with a sun-path diagram to discredit everything else.
-    This one invites them to check the working.</p>
+    <h3 style="margin-top:1.4rem">2 &middot; Three withdrawn images</h3>
+    <p style="margin-bottom:0">Three visuals presented invented data as measurement: a
+    &ldquo;CFD thermal comfort analysis&rdquo; when no CFD was run, a &ldquo;satellite
+    NDVI&rdquo; raster that is numpy noise, and an &ldquo;algorithmically solar-optimised&rdquo;
+    canopy mesh in which nothing was optimised. All three are withdrawn on the same
+    principle as the 99.2%: anything that cannot survive being checked should not be in
+    front of a juror.</p>
   </div>
 </div></section>
 
@@ -290,7 +296,7 @@ HTML = f"""<!doctype html>
 </div></section>
 
 <footer><div class="wrap">
-  <p>Al Safa 2 Park · The Shaded Spine · Mohamed Wasim · Dubai Municipality AI Park Design Challenge 2026</p>
+  <p>Al Safa 2 Park · Falaj Al Safa · Mohamed Wasim · Dubai Municipality AI Park Design Challenge 2026</p>
   <p>Built with Python, pandas, scikit-learn, pvlib and matplotlib. Reproduce everything: <code>python run_analysis.py</code></p>
 </div></footer>
 
@@ -350,8 +356,8 @@ banner = (
     'they will not open until then.</div>'
 )
 art = art.replace('<header><div class="wrap">', f'<div class="wrap">{banner}</div>\n<header><div class="wrap">', 1)
-art = f'<title>Al Safa 2 Park — The Shaded Spine</title>\n{art}\n'
+art = f'<title>Al Safa 2 Park — Falaj Al Safa</title>\n{art}\n'
 
 (DOCS / "summary_offline.html").write_text(art, encoding="utf-8")
-print(f"wrote {DOCS} summary_offline.html  ({len(art)/1e6:.2f} MB)")
-      f"({len(art)/1_048_576:.2f} MB, {inlined} figures inlined)")
+print(f"wrote {DOCS / 'summary_offline.html'}  "
+      f"({len(art) / 1_048_576:.2f} MB, {inlined} figures inlined)")

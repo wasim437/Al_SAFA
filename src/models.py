@@ -81,9 +81,9 @@ HAS_KERAS = importlib.util.find_spec("tensorflow") is not None
 
 SURROGATE_FEATURES = [
     "x", "y",
-    "dist_to_spine_m", "dist_to_edge_m",
+    "dist_to_crescent_m", "dist_to_edge_m",
     "dist_to_tree_m", "trees_within_10m", "trees_within_20m",
-    "canopy_overhead", "under_spine_canopy", "under_gridshell",
+    "canopy_overhead", "under_crescent_walk", "under_gridshell",
     "albedo", "sky_view_factor",
 ]
 

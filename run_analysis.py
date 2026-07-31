@@ -76,12 +76,12 @@ def main() -> None:
     # -- headline results --------------------------------------------------
     print("\n[5/5] Computing headline design metrics ...")
     sol = solar.hourly_solar_position()
-    frac = solar.spine_shade_fraction(sol)
+    frac = solar.crescent_shade_fraction(sol)
     canopy_only = solar.annual_shade_summary(frac)
 
     # Combined canopy + flanking tree avenue, measured along the walkway itself.
-    spine_cells = grid[grid["under_spine_canopy"] == 1]
-    combined_pct = float(spine_cells["shade_pct"].mean())
+    walk_cells = grid[grid["under_crescent_walk"] == 1]
+    combined_pct = float(walk_cells["shade_pct"].mean())
 
     exposed = hourly["comfort_band"].value_counts(normalize=True) * 100
     shaded = hourly["comfort_band_shaded"].value_counts(normalize=True) * 100

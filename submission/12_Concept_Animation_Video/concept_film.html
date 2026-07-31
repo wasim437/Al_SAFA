@@ -1,4 +1,4 @@
-<title>Al Safa 2 Park — 60-Second Concept Film</title>
+<title>Al Safa 2 Park — Falaj Al Safa — 60-Second Concept Film</title>
 <style>
   :root {
     --ground:  #0A0908;
@@ -110,7 +110,7 @@
 <div class="wrap">
   <header>
     <p class="kicker">Dubai Municipality · AI Park Design Challenge · Submission 12</p>
-    <h1>The Shaded Spine<br><span>Al Safa 2 Park in sixty seconds</span></h1>
+    <h1>Falaj Al Safa<br><span>Al Safa 2 Park in sixty seconds</span></h1>
     <p class="standfirst">
       A real 3D camera moves through the park, and the shadows it flies over are
       <em>computed</em> — the NOAA solar algorithm at 25.190°N 55.238°E, projecting the
@@ -138,16 +138,20 @@
 
   <section class="data">
     <h2>What the film asserts, and what computed it</h2>
-    <div class="grid">
+    <!-- GENERATED FIGURES — python tools/sync_film.py -->
+    <div class="grid" id="filmFigures">
       <div class="cell"><div class="v hot">42.1&nbsp;°C</div><div class="l">August mean daily maximum — NCM normals, 39-year record</div></div>
       <div class="cell"><div class="v hot">56.8&nbsp;°C</div><div class="l">Peak heat index, exposed</div></div>
-      <div class="cell"><div class="v up">48.7&nbsp;°C</div><div class="l">Peak heat index, under canopy</div></div>
+      <div class="cell"><div class="v up">48.7&nbsp;°C</div><div class="l">Peak heat index, under the canopy</div></div>
       <div class="cell"><div class="v">44.5&nbsp;%</div><div class="l">Daylight hours comfortable today</div></div>
       <div class="cell"><div class="v up">64.6&nbsp;%</div><div class="l">Daylight hours comfortable as designed</div></div>
-      <div class="cell"><div class="v">69.6&nbsp;%</div><div class="l">Annual shade on the spine — canopy plus tree avenue</div></div>
+      <div class="cell"><div class="v">87.28&nbsp;%</div><div class="l">Annual shade on the Crescent Walk — canopy and louvre alone</div></div>
+      <div class="cell"><div class="v">88.5&nbsp;%</div><div class="l">The same walk per square metre, with the tree avenue counted</div></div>
       <div class="cell"><div class="v">4,402</div><div class="l">Annual daylight hours modelled</div></div>
       <div class="cell"><div class="v">131</div><div class="l">Trees, five species, from the planting schedule</div></div>
+      <div class="cell"><div class="v">34.1&nbsp;%</div><div class="l">Site-wide mean shade — stated, not hidden</div></div>
     </div>
+    <!-- END GENERATED FIGURES -->
   </section>
 
   <section class="notes">
@@ -173,16 +177,31 @@
       </p>
     </div>
     <div>
-      <h3>Why the canopy alone is not enough</h3>
-      <p>The same model, evaluated on the 9 m walkway under its 5.5 m canopy:</p>
+      <!-- GENERATED SECTION NOTE — python tools/sync_film.py -->
+      <div id="filmSection">
+      <h3>Where the canopy still loses</h3>
+      <p>The same model, evaluated on the 7 m walk beneath its
+        18 m gridshell at 4.5 m, with the
+        3 m southern louvre:</p>
       <div class="grid" style="grid-template-columns:1fr">
-        <div class="cell"><div class="v up">98%</div><div class="l">21 June, noon — walkway covered</div></div>
-        <div class="cell"><div class="v hot">0%</div><div class="l">21 December, 09:00 — shadow offset 9.06 m, entirely off the path</div></div>
+        <div class="cell"><div class="v up">100%</div><div class="l">21 June, noon —
+          sun at 87.3°, walk fully covered</div></div>
+        <div class="cell"><div class="v up">84%</div><div class="l">21 December, 09:00 —
+          sun at 26.8°. The louvre is what holds this; the plane alone
+          loses the path entirely</div></div>
+        <div class="cell"><div class="v hot">74%</div><div class="l">21 December, 15:00 —
+          sun at 22.6° in the south-west. This is the worst case, and it
+          is not fixed by more structure</div></div>
       </div>
       <p style="margin-top:14px">
-        Watch it happen in scene three. This is why the tree avenue is structural rather than
-        decorative, and why the honest annual figure is 69.6% and not 99.2%.
+        December is the weakest month at 72% mean coverage, and
+        56 hours a year leave the walk with no shade anywhere along it. The
+        straight canopy this scheme replaced left 330. That reduction is what the
+        arc buys, and it costs about a point of mean coverage — which is the trade,
+        stated in the direction that is not flattering.
       </p>
+      </div>
+      <!-- END GENERATED SECTION NOTE -->
       <h3 style="margin-top:22px">To submit this as the required video</h3>
       <ol>
         <li>Put the film full-screen.</li>
@@ -194,7 +213,7 @@
   </section>
 
   <footer>
-    Al Safa 2 Park · The Shaded Spine · Mohamed Wasim<br>
+    Al Safa 2 Park · Falaj Al Safa · Mohamed Wasim<br>
     Real-time 3D, shadows projected from live NOAA solar geometry · 25.190°N 55.238°E<br>
     Climate: NCM Dubai normals 1977–2015 · Reproduce every figure: <code>python run_analysis.py</code>
   </footer>
@@ -341,44 +360,61 @@
   // ======================================================================
   // THE PARK — real geometry from the masterplan
   // ======================================================================
+  // ===== GENERATED GEOMETRY — python tools/sync_film.py =====
+  // The park, straight out of src/plan.py. Do not hand-edit: run the
+  // tool. The film is a standalone file, so this is inlined rather
+  // than fetched — which is exactly why it has to be regenerated.
   const SITE = { w:150, d:100 };
-  // Geometry mirrors src/config.py SPINE. The route meanders: amplitude was
-  // swept against the solar model and 8 m minimises the hours in which the
-  // walkway has no shade anywhere (437 straight -> 68 curved).
-  const SPINE = {
-    x0:5, x1:145, yc:50,
-    pathW:6, canopyW:16, h:4.5, louvre:3,
-    amp:8, cycles:1.5,
-    hSpring:3.4, hCrown:4.5,
+
+  // AL HILAL — one circular arc. Sagitta was swept against the
+  // 8,760-hour solar model; see src/config.py for the table.
+  const CRESCENT = {
+    cx:75.00, cy:182.2500, R:141.2500,
+    tMax:25.2417,
+    pathW:7.0, canopyW:18.0,
+    h:4.5, louvre:3.0,
+    hSpring:4.5, hCrown:5.7,
   };
-  const spineY = x => SPINE.yc + SPINE.amp *
-    Math.sin(2*Math.PI*SPINE.cycles*(x - SPINE.x0)/(SPINE.x1 - SPINE.x0));
-  // Unit normal in plan at x — the direction the canopy spans across.
-  function spineNormal(x) {
-    const k = 2*Math.PI*SPINE.cycles/(SPINE.x1 - SPINE.x0);
-    const dy = SPINE.amp * k * Math.cos(k*(x - SPINE.x0));
-    const L = Math.hypot(1, dy);
-    return [-dy/L, 1/L];
+  const ARC_X0 = 14.766,
+        ARC_X1 = 135.234;
+
+  // The centreline as a function of x. The arc is single-valued over
+  // its own span, so the film can keep parameterising by x.
+  const arcY = x => CRESCENT.cy - Math.sqrt(Math.max(0,
+    CRESCENT.R*CRESCENT.R - (x - CRESCENT.cx)*(x - CRESCENT.cx)));
+  // Unit normal in plan, radial and pointing SOUTH — the direction the
+  // canopy spans across. On an arc it rotates along the route, which is
+  // the entire reason the plan is an arc.
+  function arcNormal(x) {
+    const s = clamp((x - CRESCENT.cx)/CRESCENT.R, -1, 1);
+    return [s, -Math.sqrt(Math.max(0, 1 - s*s))];
   }
 
-  const TREES = (() => {
-    let s = 7; const rnd = () => (s = (s*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
-    const a = [];
-    for (let i = 0; i < 37; i++) {            // the double avenue — structural
-      const x = 8 + (134*i)/36;
-      a.push({x, y:43.0, r:5.0, h:9, t:0}, {x, y:57.0, r:5.0, h:9, t:0});
-    }
-    for (let i = 0; i < 34; i++) a.push({x:28+rnd()*25, y:9+rnd()*34, r:4.5, h:8, t:1});
-    for (let i = 0; i < 11; i++) a.push({x:57+rnd()*19, y:9+rnd()*34, r:3.5, h:6, t:2});
-    for (let i = 0; i < 12; i++) a.push({x:i%2?147.5:2.5, y:34+6*Math.floor(i/2), r:2.6, h:12, t:3});
-    return a;
-  })();
+  const FALAJ = [[18.4, 62.2], [19.8, 61.6], [21.1, 61.0], [22.5, 60.4], [23.8, 59.8], [25.2, 59.3], [26.6, 58.7], [27.9, 58.2], [29.3, 57.7], [30.7, 57.2], [32.1, 56.7], [33.5, 56.2], [34.9, 55.7], [36.3, 55.3], [37.8, 54.9], [39.2, 54.5], [40.6, 54.1], [42.0, 53.7], [43.5, 53.3], [44.9, 53.0], [46.4, 52.7], [47.8, 52.4], [49.3, 52.1], [50.7, 51.8], [52.2, 51.5], [53.6, 51.3], [55.1, 51.1], [56.6, 50.8], [58.0, 50.6], [59.5, 50.5], [61.0, 50.3], [62.4, 50.1], [63.9, 50.0], [65.4, 49.9], [66.9, 49.8], [68.3, 49.7], [69.8, 49.7], [71.3, 49.6], [72.8, 49.6], [74.3, 49.6], [75.7, 49.6], [77.2, 49.6], [78.7, 49.6], [80.2, 49.7], [81.7, 49.7], [83.1, 49.8], [84.6, 49.9], [86.1, 50.0], [87.6, 50.1], [89.0, 50.3], [90.5, 50.5], [92.0, 50.6], [93.4, 50.8], [94.9, 51.1], [96.4, 51.3], [97.8, 51.5], [99.3, 51.8], [100.7, 52.1], [102.2, 52.4], [103.6, 52.7], [105.1, 53.0], [106.5, 53.3], [108.0, 53.7], [109.4, 54.1], [110.8, 54.5], [112.2, 54.9], [113.7, 55.3], [115.1, 55.7], [116.5, 56.2], [117.9, 56.7], [119.3, 57.2], [120.7, 57.7], [122.1, 58.2], [123.4, 58.7], [124.8, 59.3], [126.2, 59.8], [127.5, 60.4], [128.9, 61.0], [130.2, 61.6], [131.6, 62.2]];
+  const LOOP = [[131.2, 4.8], [132.0, 4.8], [132.8, 4.8], [133.5, 4.9], [134.3, 5.1], [135.0, 5.3], [135.7, 5.5], [136.4, 5.7], [137.1, 6.0], [137.8, 6.4], [138.5, 6.8], [139.1, 7.2], [139.7, 7.6], [140.3, 8.1], [140.9, 8.6], [141.4, 9.1], [141.9, 9.7], [142.4, 10.3], [142.8, 10.9], [143.2, 11.5], [143.6, 12.2], [144.0, 12.9], [144.3, 13.6], [144.5, 14.3], [144.7, 15.0], [144.9, 15.7], [145.1, 16.5], [145.2, 17.2], [145.2, 18.0], [145.2, 18.8], [145.2, 81.2], [145.2, 82.0], [145.2, 82.8], [145.1, 83.5], [144.9, 84.3], [144.7, 85.0], [144.5, 85.7], [144.3, 86.4], [144.0, 87.1], [143.6, 87.8], [143.2, 88.5], [142.8, 89.1], [142.4, 89.7], [141.9, 90.3], [141.4, 90.9], [140.9, 91.4], [140.3, 91.9], [139.7, 92.4], [139.1, 92.8], [138.5, 93.2], [137.8, 93.6], [137.1, 94.0], [136.4, 94.3], [135.7, 94.5], [135.0, 94.7], [134.3, 94.9], [133.5, 95.1], [132.8, 95.2], [132.0, 95.2], [131.2, 95.2], [18.8, 95.2], [18.0, 95.2], [17.2, 95.2], [16.5, 95.1], [15.7, 94.9], [15.0, 94.7], [14.3, 94.5], [13.6, 94.3], [12.9, 94.0], [12.2, 93.6], [11.5, 93.2], [10.9, 92.8], [10.3, 92.4], [9.7, 91.9], [9.1, 91.4], [8.6, 90.9], [8.1, 90.3], [7.6, 89.7], [7.2, 89.1], [6.8, 88.5], [6.4, 87.8], [6.0, 87.1], [5.7, 86.4], [5.5, 85.7], [5.3, 85.0], [5.1, 84.3], [4.9, 83.5], [4.8, 82.8], [4.8, 82.0], [4.8, 81.2], [4.8, 18.8], [4.8, 18.0], [4.8, 17.2], [4.9, 16.5], [5.1, 15.7], [5.3, 15.0], [5.5, 14.3], [5.7, 13.6], [6.0, 12.9], [6.4, 12.2], [6.8, 11.5], [7.2, 10.9], [7.6, 10.3], [8.1, 9.7], [8.6, 9.1], [9.1, 8.6], [9.7, 8.1], [10.3, 7.6], [10.9, 7.2], [11.5, 6.8], [12.2, 6.4], [12.9, 6.0], [13.6, 5.7], [14.3, 5.5], [15.0, 5.3], [15.7, 5.1], [16.5, 4.9], [17.2, 4.8], [18.0, 4.8], [18.7, 4.8], [131.2, 4.8]];
+  const MAJLIS = [{"x": 46.5, "y": 58.7, "r": 4.5}, {"x": 103.5, "y": 58.7, "r": 4.5}, {"x": 37.3, "y": 31.1, "r": 4.5}, {"x": 104.7, "y": 29.4, "r": 4.5}, {"x": 75.0, "y": 87.0, "r": 5.5}];
+  const SIKKAK = [[[45.3, 53.4], [54.6, 94.0]], [[104.7, 53.4], [95.4, 94.0]], [[38.7, 36.5], [31.1, 6.0]], [[72.4, 32.0], [71.9, 6.0]], [[103.7, 34.8], [109.3, 6.0]], [[118.9, 38.6], [128.9, 6.0]]];
+
+  const TREES = [{"x": 12.1, "y": 48.8, "r": 6.0, "h": 8.0, "t": 0}, {"x": 20.0, "y": 45.4, "r": 6.0, "h": 8.0, "t": 0}, {"x": 28.2, "y": 42.4, "r": 6.0, "h": 8.0, "t": 0}, {"x": 36.5, "y": 39.9, "r": 6.0, "h": 8.0, "t": 0}, {"x": 44.9, "y": 37.9, "r": 6.0, "h": 8.0, "t": 0}, {"x": 53.4, "y": 36.3, "r": 6.0, "h": 8.0, "t": 0}, {"x": 62.0, "y": 35.3, "r": 6.0, "h": 8.0, "t": 0}, {"x": 70.7, "y": 34.8, "r": 6.0, "h": 8.0, "t": 0}, {"x": 79.3, "y": 34.8, "r": 6.0, "h": 8.0, "t": 0}, {"x": 88.0, "y": 35.3, "r": 6.0, "h": 8.0, "t": 0}, {"x": 96.6, "y": 36.3, "r": 6.0, "h": 8.0, "t": 0}, {"x": 105.1, "y": 37.9, "r": 6.0, "h": 8.0, "t": 0}, {"x": 113.5, "y": 39.9, "r": 6.0, "h": 8.0, "t": 0}, {"x": 121.8, "y": 42.4, "r": 6.0, "h": 8.0, "t": 0}, {"x": 130.0, "y": 45.4, "r": 6.0, "h": 8.0, "t": 0}, {"x": 137.9, "y": 48.8, "r": 6.0, "h": 8.0, "t": 0}, {"x": 17.4, "y": 60.1, "r": 5.0, "h": 9.0, "t": 0}, {"x": 20.2, "y": 58.9, "r": 5.0, "h": 9.0, "t": 0}, {"x": 23.0, "y": 57.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 25.8, "y": 56.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 28.7, "y": 55.4, "r": 5.0, "h": 9.0, "t": 0}, {"x": 31.6, "y": 54.4, "r": 5.0, "h": 9.0, "t": 0}, {"x": 34.5, "y": 53.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 37.4, "y": 52.6, "r": 5.0, "h": 9.0, "t": 0}, {"x": 40.3, "y": 51.8, "r": 5.0, "h": 9.0, "t": 0}, {"x": 43.3, "y": 51.0, "r": 5.0, "h": 9.0, "t": 0}, {"x": 46.2, "y": 50.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 49.2, "y": 49.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 52.2, "y": 49.2, "r": 5.0, "h": 9.0, "t": 0}, {"x": 55.2, "y": 48.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 58.3, "y": 48.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 61.3, "y": 47.9, "r": 5.0, "h": 9.0, "t": 0}, {"x": 64.3, "y": 47.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 67.4, "y": 47.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 70.4, "y": 47.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 73.5, "y": 47.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 76.5, "y": 47.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 79.6, "y": 47.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 82.6, "y": 47.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 85.7, "y": 47.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 88.7, "y": 47.9, "r": 5.0, "h": 9.0, "t": 0}, {"x": 91.7, "y": 48.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 94.8, "y": 48.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 97.8, "y": 49.2, "r": 5.0, "h": 9.0, "t": 0}, {"x": 100.8, "y": 49.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 103.8, "y": 50.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 106.7, "y": 51.0, "r": 5.0, "h": 9.0, "t": 0}, {"x": 109.7, "y": 51.8, "r": 5.0, "h": 9.0, "t": 0}, {"x": 112.6, "y": 52.6, "r": 5.0, "h": 9.0, "t": 0}, {"x": 115.5, "y": 53.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 118.4, "y": 54.4, "r": 5.0, "h": 9.0, "t": 0}, {"x": 121.3, "y": 55.4, "r": 5.0, "h": 9.0, "t": 0}, {"x": 124.2, "y": 56.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 127.0, "y": 57.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 129.8, "y": 58.9, "r": 5.0, "h": 9.0, "t": 0}, {"x": 132.6, "y": 60.1, "r": 5.0, "h": 9.0, "t": 0}, {"x": 89.0, "y": 62.6, "r": 3.0, "h": 12.0, "t": 3}, {"x": 93.3, "y": 67.6, "r": 3.0, "h": 12.0, "t": 3}, {"x": 54.3, "y": 73.1, "r": 3.0, "h": 12.0, "t": 3}, {"x": 88.3, "y": 69.4, "r": 3.0, "h": 12.0, "t": 3}, {"x": 56.0, "y": 62.8, "r": 3.0, "h": 12.0, "t": 3}, {"x": 68.4, "y": 72.1, "r": 3.0, "h": 12.0, "t": 3}, {"x": 82.4, "y": 70.1, "r": 3.0, "h": 12.0, "t": 3}, {"x": 72.1, "y": 58.4, "r": 3.0, "h": 12.0, "t": 3}, {"x": 77.8, "y": 55.2, "r": 3.0, "h": 12.0, "t": 3}, {"x": 91.7, "y": 66.3, "r": 3.0, "h": 12.0, "t": 3}, {"x": 88.2, "y": 60.9, "r": 3.0, "h": 12.0, "t": 3}, {"x": 99.1, "y": 71.4, "r": 3.0, "h": 12.0, "t": 3}, {"x": 61.0, "y": 13.1, "r": 4.5, "h": 8.0, "t": 1}, {"x": 50.8, "y": 9.5, "r": 4.5, "h": 8.0, "t": 1}, {"x": 40.6, "y": 24.6, "r": 4.5, "h": 8.0, "t": 1}, {"x": 59.9, "y": 31.4, "r": 4.5, "h": 8.0, "t": 1}, {"x": 46.2, "y": 17.3, "r": 4.5, "h": 8.0, "t": 1}, {"x": 50.9, "y": 13.0, "r": 4.5, "h": 8.0, "t": 1}, {"x": 39.8, "y": 19.7, "r": 4.5, "h": 8.0, "t": 1}, {"x": 43.0, "y": 24.3, "r": 4.5, "h": 8.0, "t": 1}, {"x": 49.8, "y": 28.2, "r": 4.5, "h": 8.0, "t": 1}, {"x": 58.4, "y": 15.9, "r": 4.5, "h": 8.0, "t": 1}, {"x": 62.8, "y": 27.5, "r": 4.5, "h": 8.0, "t": 1}, {"x": 48.2, "y": 15.3, "r": 4.5, "h": 8.0, "t": 1}, {"x": 57.9, "y": 11.8, "r": 4.5, "h": 8.0, "t": 1}, {"x": 42.1, "y": 8.7, "r": 4.5, "h": 8.0, "t": 1}, {"x": 61.3, "y": 24.2, "r": 4.5, "h": 8.0, "t": 1}, {"x": 58.6, "y": 26.9, "r": 4.5, "h": 8.0, "t": 1}, {"x": 50.5, "y": 21.9, "r": 4.5, "h": 8.0, "t": 1}, {"x": 40.1, "y": 11.2, "r": 4.5, "h": 8.0, "t": 1}, {"x": 57.4, "y": 19.6, "r": 4.5, "h": 8.0, "t": 1}, {"x": 54.0, "y": 26.6, "r": 4.5, "h": 8.0, "t": 1}, {"x": 56.3, "y": 21.6, "r": 4.5, "h": 8.0, "t": 1}, {"x": 53.8, "y": 15.7, "r": 4.5, "h": 8.0, "t": 1}, {"x": 36.5, "y": 18.8, "r": 4.5, "h": 8.0, "t": 1}, {"x": 42.6, "y": 18.2, "r": 4.5, "h": 8.0, "t": 1}, {"x": 63.4, "y": 14.0, "r": 4.5, "h": 8.0, "t": 1}, {"x": 37.4, "y": 15.1, "r": 4.5, "h": 8.0, "t": 1}, {"x": 45.1, "y": 24.1, "r": 4.5, "h": 8.0, "t": 1}, {"x": 53.8, "y": 27.0, "r": 4.5, "h": 8.0, "t": 1}, {"x": 57.3, "y": 18.1, "r": 4.5, "h": 8.0, "t": 1}, {"x": 62.2, "y": 12.4, "r": 4.5, "h": 8.0, "t": 1}, {"x": 36.3, "y": 10.6, "r": 4.5, "h": 8.0, "t": 1}, {"x": 59.2, "y": 19.4, "r": 4.5, "h": 8.0, "t": 1}, {"x": 40.8, "y": 20.3, "r": 4.5, "h": 8.0, "t": 1}, {"x": 40.5, "y": 25.0, "r": 4.5, "h": 8.0, "t": 1}, {"x": 72.8, "y": 83.8, "r": 3.5, "h": 6.0, "t": 2}, {"x": 67.0, "y": 86.9, "r": 3.5, "h": 6.0, "t": 2}, {"x": 69.4, "y": 80.1, "r": 3.5, "h": 6.0, "t": 2}, {"x": 59.6, "y": 91.0, "r": 3.5, "h": 6.0, "t": 2}, {"x": 91.5, "y": 87.7, "r": 3.5, "h": 6.0, "t": 2}, {"x": 65.5, "y": 91.1, "r": 3.5, "h": 6.0, "t": 2}, {"x": 86.3, "y": 88.0, "r": 3.5, "h": 6.0, "t": 2}, {"x": 73.0, "y": 82.4, "r": 3.5, "h": 6.0, "t": 2}, {"x": 58.7, "y": 90.3, "r": 3.5, "h": 6.0, "t": 2}, {"x": 73.2, "y": 81.5, "r": 3.5, "h": 6.0, "t": 2}, {"x": 67.2, "y": 86.2, "r": 3.5, "h": 6.0, "t": 2}, {"x": 4.9, "y": 71.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 14.4, "y": 67.4, "r": 5.0, "h": 9.0, "t": 0}, {"x": 9.0, "y": 64.5, "r": 5.0, "h": 9.0, "t": 0}, {"x": 11.5, "y": 65.2, "r": 5.0, "h": 9.0, "t": 0}, {"x": 3.4, "y": 57.8, "r": 5.0, "h": 9.0, "t": 0}, {"x": 2.7, "y": 60.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 7.4, "y": 49.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 3.7, "y": 63.2, "r": 5.0, "h": 9.0, "t": 0}, {"x": 4.8, "y": 73.9, "r": 5.0, "h": 9.0, "t": 0}, {"x": 141.2, "y": 55.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 141.3, "y": 45.4, "r": 5.0, "h": 9.0, "t": 0}, {"x": 147.3, "y": 59.9, "r": 5.0, "h": 9.0, "t": 0}, {"x": 144.5, "y": 47.3, "r": 5.0, "h": 9.0, "t": 0}, {"x": 139.6, "y": 60.2, "r": 5.0, "h": 9.0, "t": 0}, {"x": 147.0, "y": 62.7, "r": 5.0, "h": 9.0, "t": 0}, {"x": 139.4, "y": 53.1, "r": 5.0, "h": 9.0, "t": 0}, {"x": 137.1, "y": 61.1, "r": 5.0, "h": 9.0, "t": 0}, {"x": 138.8, "y": 45.4, "r": 5.0, "h": 9.0, "t": 0}];
+
+  const ROOMS = [
+    {"n": "AL NAKHIL — OASIS BASIN", "p": [[51.7, 76.0], [54.6, 75.4], [57.5, 74.9], [60.5, 74.5], [63.4, 74.1], [66.4, 73.8], [69.4, 73.6], [72.4, 73.5], [75.4, 73.5], [78.4, 73.6], [81.3, 73.7], [84.3, 73.9], [87.3, 74.2], [90.3, 74.6], [93.2, 75.0], [96.1, 75.6], [103.1, 54.5], [99.5, 53.8], [96.0, 53.2], [92.5, 52.7], [88.9, 52.2], [85.3, 51.9], [81.7, 51.7], [78.1, 51.5], [74.6, 51.5], [71.0, 51.6], [67.4, 51.7], [63.8, 52.0], [60.2, 52.3], [56.7, 52.8], [53.1, 53.3], [49.6, 54.0]], "c": [75.0, 63.0]},
+    {"n": "QUIET GARDEN", "p": [[55.6, 94.0], [96.3, 78.7], [93.4, 78.1], [90.6, 77.7], [87.7, 77.3], [84.8, 77.0], [81.9, 76.7], [79.0, 76.6], [76.1, 76.5], [73.2, 76.5], [70.3, 76.6], [67.4, 76.8], [64.5, 77.0], [61.6, 77.4], [58.7, 77.8], [55.9, 78.2], [53.0, 78.8]], "c": [75.0, 85.0]},
+    {"n": "CHILDREN'S DUNE PLAY", "p": [[34.5, 94.0], [43.5, 55.4], [41.9, 55.8], [40.4, 56.2], [38.8, 56.6], [37.3, 57.1], [35.8, 57.5], [34.3, 58.0], [32.7, 58.5], [31.2, 59.0], [29.7, 59.6], [28.2, 60.2], [26.7, 60.7], [25.3, 61.3], [23.8, 61.9], [22.3, 62.6], [20.9, 63.2]], "c": [38.1, 75.2]},
+    {"n": "FAMILY PICNIC GROVE", "p": [[96.4, 94.0], [128.8, 63.1], [127.3, 62.4], [125.8, 61.8], [124.4, 61.2], [122.9, 60.6], [121.4, 60.0], [119.9, 59.5], [118.4, 58.9], [116.9, 58.4], [115.4, 57.9], [113.8, 57.4], [112.3, 56.9], [110.8, 56.5], [109.2, 56.1], [107.7, 55.7], [106.2, 55.3]], "c": [111.9, 75.2]},
+    {"n": "FITNESS TERRACE", "p": [[6.0, 6.0], [12.5, 44.0], [14.1, 43.3], [15.6, 42.6], [17.2, 42.0], [18.7, 41.3], [20.3, 40.7], [21.9, 40.1], [23.4, 39.5], [25.0, 39.0], [26.6, 38.4], [28.2, 37.9], [29.8, 37.4], [31.5, 36.9], [33.1, 36.4], [34.7, 36.0], [36.3, 35.5]], "c": [17.8, 25.1]},
+    {"n": "BIODIVERSITY WADI", "p": [[33.0, 6.0], [41.3, 34.3], [43.2, 33.9], [45.2, 33.5], [47.1, 33.1], [49.1, 32.7], [51.0, 32.4], [53.0, 32.1], [54.9, 31.8], [56.9, 31.6], [58.9, 31.4], [60.9, 31.2], [62.8, 31.0], [64.8, 30.8], [66.8, 30.7], [68.8, 30.6], [70.7, 30.6]], "c": [53.2, 16.4]},
+    {"n": "COMMUNITY PLAZA", "p": [[73.8, 6.0], [75.3, 30.5], [77.1, 30.5], [78.9, 30.6], [80.8, 30.6], [82.6, 30.7], [84.4, 30.8], [86.2, 30.9], [88.0, 31.1], [89.8, 31.2], [91.6, 31.4], [93.4, 31.6], [95.2, 31.9], [97.0, 32.1], [98.8, 32.4], [100.6, 32.7], [102.4, 33.0]], "c": [89.6, 15.6]},
+    {"n": "SOUK", "p": [[111.2, 6.0], [106.1, 33.7], [106.9, 33.9], [107.7, 34.1], [108.5, 34.2], [109.3, 34.4], [110.1, 34.6], [110.8, 34.8], [111.6, 35.0], [112.4, 35.2], [113.2, 35.4], [114.0, 35.6], [114.7, 35.8], [115.5, 36.0], [116.3, 36.2], [117.1, 36.4], [117.8, 36.7]], "c": [115.1, 27.1]},
+    {"n": "SPORTS LAWN", "p": [[130.9, 6.0], [121.7, 37.9], [122.9, 38.2], [124.0, 38.6], [125.1, 39.0], [126.2, 39.4], [127.3, 39.8], [128.4, 40.2], [129.5, 40.6], [130.6, 41.1], [131.7, 41.5], [132.8, 42.0], [133.9, 42.4], [135.0, 42.9], [136.1, 43.3], [137.2, 43.8], [138.3, 44.3]], "c": [139.2, 23.5]},
+  ];
+  // ===== END GENERATED GEOMETRY =====
 
   // The park as it stands: a handful of scattered, undersized specimens whose
   // shadows fall on nothing anyone can use. This is the "before" the design
   // argues against, and scene two needs it — an empty plane with a number over
   // it states the problem, but showing sparse trees throwing useless shadows
-  // demonstrates it.
+  // demonstrates it. Not generated: this is the existing park, not the design.
   const EXISTING = (() => {
     let s = 91; const rnd = () => (s = (s*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
     const a = [];
@@ -386,17 +422,6 @@
       a.push({ x: 12 + rnd()*126, y: 10 + rnd()*80, r: 1.9 + rnd()*1.1, h: 4.5 + rnd()*2, t: 2 });
     return a;
   })();
-
-  const ROOMS = [
-    {x0:5,   x1:33.4, y0:54.5, y1:92.8, n:"CHILDREN'S PLAY"},
-    {x0:33.4,x1:56.5, y0:54.5, y1:92.8, n:"FAMILY PICNIC"},
-    {x0:56.5,x1:88.5, y0:54.5, y1:92.8, n:"COMMUNITY PLAZA"},
-    {x0:5,   x1:26.3, y0:7.2,  y1:45.5, n:"FITNESS"},
-    {x0:26.3,x1:54.7, y0:7.2,  y1:45.5, n:"BIODIVERSITY"},
-    {x0:54.7,x1:77.8, y0:7.2,  y1:45.5, n:"QUIET GARDEN"},
-    {x0:77.8,x1:97.3, y0:7.2,  y1:45.5, n:"KIOSKS"},
-    {x0:97.3,x1:131,  y0:7.2,  y1:45.5, n:"SPORTS LAWN"},
-  ];
 
   const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
   const TMAX = [24.0,25.0,30.0,34.0,37.5,39.9,41.7,42.1,39.5,36.5,31.0,26.0];
@@ -407,16 +432,16 @@
   // The shell springs low at both edges and crowns over the walkway, and it
   // rides the meander rather than sitting on a straight axis.
   function canopyPt(x, u) {
-    const [nx, ny] = spineNormal(x);
-    const off = (u - 0.5) * SPINE.canopyW;
-    const z = SPINE.hSpring + (SPINE.hCrown - SPINE.hSpring) * Math.sin(Math.PI*u);
-    return [x + nx*off, spineY(x) + ny*off, z];
+    const [nx, ny] = arcNormal(x);
+    const off = (u - 0.5) * CRESCENT.canopyW;
+    const z = CRESCENT.hSpring + (CRESCENT.hCrown - CRESCENT.hSpring) * Math.sin(Math.PI*u);
+    return [x + nx*off, arcY(x) + ny*off, z];
   }
   // Nearest distance from a plan point to the route, for "am I on the path?"
-  function distToSpine(px, py) {
+  function distToArc(px, py) {
     let best = 1e9;
-    for (let x = SPINE.x0; x <= SPINE.x1; x += 2.5) {
-      const d = Math.hypot(px - x, py - spineY(x));
+    for (let x = ARC_X0; x <= ARC_X1; x += 2.5) {
+      const d = Math.hypot(px - x, py - arcY(x));
       if (d < best) best = d;
     }
     return best;
@@ -552,7 +577,7 @@
     // Canopy shadow: project the vault's outline.
     // The shell's shadow is a ribbon, so it is cast segment by segment along
     // the route rather than as one quad.
-    for (let x = SPINE.x0; x < SPINE.x1 - 6; x += 6) {
+    for (let x = ARC_X0; x < ARC_X1 - 6; x += 6) {
       const q = [
         shadowOf(canopyPt(x, 0), sd),
         shadowOf(canopyPt(x + 6, 0), sd),
@@ -576,7 +601,7 @@
   }
 
   function drawCanopy(progress, lit) {
-    const xEnd = SPINE.x0 + (SPINE.x1 - SPINE.x0)*progress;
+    const xEnd = ARC_X0 + (ARC_X1 - ARC_X0)*progress;
     if (progress <= 0) return;
     const step = 3.5, cross = 6;
 
@@ -584,7 +609,7 @@
     // Drawing in x order is wrong whenever the camera looks back along the
     // spine — far panels end up over near ones and the vault turns inside out.
     const quads = [];
-    for (let x = SPINE.x0; x < xEnd - step; x += step) {
+    for (let x = ARC_X0; x < xEnd - step; x += step) {
       for (let j = 0; j < cross; j++) {
         const ua = j/cross, ub = (j+1)/cross;
         const mid = canopyPt(x + step/2, (ua+ub)/2);
@@ -607,7 +632,7 @@
 
     // Timber arch ribs and their branching columns, far-to-near.
     const ribs = [];
-    for (let x = SPINE.x0; x < xEnd; x += 7) ribs.push({ x, d: camDist(x, spineY(x), 4.5) });
+    for (let x = ARC_X0; x < xEnd; x += 7) ribs.push({ x, d: camDist(x, arcY(x), 4.5) });
     ribs.sort((a,b) => b.d - a.d);
     for (const { x, d } of ribs) {
       const pts = [];
@@ -682,13 +707,16 @@
     }
   }
 
+  // Rooms are curved trapezoids struck off the crescent's centre, so they are
+  // drawn from their real outlines. The earlier version drew four-cornered
+  // boxes, which on this plan is a different park.
   function drawRooms(alpha, labels) {
     ctx.lineWidth = 1.5;
     ROOMS.forEach(r => {
-      poly([[r.x0,r.y0,.05],[r.x1,r.y0,.05],[r.x1,r.y1,.05],[r.x0,r.y1,.05]],
+      poly(r.p.map(([x, y]) => [x, y, .05]),
            `rgba(239,233,221,${.035*alpha})`, `rgba(239,233,221,${.20*alpha})`, 1.5);
       if (labels && alpha > .6) {
-        const p = proj([(r.x0+r.x1)/2, (r.y0+r.y1)/2, .2]);
+        const p = proj([r.c[0], r.c[1], .2]);
         if (p && p[3] > 1.2) {
           ctx.textAlign="center"; ctx.fillStyle=`rgba(239,233,221,${.34*alpha})`;
           mono(Math.max(9, Math.min(17, 11*p[3]/3)), 400);
@@ -696,6 +724,35 @@
           ctx.textAlign="left";
         }
       }
+    });
+  }
+
+  // Al Falaj, Al Madar and the majlis pavilions. The channel is the one thing
+  // in the park that moves on its own, so it is worth a frame of its own.
+  function drawWater(alpha) {
+    if (!FALAJ.length) return;
+    ctx.lineWidth = 2;
+    for (let i = 0; i + 1 < FALAJ.length; i++) {
+      line3([FALAJ[i][0], FALAJ[i][1], .12], [FALAJ[i+1][0], FALAJ[i+1][1], .12],
+            `rgba(127,184,164,${.85*alpha})`, 3);
+    }
+  }
+  function drawLoop(alpha) {
+    if (!LOOP.length) return;
+    for (let i = 0; i + 1 < LOOP.length; i++) {
+      if (i % 3 === 0) continue;                     // dashed, cheaply
+      line3([LOOP[i][0], LOOP[i][1], .06], [LOOP[i+1][0], LOOP[i+1][1], .06],
+            `rgba(239,233,221,${.22*alpha})`, 1.6);
+    }
+  }
+  function drawMajlis(alpha) {
+    MAJLIS.forEach(m => {
+      const ring = [];
+      for (let k = 0; k <= 16; k++) {
+        const a = k / 16 * Math.PI * 2;
+        ring.push([m.x + m.r*Math.cos(a), m.y + m.r*Math.sin(a), 3.4]);
+      }
+      poly(ring, `rgba(255,182,39,${.10*alpha})`, `rgba(255,182,39,${.42*alpha})`, 1.4);
     });
   }
 
@@ -806,7 +863,7 @@
     stamp(win(t,.2,.12), "NCM DUBAI NORMALS 1977–2015 · 39-YEAR RECORD");
   }
 
-  // ---------- 03 THE SPINE (25–43s): build, plant, then a full day -------
+  // ---------- 03 THE CRESCENT (25-43s): build, plant, then a full day ----
   function s3(t) {
     const build = clamp(t/.42, 0, 1);          // build + plant
     const day   = clamp((t-.44)/.56, 0, 1);    // then time passes
@@ -830,8 +887,11 @@
     const planted = Math.round(clamp((t-.22)/.20,0,1) * TREES.length);
 
     if (day > 0) drawShadows(sd, .5, planted);
+    drawLoop(clamp((t-.10)/.18, 0, 1));
+    drawWater(clamp((t-.16)/.18, 0, 1));
     drawTrees(TREES, planted, null, s.azim);
     drawCanopy(grow, day > 0);
+    drawMajlis(clamp((t-.30)/.16, 0, 1));
 
     if (planted > 0 && day === 0) {
       ctx.textAlign="right"; ctx.fillStyle=C.bone; mono(62,700);
@@ -847,24 +907,24 @@
       ctx.textAlign="left";
     }
 
-    lower(day>0 ? "Watch the shadow move." : "One shaded route, end to end.",
-          day>0 ? "Every shadow here is computed — 5.5 m vault, 9 m walkway, real sun angles."
-                : "140 m of canopy, and a double avenue of Neem either side.",
+    lower(day>0 ? "Watch the shadow move." : "One arc, and a channel of water.",
+          day>0 ? "Every shadow here is computed — 18 m gridshell over a 7 m walk, real sun angles."
+                : "A 141 m radius, a double avenue of Ghaf and Neem, and Al Falaj beneath the drip line.",
           day>0 ? win(day,.12,.16) : win(clamp(t/.42,0,1),.18,.16));
-    chapter("03","THE SPINE", win(t,.07,.10));
+    chapter("03","THE CRESCENT", win(t,.07,.10));
     stamp(win(t,.14,.10));
   }
 
-  // ---------- 04 BENEATH (43–52s): eye level, dollying the spine --------
+  // ---------- 04 BENEATH (43-52s): eye level, dollying the crescent ------
   function s4(t) {
     const e = easeIO(t);
     // Walk the route, not a straight line through it. The camera rides the
     // centreline and looks a little way ahead along it, so the meander reveals
     // itself the way it would on foot — the far end stays hidden until you
     // round the bend, which is the entire spatial argument for curving it.
-    const cxp = lerp(10, 92, e), ctp = Math.min(cxp + 34, SPINE.x1);
-    cam.pos = [cxp, spineY(cxp), 1.72];
-    cam.tgt = [ctp, spineY(ctp), 3.0];
+    const cxp = lerp(10, 92, e), ctp = Math.min(cxp + 34, ARC_X1);
+    cam.pos = [cxp, arcY(cxp), 1.72];
+    cam.tgt = [ctp, arcY(ctp), 3.0];
     cam.fov = 52; camSetup();
 
     const s = solar(172, 13.4), sd = sunDir(s);
@@ -876,7 +936,7 @@
     // 130 m — beyond that the cells are sub-pixel and only cost time.
     drawGround(16, () => "rgb(40,34,29)", 200);
     drawSiteGround(3, (x,y) => {
-      const onPath = distToSpine(x, y) <= SPINE.pathW/2 + 1;
+      const onPath = distToArc(x, y) <= CRESCENT.pathW/2 + 1;
       const band = (Math.floor(x/3) + Math.floor(y/3)) % 2;
       if (onPath) return band ? "rgb(96,90,79)" : "rgb(90,84,74)";
       return y > 20 && y < 80 ? "rgb(62,78,58)" : "rgb(44,38,32)";
@@ -916,7 +976,7 @@
       if (x/SITE.w > reveal) return "#2C231B";
       let near = 99;
       for (const tr of TREES) { const d = Math.hypot(x-tr.x, y-tr.y); if (d<near) near=d; }
-      const onSpine = distToSpine(x, y) <= SPINE.canopyW/2 && x>SPINE.x0 && x<SPINE.x1;
+      const onSpine = distToArc(x, y) <= CRESCENT.canopyW/2 && x>ARC_X0 && x<ARC_X1;
       const cool = clamp(clamp(1-near/16,0,1)*.72 + (onSpine?.58:0), 0, 1);
       const hot = `rgb(${lerp(190,46,cool)|0},${lerp(78,118,cool)|0},${lerp(30,116,cool)|0})`;
       return eve > 0 ? mix(hot, cool>.5 ? "#22303A" : "#241A18", eve*.8) : hot;
@@ -968,7 +1028,7 @@
       ctx.fillStyle = `rgba(6,5,5,${.82*ca})`; ctx.fillRect(0,FT,W,FH);
       ctx.textAlign="center"; ctx.fillStyle=C.bone; disp(92,700);
       ctx.save(); ctx.letterSpacing = `${lerp(16,2,easeOut(ca))}px`;
-      tx("THE SHADED SPINE", W/2, FT+FH*.44, ca); ctx.restore();
+      tx("FALAJ AL SAFA", W/2, FT+FH*.44, ca); ctx.restore();
       ctx.fillStyle="rgba(239,233,221,.58)"; mono(19,400);
       ctx.save(); ctx.letterSpacing="7px";
       tx("AL SAFA 2 PARK   ·   DUBAI", W/2, FT+FH*.44+48, ca); ctx.restore();

@@ -23,8 +23,9 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import pvlib
+from matplotlib.path import Path as MplPath
 
-from . import config as C
+from . import config as C, plan
 
 
 def hourly_solar_position(year: int | None = None) -> pd.DataFrame:
@@ -63,35 +64,27 @@ def shadow_length(height_m: float, elevation_deg) -> np.ndarray:
     return height_m / np.tan(elev)
 
 
-def spine_centreline(n: int = 200):
-    """Sample the spine's meandering centreline.
+def crescent_centreline(n: int = 200):
+    """Sample the Crescent Walk's centreline.
 
     Returns ``(x, y, nx, ny)`` — position and the unit normal in plan at each
     sample. The normal is what the shade model needs: a canopy element resists
-    the sun across its width, and "across" is the normal direction, which now
-    varies along the route instead of being fixed north-south.
+    the sun across its width, and "across" is the normal direction, which on an
+    arc rotates continuously along the route instead of being fixed.
+
+    The geometry itself lives in `src.plan`, which builds the whole masterplan
+    from this one curve.
     """
-    x = np.linspace(C.SPINE["x_start_m"], C.SPINE["x_end_m"], n)
-    span = C.SPINE["x_end_m"] - C.SPINE["x_start_m"]
-    k = 2.0 * np.pi * C.SPINE["curve_cycles"] / span
-    a = C.SPINE["curve_amplitude_m"]
-
-    y = C.SPINE["y_centre_m"] + a * np.sin(k * (x - C.SPINE["x_start_m"]))
-    dydx = a * k * np.cos(k * (x - C.SPINE["x_start_m"]))
-
-    # Unit tangent, then rotate 90 degrees for the normal.
-    tlen = np.hypot(1.0, dydx)
-    nx, ny = -dydx / tlen, 1.0 / tlen
-    return x, y, nx, ny
+    return plan.centreline(n)
 
 
-def spine_shade_fraction(solar: pd.DataFrame) -> pd.Series:
-    """Fraction of the Shaded Spine *walkway* in shadow, hour by hour.
+def crescent_shade_fraction(solar: pd.DataFrame) -> pd.Series:
+    """Fraction of the Crescent Walk in shadow, hour by hour.
 
-    The spine runs east-west. Above it sits a horizontal canopy plane of width
-    `SPINE.canopy_width_m` at `SPINE.canopy_height_m`, overhanging the 6 m
-    walkway on both sides, with a vertical louvre blade of depth
-    `SPINE.south_louvre_depth_m` hanging from its southern edge.
+    Above the 7 m walk sits a horizontal canopy plane of width
+    `CRESCENT.canopy_width_m` at `CRESCENT.canopy_height_m`, overhanging it on
+    both sides, with a vertical louvre blade of depth
+    `CRESCENT.south_louvre_depth_m` hanging from its southern edge.
 
     Geometry, in plan, working in metres north of the site's south boundary:
 
@@ -112,16 +105,16 @@ def spine_shade_fraction(solar: pd.DataFrame) -> pd.Series:
     elev = solar["elevation_deg"].to_numpy()
     azi = solar["azimuth_deg"].to_numpy()
 
-    pw = C.SPINE["path_width_m"]
-    cw = C.SPINE["canopy_width_m"]
-    h = C.SPINE["canopy_height_m"]
-    ld = C.SPINE["south_louvre_depth_m"]
+    pw = C.CRESCENT["path_width_m"]
+    cw = C.CRESCENT["canopy_width_m"]
+    h = C.CRESCENT["canopy_height_m"]
+    ld = C.CRESCENT["south_louvre_depth_m"]
 
-    # Sample the meandering centreline once; every hour is evaluated against
-    # every sample, and the hour's coverage is the mean along the route. A
-    # straight spine would have one orientation and one answer; this one has a
-    # spread, which is the point of curving it.
-    _, _, nx, ny = spine_centreline()
+    # Sample the arc once; every hour is evaluated against every sample, and the
+    # hour's coverage is the mean along the route. A straight route would have
+    # one orientation and one answer; the crescent has a spread of headings, and
+    # that spread is the entire reason for curving it.
+    _, _, nx, ny = crescent_centreline()
 
     with np.errstate(divide="ignore", invalid="ignore"):
         tan_e = np.tan(np.radians(np.clip(elev, 0.05, 90.0)))
@@ -150,7 +143,7 @@ def spine_shade_fraction(solar: pd.DataFrame) -> pd.Series:
     ov = np.clip(np.minimum(hi, pw / 2.0) - np.maximum(lo, -pw / 2.0), 0.0, pw) / pw
     overlap = ov.mean(axis=1)
     overlap = np.where(solar["is_daylight"].to_numpy(), overlap, np.nan)
-    return pd.Series(overlap, index=solar.index, name="spine_shade_fraction")
+    return pd.Series(overlap, index=solar.index, name="crescent_shade_fraction")
 
 
 def annual_shade_summary(fraction: pd.Series, *, threshold: float = 0.5) -> dict:
@@ -177,56 +170,64 @@ def annual_shade_summary(fraction: pd.Series, *, threshold: float = 0.5) -> dict
 def tree_positions(seed: int = C.RANDOM_SEED) -> pd.DataFrame:
     """Planting layout for the 131 trees in the Phase 6 schedule.
 
-    Trees line the spine, cluster in the biodiversity strip and edge the
-    perimeter buffers. Positions are the design's own layout; the species mix
-    and counts come from data/raw/species_water_carbon_rates.csv.
+    Each species is planted into the room the masterplan gives it, and the
+    rooms come from `src.plan`, so the planting cannot drift out of step with
+    the geometry. Species counts come from
+    data/raw/species_water_carbon_rates.csv; the layout is the design's own.
     """
     rng = np.random.default_rng(seed)
     species = pd.read_csv(C.DATA_RAW / "species_water_carbon_rates.csv")
+    counts = species.set_index("Species")["Count"].to_dict()
     rows = []
 
-    # Double avenue in the planted margins either side of the walkway, set at
-    # the centre of each 5 m margin so the crowns knit into the canopy overhang
-    # rather than fighting it. These are the structural planting of the scheme:
-    # the canopy carries the summer, the avenue carries the shoulder seasons and
-    # the low morning and evening sun the plane cannot reach.
-    avenue = int(species.loc[species["Species"].isin(["Neem", "Ghaf"]), "Count"].sum())
-    cx, cy, cnx, cny = spine_centreline(avenue // 2)
-    margin_offset = C.SPINE["path_width_m"] / 2.0 + 2.5   # centre of the 5 m margin
-    for x, y, nx_, ny_ in zip(cx, cy, cnx, cny):
-        # Offset along the local normal, so the avenue follows the meander
-        # instead of running straight past it.
-        for sgn in (-1.0, 1.0):
-            rows.append(("Neem",
-                         float(x + sgn * margin_offset * nx_),
-                         float(y + sgn * margin_offset * ny_),
-                         5.0, 9.0))
+    # --- the avenue --------------------------------------------------------
+    # A double rank in the planted margins either side of the walk, set at the
+    # centre of each margin so the crowns knit into the canopy's overhang rather
+    # than fighting it. This is the structural planting of the scheme: the
+    # gridshell carries the summer, the avenue carries the shoulder seasons and
+    # the low morning and evening sun that no horizontal plane can reach.
+    #
+    # Ghaf on the southern rank, Neem on the northern. That is not decoration —
+    # Ghaf (Prosopis cineraria) is the UAE's national tree, the most drought
+    # tolerant species in the schedule at 45 L/day against Neem's 90, and the
+    # southern rank is the hotter, drier, more exposed of the two.
+    n_ghaf = int(counts["Ghaf"])
+    n_neem_avenue = int(counts["Neem"]) - 18      # 18 held back for the gates
+    margin = (C.CRESCENT["path_width_m"] + C.CRESCENT["canopy_width_m"]) / 4.0
+    for name, n, sgn, r, h in (("Ghaf", n_ghaf, 1.0, 6.0, 8.0),
+                               ("Neem", n_neem_avenue, -1.0, 5.0, 9.0)):
+        cx, cy, cnx, cny = crescent_centreline(n)
+        for x, y, nx_, ny_ in zip(cx, cy, cnx, cny):
+            # Offset along the local normal, so the rank follows the arc.
+            rows.append((name, float(x + sgn * margin * nx_),
+                         float(y + sgn * margin * ny_), r, h))
 
-    # Species are planted into the zone that the masterplan assigns them, read
-    # from the zoning schedule rather than hard-coded, so the planting layout
-    # cannot drift out of step with the plan geometry.
-    zones = pd.read_csv(C.DATA_RAW / "site_zoning_schedule.csv").set_index("Zone")
+    # --- planting by room --------------------------------------------------
+    zones = {z["key"]: z for z in plan.build()}
 
-    def _scatter(species_name: str, zone: str, r: float, h: float, inset: float = 2.0):
-        z = zones.loc[zone]
-        n = int(species.loc[species["Species"] == species_name, "Count"].iloc[0])
-        for _ in range(n):
-            rows.append((
-                species_name,
-                rng.uniform(z["X_min"] + inset, z["X_max"] - inset),
-                rng.uniform(z["Y_min"] + inset, z["Y_max"] - inset),
-                r, h,
-            ))
+    def _scatter(name: str, key: str, n: int, r: float, h: float, inset: float = 2.5):
+        """Scatter n trees inside a room, rejecting points outside its polygon."""
+        poly = MplPath(zones[key]["polygon"])
+        pts = np.asarray(zones[key]["polygon"])
+        lo, hi = pts.min(axis=0) + inset, pts.max(axis=0) - inset
+        placed = 0
+        for _ in range(n * 200):
+            if placed >= n:
+                break
+            p = rng.uniform(lo, hi)
+            if poly.contains_point(p, radius=-inset):
+                rows.append((name, float(p[0]), float(p[1]), r, h))
+                placed += 1
 
-    _scatter("Ficus nitida", "Native Planting / Biodiversity Strip", 4.5, 8.0)
-    _scatter("Olive", "Quiet Contemplation Garden", 3.5, 6.0)
+    # Date palms in the Oasis Basin. Palms belong in the nakhil, not scattered
+    # at entrances: a date grove is the reason a falaj exists.
+    _scatter("Date Palm", "basin", int(counts["Date Palm"]), 3.0, 12.0)
+    _scatter("Ficus nitida", "wadi", int(counts["Ficus nitida"]), 4.5, 8.0)
+    _scatter("Olive", "quiet", int(counts["Olive"]), 3.5, 6.0)
 
-    # Date palms marking the two entrances, ranked either side of the spine.
-    n_palm = int(species.loc[species["Species"] == "Date Palm", "Count"].iloc[0])
-    for i in range(n_palm):
-        z = zones.loc["Main Entrance Plaza" if i % 2 == 0 else "Secondary Entrance (E)"]
-        x = (z["X_min"] + z["X_max"]) / 2.0
-        rows.append(("Date Palm", x, 34.0 + 6.0 * (i // 2), 3.0, 12.0))
+    # The remaining Neem rank the two arrival majlis, nine to each gate.
+    for key in ("gate_w", "gate_e"):
+        _scatter("Neem", key, 9, 5.0, 9.0, inset=2.0)
 
     return pd.DataFrame(rows, columns=["species", "x", "y", "canopy_r_m", "height_m"])
 
@@ -273,9 +274,9 @@ def grid_shade_hours(
     tr = trees["canopy_r_m"].to_numpy()[None, :]
     th = trees["height_m"].to_numpy()[None, :]
 
-    # The canopy centreline, sampled once. 60 samples over 140 m is a point
-    # every ~2.3 m, comfortably finer than the 16 m ribbon it describes.
-    spine_x, spine_y, _, _ = spine_centreline(60)
+    # The canopy centreline, sampled once. 60 samples over ~124 m is a point
+    # every ~2 m, comfortably finer than the 18 m ribbon it describes.
+    arc_x, arc_y, _, _ = crescent_centreline(60)
 
     shaded = np.zeros(len(grid), dtype=float)
 
@@ -292,22 +293,22 @@ def grid_shade_hours(
         hit = ((gx - sx) ** 2 + (gy - sy) ** 2) <= tr**2
         under_tree = hit.any(axis=1)
 
-        # Spine canopy shadow — the 16 m gridshell follows the meander, so its
-        # shadow is a ribbon, not a straight band. Displace the centreline by
-        # the sun vector and test each cell's distance to the displaced ribbon.
-        # Same geometry as spine_shade_fraction, kept deliberately in step:
-        # the headline number and the ground-plane map disagreeing would be
-        # worse than either being slightly off.
-        ch = C.SPINE["canopy_height_m"]
-        sx_c = spine_x + dx * ch
-        sy_c = spine_y + dy * ch
-        half = C.SPINE["canopy_width_m"] / 2.0
-        if C.SPINE["south_louvre_depth_m"] > 0:
-            half += C.SPINE["south_louvre_depth_m"] * 0.5 / max(tan_e, 0.05)
+        # Crescent canopy shadow — the 18 m gridshell follows the arc, so its
+        # shadow is a curved ribbon, not a straight band. Displace the
+        # centreline by the sun vector and test each cell's distance to the
+        # displaced ribbon. Same geometry as crescent_shade_fraction, kept
+        # deliberately in step: the headline number and the ground-plane map
+        # disagreeing would be worse than either being slightly off.
+        ch = C.CRESCENT["canopy_height_m"]
+        sx_c = arc_x + dx * ch
+        sy_c = arc_y + dy * ch
+        half = C.CRESCENT["canopy_width_m"] / 2.0
+        if C.CRESCENT["south_louvre_depth_m"] > 0:
+            half += C.CRESCENT["south_louvre_depth_m"] * 0.5 / max(tan_e, 0.05)
 
         d2 = ((grid["x"].to_numpy()[:, None] - sx_c[None, :]) ** 2
               + (grid["y"].to_numpy()[:, None] - sy_c[None, :]) ** 2)
-        in_spine_shadow = d2.min(axis=1) <= half**2
-        shaded += (under_tree | in_spine_shadow).astype(float)
+        in_canopy_shadow = d2.min(axis=1) <= half**2
+        shaded += (under_tree | in_canopy_shadow).astype(float)
 
     return shaded * scale

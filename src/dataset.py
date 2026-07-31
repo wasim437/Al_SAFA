@@ -22,7 +22,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from . import climate, config as C, solar
+from . import climate, config as C, plan, solar
 
 
 # Column provenance. Every column in the hourly table appears here; the notebook
@@ -38,7 +38,7 @@ HOURLY_PROVENANCE = {
     "wind_kmh": "MEASURED (monthly) — NCM normals, held flat within the month",
     "ghi_wh_m2": "MODELLED — NCM daily GHI distributed by solar geometry",
     "heat_index_c": "DERIVED — NWS Rothfusz on modelled temp/RH",
-    "spine_shade_fraction": "COMPUTED — geometric canopy occlusion",
+    "crescent_shade_fraction": "COMPUTED — geometric canopy occlusion",
     "temp_shaded_c": "DERIVED — measured shade relief applied to modelled temp",
     "rh_shaded_pct": "DERIVED — Magnus relation on the shaded temperature",
     "heat_index_shaded_c": "DERIVED — NWS Rothfusz on the shaded condition",
@@ -66,7 +66,7 @@ def build_hourly(*, verbose: bool = True) -> pd.DataFrame:
     met = climate.downscale_to_hourly(normals, sol)
 
     df = sol.join(met)
-    df["spine_shade_fraction"] = solar.spine_shade_fraction(sol).fillna(0.0)
+    df["crescent_shade_fraction"] = solar.crescent_shade_fraction(sol).fillna(0.0)
 
     # Shaded counterfactual — the whole point of the design.
     t_sh, rh_sh = climate.apply_shade(df["temp_c"], df["rh_pct"])
@@ -130,7 +130,6 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
     sol = solar.hourly_solar_position()
     trees = solar.tree_positions()
     grid = solar.site_grid(step_m)
-    zones = pd.read_csv(C.DATA_RAW / "site_zoning_schedule.csv")
 
     if verbose:
         print(f"spatial grid: {len(grid):,} cells, {len(trees)} trees, "
@@ -146,11 +145,11 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
     gx = grid["x"].to_numpy()
     gy = grid["y"].to_numpy()
 
-    # Distance to the spine is distance to its CURVE, not to a straight mean
-    # line. With the meander adopted, the straight-line version was wrong by up
-    # to the curve amplitude, and it is a feature the shade surrogate leans on.
-    _sx, _sy, _, _ = solar.spine_centreline(120)
-    grid["dist_to_spine_m"] = np.sqrt(
+    # Distance to the crescent is distance to its ARC, not to a chord. On a
+    # 18 m sagitta the chord approximation is wrong by up to 18 m at midspan,
+    # and this is a feature the shade surrogate leans on heavily.
+    _sx, _sy, _, _ = solar.crescent_centreline(120)
+    grid["dist_to_crescent_m"] = np.sqrt(
         ((gx[:, None] - _sx[None, :]) ** 2 + (gy[:, None] - _sy[None, :]) ** 2)
     ).min(axis=1)
     grid["dist_to_edge_m"] = np.minimum.reduce([
@@ -167,38 +166,43 @@ def build_spatial(*, step_m: float = 1.0, sample_hours: int = 240, verbose: bool
         d <= trees["canopy_r_m"].to_numpy()[None, :]
     ).any(axis=1).astype(int)
 
-    # On the walkway itself (the 6 m surface), measured from the curve.
-    grid["under_spine_canopy"] = (
-        grid["dist_to_spine_m"] <= C.SPINE["path_width_m"] / 2.0
+    # On the walk itself (the 7 m surface), measured from the arc.
+    grid["under_crescent_walk"] = (
+        grid["dist_to_crescent_m"] <= C.CRESCENT["path_width_m"] / 2.0
     ).astype(int)
-    # Under the 16 m gridshell, which reaches 5 m past the walkway either side.
+    # Under the 18 m gridshell, which reaches 5.5 m past the walk either side.
     grid["under_gridshell"] = (
-        grid["dist_to_spine_m"] <= C.SPINE["canopy_width_m"] / 2.0
+        grid["dist_to_crescent_m"] <= C.CRESCENT["canopy_width_m"] / 2.0
     ).astype(int)
 
-    # Zone membership and surface properties.
+    # Zone membership and surface properties, by point-in-polygon against the
+    # masterplan. The rooms are curved trapezoids struck off the crescent's own
+    # centre, so a bounding-box test would assign a third of the site to the
+    # wrong room; nothing here can be done with min/max coordinates.
     #
-    # The path network is the RESIDUAL zone: its extent in the schedule spans
-    # the whole site because it is everything left over between the rooms. It is
-    # therefore the default, and is skipped in the loop below — applying it as a
-    # normal row would overwrite every specific zone assigned before it and
-    # leave the entire grid labelled "Path Network" with a constant albedo.
-    RESIDUAL = "Path Network & Landscape Setbacks"
-    grid["zone"] = RESIDUAL
-    grid["albedo"] = float(zones.loc[zones["Zone"] == RESIDUAL, "SurfaceAlbedo"].iloc[0])
-    for _, z in zones[zones["Zone"] != RESIDUAL].iterrows():
-        m = (gx >= z["X_min"]) & (gx < z["X_max"]) & (gy >= z["Y_min"]) & (gy < z["Y_max"])
-        grid.loc[m, "zone"] = z["Zone"]
-        grid.loc[m, "albedo"] = z["SurfaceAlbedo"]
-    grid = grid.merge(
-        zones[["Zone", "Category"]].rename(columns={"Zone": "zone", "Category": "category"}),
-        on="zone", how="left",
-    )
-    grid["category"] = grid["category"].fillna("Circulation")
+    # The alley network is the RESIDUAL zone — everything the rooms do not claim
+    # — so it is the default and is never tested for.
+    from matplotlib.path import Path as MplPath
+
+    pts = np.column_stack([gx, gy])
+    residual = plan.RESIDUAL
+    grid["zone"] = residual["name"]
+    grid["category"] = residual["category"]
+    grid["albedo"] = residual["albedo"]
+    for z in plan.build():
+        if z.get("is_residual"):
+            continue
+        hit = np.zeros(len(grid), dtype=bool)
+        for part in z["parts"]:
+            if len(part) >= 3:
+                hit |= MplPath(part).contains_points(pts)
+        grid.loc[hit, "zone"] = z["name"]
+        grid.loc[hit, "category"] = z["category"]
+        grid.loc[hit, "albedo"] = z["albedo"]
 
     # Sky view factor proxy: openness overhead, driven by nearby canopy.
     grid["sky_view_factor"] = np.clip(
-        1.0 - 0.06 * grid["trees_within_10m"] - 0.45 * grid["under_spine_canopy"], 0.05, 1.0
+        1.0 - 0.06 * grid["trees_within_10m"] - 0.45 * grid["under_crescent_walk"], 0.05, 1.0
     )
 
     # Mean summer afternoon comfort per cell — the design-relevant target.
