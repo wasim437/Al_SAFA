@@ -188,10 +188,49 @@ def pretty(name: str) -> str:
 MARKERS = ("[AI DRAFT]", "AI-GENERATED DRAFT", "FOR REVIEW",
            "AI DRAFT]", "DRAFT - FOR REVIEW")
 
+# Claims and language this submission has withdrawn. A document is not safe to
+# upload merely because it lacks a draft stamp: two files were still shipping in
+# slots 05 and 11 that described the superseded straight-spine scheme and quoted
+# the 99.2% shade figure the project itself retracted. A juror comparing them
+# with slot 02 would have found two different parks and a number that the
+# analysis contradicts.
+WITHDRAWN = {
+    "99.2": "quotes the withdrawn 99.2% shade claim (re-solved section is 87.3%)",
+    "SHADED SPINE": "describes the superseded straight-spine scheme",
+    "LINEAR SPINE": "describes the superseded straight-spine scheme",
+}
+
 
 def _has_marker(text: str) -> bool:
     up = text.upper()
     return any(mk in up for mk in MARKERS)
+
+
+def withdrawn_claims(pdf: Path) -> list[str]:
+    """Withdrawn claims or superseded-scheme language found in a PDF.
+
+    The distinction that matters is between *asserting* a retracted claim and
+    *retracting* it. The rewritten reports quote 99.2% and the straight spine on
+    purpose, in order to say they were withdrawn — that is the submission's
+    strongest passage, not a defect. So a document is only flagged when it
+    repeats the claim without any retraction language anywhere in it.
+    """
+    try:
+        r = pypdf.PdfReader(str(pdf))
+        txt = " ".join((pg.extract_text() or "") for pg in r.pages).upper()
+    except Exception:
+        return []
+    retracts = any(w in txt for w in
+                   ("WITHDRAW", "DOES NOT SURVIVE", "SUPERSEDE",
+                    "RE-SOLVED"))
+    if retracts:
+        return []
+    found = [why for needle, why in WITHDRAWN.items() if needle in txt]
+    # "spine" alone is only damning when the crescent is never mentioned.
+    if "SPINE" in txt and "CRESCENT" not in txt:
+        found.append("describes the superseded scheme and never mentions the "
+                     "crescent")
+    return found
 
 
 def draft_markers(pdf: Path) -> int:
@@ -323,8 +362,8 @@ def image_sheet(c: rl_canvas.Canvas, img: Path) -> None:
 def build_slot(slot: dict, act: bool) -> dict:
     folder = SRC / slot["folder"]
     report = dict(slot=slot["n"], title=slot["title"], pages=0, mb=0.0,
-                  drafts=[], held=[], review=[], missing=not folder.exists(),
-                  out=None)
+                  drafts=[], held=[], review=[], stale=[],
+                  missing=not folder.exists(), out=None)
     if not folder.exists():
         return report
 
@@ -347,6 +386,8 @@ def build_slot(slot: dict, act: bool) -> dict:
         n = draft_markers(p)
         if n:
             report["drafts"].append((p.name, n))
+        for why in withdrawn_claims(p):
+            report["stale"].append((p.name, why))
 
     ordered = pdfs + imgs
     if not ordered:
@@ -431,6 +472,16 @@ def main() -> int:
         print("  [X] HELD BACK - contradicts the design. Not in the package.")
         print("=" * 78)
         for r, (name, why) in held:
+            print(f"  slot {r['slot']:02d}  {name}")
+            print(f"           {why}")
+
+    stale = [(r, t) for r in reports for t in r["stale"]]
+    if stale:
+        print()
+        print("=" * 78)
+        print("  [X] WITHDRAWN CLAIMS / SUPERSEDED SCHEME still in the package")
+        print("=" * 78)
+        for r, (name, why) in stale:
             print(f"  slot {r['slot']:02d}  {name}")
             print(f"           {why}")
 
