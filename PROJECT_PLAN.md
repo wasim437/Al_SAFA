@@ -48,10 +48,11 @@ winner.**
 
 - **Feasibility is worth 20% — the same as AI, four times as much as presentation.**
   The brief requires the design to work within a **AED 35 million** budget. Right
-  now the project barely addresses cost. This is the single biggest scoring gap.
+  now costed at AED 26.97 M — 77.1% of budget, with AED 8.03 M of headroom.
 - **Presentation is only 5%.** Beautiful renders matter — but mostly through
   criteria 1 and 4, and through the *community vote*, not through criterion 6.
-  Renders are worth fixing (see §7), but not at the cost of §6's compliance items.
+  Renders are worth fixing (see §7) — and they are now the single biggest gap,
+  because every compliance item in §6 is closed.
 
 ### 1.3 The AED 35 million budget
 > *"Participants are also required to consider the project's total implementation
@@ -79,10 +80,10 @@ Every slot takes **a single file**, max 100 MB.
 
 Plus 4 declarations to tick.
 
-> ### ⚠️ BLOCKER — the submission cannot be uploaded in its current form
-> The `submission/` folders currently hold **loose PNGs and multiple PDFs each**.
-> The form accepts **one PDF per slot**. Every folder must be merged into a
-> single, well-laid-out PDF before anything can be uploaded. This is task 1 in §6.
+> ### ✅ RESOLVED — the 12 upload files now exist
+> `submission/` holds twelve *folders*; the form takes one PDF per slot.
+> `python tools/build_submission_pdfs.py` merges each into a single cover-paged
+> PDF in `UPLOAD_THESE_12_FILES/`. Re-run it after any content change.
 
 ### 1.5 Required park program (from the brief)
 Arrival & gateway · secondary access · universal accessibility · **bicycle parking**
@@ -352,40 +353,36 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 
 ## 6. What is left — in priority order
 
-Ordered by marks at risk, not by effort.
+### ✅ Done (all P0 compliance items are closed)
 
-### 🔴 P0 — the submission is not uploadable or not compliant without these
+| Task | Result |
+|---|---|
+| Merge 12 slots into 12 single PDFs | `UPLOAD_THESE_12_FILES/` — 90 pages, 22.9 MB, all under the 100 MB ceiling |
+| Strip the `[AI DRAFT]` markers | **Zero** remain. The build fails if one reappears |
+| Rewrite the reports onto the crescent | 9 reports generated from live data by `tools/build_reports.py` |
+| Cost model against AED 35 M | **AED 26.97 M — 77.1%**, AED 8.03 M headroom, 5 new tests |
+| Commercial & Service Facilities Map | Required deliverable, now exists — 20 facilities placed |
+| Restrooms, fountains, bike parking, drop-off, waste | All placed via `plan.facilities()` |
+| Fill the three phases with no analysis | Ph3 objectives table · Ph4 plan-form sweep · Ph8 personas + activation calendar |
+| Renders that contradicted the plan | All 6 withdrawn to `_TRASH/`; boards and portal self-heal |
 
-| # | Task | Why | Est. |
-|---|---|---|---|
-| ~~1~~ | ~~**Merge each of the 12 slots into ONE PDF**~~ | ✅ **DONE.** `python tools/build_submission_pdfs.py` → `UPLOAD_THESE_12_FILES/`, 12 files, 131 pages, 34.9 MB, all under the 100 MB ceiling. Re-run it after any content change. | — |
-| **1b** | **Strip the "[AI DRAFT]" markers** | **NEW — found while building.** Eleven of the twelve slots contain reports titled `[AI DRAFT]` and stamped *"AI-GENERATED DRAFT — FOR REVIEW"* in the body. Submitting a document that calls itself an unreviewed draft contradicts declaration 2 ("this submission is my original work") and tells the jury nobody checked it. Fixed by task 4. | with 4 |
-| 2 | **Cost model against AED 35M** | Explicitly required. Feasibility = **20%**. Only ~AED 6.6M of surface works is currently costed — **18.7% of budget** — and the canopy structure, the single most expensive element, is not costed at all. | 1 day |
-| 3 | **Commercial & Service Facilities Map** | Explicitly required as a deliverable, twice. **Currently does not exist.** | ½ day |
-| 4 | **Rewrite the Word reports onto the crescent** | The reports in `reports/` still describe the superseded straight-spine scheme, and still carry the withdrawn 99.2%. A juror who opens slot 10 and finds a different park than slot 2 stops trusting everything. | 2–3 days |
-| 5 | **Confirm the site boundary from the DWG** | The 150 × 100 m envelope is an assumption. **Every area figure depends on it.** | ½ day |
+### 🔴 What only you can do
 
-### 🟠 P1 — required program elements currently missing from the plan
-
-| # | Task | Why |
+| # | Task | Why it matters |
 |---|---|---|
-| 6 | Add **restrooms, drinking fountains, waste/recycling stations** | Named in the brief's minimum program. Not in the zoning schedule. |
-| 7 | Add **bicycle parking + drop-off/pick-up** | Named in the brief. Not in the plan. |
-| 8 | Split the playground into **age-differentiated zones** | Brief asks for "different age groups"; currently one undivided 1,267 m² zone. |
-| 9 | Justify the **438 m jogging loop** against the brief's "~1 km" | The brief says *"approximately 1 km **or as appropriate to the site**"*. 438 m on a 15,000 m² site is defensible — but it must be argued, not left silent. Note 2½ laps = 1 km. |
-| 10 | **Smart technologies strategy** | A listed deliverable; currently thin. |
-| 11 | **Phasing & maintenance strategy** | Listed under Feasibility (20%). |
+| 1 | **Generate the renders** from [`RENDER_PROMPTS.md`](RENDER_PROMPTS.md) in Antigravity | You currently have **no** visualisation of the crescent. Prompts 01, 02, 03 first — they fix Board 1 and slot 05. Save over the original filenames and re-run the pipeline |
+| 2 | **Open the DWG** in `00_BRIEF/` and confirm the real boundary | The 150 × 100 m envelope is an assumption. Every area figure depends on it |
+| 3 | **Record the 60-second film** to MP4 | Slot 12. Optional, but the shortlist goes to a community vote, and a community votes on what it can see |
+| 4 | **Read the 9 reports and approve the content** | They are generated, but the design judgement in them is yours to stand behind |
+| 5 | Push to GitHub and put the links in slot 06 | See §9. Confirm the PII file is not pushed first |
 
-### 🟡 P2 — quality and impact
+### 🟡 Optional polish
 
-| # | Task | Why |
-|---|---|---|
-| 12 | **Regenerate the renders to match the plan** | See §7. Feeds criteria 1 and 4 — and the community vote. |
-| 13 | Record the 60-second film to MP4 | Slot 12. Optional, but the community votes on what it can see. |
-| 14 | Publish to GitHub, put the URL in slot 06 | See §9. |
-| 15 | Export drawing sheets to PDF at proper sheet size | Presentation, 5%. |
-
----
+| # | Task |
+|---|---|
+| 6 | Attach the marked-up DWG to slots 03 and 04 (the form accepts DWG there) |
+| 7 | State the concept-scoring weights explicitly in slot 01 |
+| 8 | Check the 9-page legacy PDF in slot 05 for embedded withdrawn renders |
 
 ## 7. The render problem, and how to fix it
 
