@@ -337,7 +337,8 @@ Ordered by marks at risk, not by effort.
 
 | # | Task | Why | Est. |
 |---|---|---|---|
-| 1 | **Merge each of the 12 slots into ONE PDF** | The form takes one PDF per slot. Right now they are folders of loose PNGs. **Without this, nothing can be uploaded at all.** | 1 day |
+| ~~1~~ | ~~**Merge each of the 12 slots into ONE PDF**~~ | ✅ **DONE.** `python tools/build_submission_pdfs.py` → `submission_upload/`, 12 files, 131 pages, 34.9 MB, all under the 100 MB ceiling. Re-run it after any content change. | — |
+| **1b** | **Strip the "[AI DRAFT]" markers** | **NEW — found while building.** Eleven of the twelve slots contain reports titled `[AI DRAFT]` and stamped *"AI-GENERATED DRAFT — FOR REVIEW"* in the body. Submitting a document that calls itself an unreviewed draft contradicts declaration 2 ("this submission is my original work") and tells the jury nobody checked it. Fixed by task 4. | with 4 |
 | 2 | **Cost model against AED 35M** | Explicitly required. Feasibility = **20%**. Only ~AED 6.6M of surface works is currently costed — **18.7% of budget** — and the canopy structure, the single most expensive element, is not costed at all. | 1 day |
 | 3 | **Commercial & Service Facilities Map** | Explicitly required as a deliverable, twice. **Currently does not exist.** | ½ day |
 | 4 | **Rewrite the Word reports onto the crescent** | The reports in `reports/` still describe the superseded straight-spine scheme, and still carry the withdrawn 99.2%. A juror who opens slot 10 and finds a different park than slot 2 stops trusting everything. | 2–3 days |
