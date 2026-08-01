@@ -96,8 +96,20 @@ AL SAFA/
 │   │                             pulled (see §6 below — do not delete these)
 │   ├── weak_renders/              renders judged not strong enough to submit
 │   ├── source_files/              the original brief, DWG, scope of work
-│   └── legacy_outputs/, legacy_scripts/, superseded_site/, pdf_only_deliverables/
-│       — earlier iterations of the analysis and website, kept for audit trail
+│   └── misc_superseded/           ⭐ ONE folder for everything else with no
+│       ├── legacy_outputs/          remaining live reference — old analysis
+│       ├── legacy_scripts/          runs, an old PDF-typesetting script set,
+│       ├── final_deliverables/      a second copy of an old deliverables
+│       ├── superseded_site/         folder, the pre-portal static website,
+│       ├── pdf_only_deliverables/   a duplicate PDF export set, and the old
+│       ├── portal/                  portal before it moved to docs/_PORTAL.
+│       └── START_HERE_superseded.md   Nothing here is pointed at by name from
+│                                     any tool or doc, unlike phases/,
+│                                     withdrawn_visuals/, weak_renders/ and
+│                                     source_files/ above, which stayed as
+│                                     their own folders because the pipeline
+│                                     and MANIFEST.md files reference them
+│                                     directly by path.
 │
 ├── run_analysis.py            THE master command — data → models → figures
 ├── requirements.txt

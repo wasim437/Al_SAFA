@@ -45,13 +45,13 @@ CANONICAL = [
 
 # Whole folders that are exact re-copies of something canonical.
 REDUNDANT_TREES = {
-    "archive/pdf_only_deliverables":
+    "archive/misc_superseded/pdf_only_deliverables":
         "Every PDF here is byte-identical to one in reports/pdf/ or reports/. "
         "It was a second, differently-named copy of the same deliverables.",
-    "archive/portal":
+    "archive/misc_superseded/portal":
         "A full second copy of docs/_PORTAL — including the vendored three.js "
         "and Chart.js. The live portal is docs/_PORTAL.",
-    "archive/superseded_site":
+    "archive/misc_superseded/superseded_site":
         "The previous static site, superseded by the portal at docs/index.html.",
 }
 
