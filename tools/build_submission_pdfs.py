@@ -30,7 +30,7 @@ It refuses to build quietly over three problems that would cost marks:
     python tools/build_submission_pdfs.py            build
     python tools/build_submission_pdfs.py --dry-run  report only, write nothing
 
-Output goes to `submission_upload/` — twelve files, named for their slot.
+Output goes to `UPLOAD_THESE_12_FILES/` — twelve files, named for their slot.
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ from reportlab.pdfgen import canvas as rl_canvas
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "submission"
-OUT = ROOT / "submission_upload"
+OUT = ROOT / "UPLOAD_THESE_12_FILES"
 
 PROJECT = "Al Safa 2 Park — Falaj Al Safa"
 APPLICANT = "Mohamed Wasim · Individual Applicant"
@@ -445,7 +445,7 @@ def main() -> int:
         built = sum(1 for r in reports if r["out"])
         print()
         print("=" * 78)
-        print(f"  {built}/12 slots built | {total:.1f} MB total -> submission_upload/")
+        print(f"  {built}/12 slots built | {total:.1f} MB total -> UPLOAD_THESE_12_FILES/")
         print("=" * 78)
     else:
         print("\n  DRY RUN — nothing written.")

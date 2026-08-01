@@ -53,6 +53,11 @@ SHEETS = [
      "Circulation & accessibility",
      "One shaded primary route, radial sikkas to every room, and Al Madar — "
      "the 438 m running loop — around the whole."),
+    ("design/visuals/facilities_crescent.png", "drawings", "Facilities",
+     "Commercial & service facilities",
+     "Where the park earns its running costs and where it is serviced. Souk "
+     "and cafe on the convex face; restrooms at both gates; every facility "
+     "reachable without a vehicle entering the walk."),
     ("design/visuals/planting_crescent.png", "drawings", "Planting",
      "Planting plan — 131 trees",
      "Drawn at mature canopy radius. Ghaf takes the southern rank because it is "

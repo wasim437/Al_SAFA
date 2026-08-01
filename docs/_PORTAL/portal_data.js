@@ -12,7 +12,7 @@ window.AS2 = {
   "deadline": "2026-08-15",
   "siteAreaSqm": 15000.0,
   "budgetAED": 35000000,
-  "generated": "2026-07-31 16:54 UTC",
+  "generated": "2026-08-01 12:56 UTC",
   "sourceCount": 20,
   "conceptSubtitle": "a crescent of shade over a channel of water"
  },
@@ -7518,7 +7518,7 @@ window.AS2 = {
    "net_annual_tCO2e": 108.7,
    "sequestration_source": "Phase 7.5 carbon model (131-tree Phase 6 planting schedule)"
   },
-  "source": "../archive/phases/07_PHASE7_PERFORMANCE_AND_SUSTAINABILITY/outputs/advanced_lcc_energy_carbon_results.json Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years."
+  "source": "../archive/phases/07_PHASE7_PERFORMANCE_AND_SUSTAINABILITY/outputs/advanced_lcc_energy_carbon_results.json Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years."
  },
  "concepts": {
   "source": "src/config.py CRESCENT — the sweep table is in the file.",
@@ -7860,50 +7860,7 @@ window.AS2 = {
   "total": 12,
   "source": "../archive/phases/10_PHASE10_UPLOAD_DOCUMENTS/compilation_log.json"
  },
- "renders": [
-  {
-   "src": "assets/renders/dubai_futuristic_masterplan_aerial.jpg",
-   "title": "Canopy and channel, aerial",
-   "tag": "Phase 5 · Masterplan",
-   "desc": "Sweeping dune-inspired parametric canopy, fluid terrazzo pathways, and integrated micro-oasis pockets.",
-   "caption": "The gridshell and the falaj running together the length of the crescent, with the sikkas cutting radially out to the perimeter."
-  },
-  {
-   "src": "assets/renders/dubai_futuristic_spine_interior.jpg",
-   "title": "Al Mamsha — the Crescent Walk",
-   "tag": "Phase 6 · Detailed Design",
-   "desc": "Ultra-luxury marble walkway beneath a fluid parametric canopy with cooling mist rings and Ghaf groves.",
-   "caption": "The 7 m walk under an 18 m shell. The overhang is what keeps the shadow on the path when the sun is low."
-  },
-  {
-   "src": "assets/renders/masterplan_aerial_golden_hour.jpg",
-   "title": "The crescent from the north-west",
-   "tag": "Phase 5 · Masterplan",
-   "desc": "Fluid biophilic architecture bathed in warm evening sunlight.",
-   "caption": "The arc reads as one continuous element from horn to horn, with the Oasis Basin held in its concave side."
-  },
-  {
-   "src": "assets/renders/spine_corridor_interior.jpg",
-   "title": "Beneath Al Hilal — the perforated soffit",
-   "tag": "Phase 6 · Detailed Design",
-   "desc": "Curved timber and bronze louvers providing continuous thermal comfort.",
-   "caption": "The mashrabiya rule at full size: light through, heat stopped. 12% direct-beam transmittance."
-  },
-  {
-   "src": "assets/renders/eyelevel_spine_1784970552956.jpg",
-   "title": "The walk in the shoulder season",
-   "tag": "Phase 6 · Detailed Design",
-   "desc": "Native Ghaf and Neem canopy trees integrated into the fluid shade structure.",
-   "caption": "Late afternoon in spring and autumn is where the comfort gain concentrates, and where the activation strategy is aimed."
-  },
-  {
-   "src": "assets/renders/night_plaza_render_1784970565232.jpg",
-   "title": "The Community Plaza after dark",
-   "tag": "Phase 8 · Activation",
-   "desc": "Linear and edge-lit LED illumination creating a vibrant evening community destination.",
-   "caption": "The convex side takes the uses that run in the evening, when its exposure stops being a liability."
-  }
- ],
+ "renders": [],
  "provenance": [
   {
    "key": "peak_temp",

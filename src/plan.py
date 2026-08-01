@@ -489,6 +489,88 @@ def majlis_pods():
     return pods
 
 
+def facilities():
+    """Commercial and service facilities, placed against the drawn geometry.
+
+    The Scope of Work requires a Commercial and Service Facilities Map showing
+    "the location, distribution, and integration of the proposed commercial and
+    service uses", and separately names restrooms, drinking fountains, a
+    café/kiosk, service and maintenance facilities, waste and recycling
+    stations, bicycle parking and drop-off in its minimum programme. None of
+    them existed in the plan before this function.
+
+    Nothing here is dropped on the drawing by eye. Each position is expressed in
+    the crescent's own arc coordinates, so the whole set moves with the geometry
+    if the sagitta changes — the same rule every other element obeys.
+
+    ``kind`` groups them for the map's legend; ``serviced_from`` records how a
+    van reaches it, because a facility that cannot be serviced is a facility
+    that will not be maintained.
+    """
+    out = []
+
+    def add(kind, name, t, d, note, serviced_from):
+        x, y = arc_point(t, d)
+        out.append(dict(kind=kind, name=name,
+                        x=float(np.clip(x, 4.0, SITE_W - 4.0)),
+                        y=float(np.clip(y, 4.0, SITE_H - 4.0)),
+                        note=note, serviced_from=serviced_from))
+
+    # Commercial — the souk already exists as a room; this is its frontage.
+    add("commercial", "Souk kiosks — F&B and retail", 14.0, _SHELL + 26.0,
+        "8 modular kiosks on the convex face, facing the plaza and the event "
+        "lawn so evening trade and programming reinforce each other",
+        "South margin service route")
+    add("commercial", "Café pavilion", -1.0, _SHELL + 20.0,
+        "Sited between the plaza and the play area — the two longest-dwell "
+        "spaces — with seating under the canopy's south margin",
+        "South margin service route")
+
+    # Restrooms — at both gates, where arrival concentrates and drainage is
+    # shortest to the perimeter.
+    for t, side in ((-_T + 1.0, "West"), (_T - 1.0, "East")):
+        add("restroom", f"{side} restrooms — universally accessible",
+            t, _SHELL + 9.0,
+            "At the gate, so it is found without entering the park, and short "
+            "drainage runs to the perimeter",
+            f"{side} gate")
+
+    # Drinking fountains — on the walk and in every room that holds people for
+    # long enough to need one.
+    for t in (-16.0, -6.0, 6.0, 16.0):
+        add("fountain", "Drinking fountain + bottle fill", t, -_SHELL - 1.5,
+            "On the shaded walk, in the cool margin", "Walk")
+    add("fountain", "Drinking fountain — play area", -13.0, -_SHELL - 24.0,
+        "Beside the children's dune play, within sight of family seating",
+        "North sikka")
+    add("fountain", "Drinking fountain — fitness terrace", -14.0, _SHELL + 30.0,
+        "At the outdoor fitness terrace", "South margin service route")
+
+    # Waste and recycling — paired bins where people gather or leave.
+    for t, where in ((-_T + 2.0, "West gate"), (_T - 2.0, "East gate"),
+                     (2.0, "Community plaza"), (13.0, "Picnic grove"),
+                     (-13.0, "Play area")):
+        d = -_SHELL - 20.0 if where in ("Picnic grove", "Play area") \
+            else _SHELL + 12.0
+        add("waste", f"Waste & recycling — {where}", t, d,
+            "Paired general and recycling, screened, on the service route",
+            "Perimeter loop")
+
+    # Maintenance, bicycles and drop-off — the operational edge of the park.
+    add("service", "Service & maintenance store", _T - 3.0, _SHELL + 34.0,
+        "Irrigation controls, tools and horticultural store, tucked behind the "
+        "berm where it is invisible from the walk",
+        "East gate, direct from the street")
+    for t, side in ((-_T + 1.5, "West"), (_T - 1.5, "East")):
+        add("bicycle", f"{side} bicycle parking", t, _SHELL + 4.0,
+            "Sheltered racks inside the gate, before the walk begins",
+            f"{side} gate")
+        add("dropoff", f"{side} drop-off / pick-up bay", t, _SHELL + 44.0,
+            "Lay-by on the street edge, level and step-free to the gate",
+            "Street")
+    return out
+
+
 def falaj_polyline(n: int = 200):
     """Centre line of the water channel."""
     x, y = arc_point(np.linspace(-_T, _T, n),

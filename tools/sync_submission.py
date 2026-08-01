@@ -43,6 +43,10 @@ PLAN: dict[str, list[tuple[Path, str]]] = {
     ],
     "03_Concept_Plans_Spatial_Diagrams": [
         (FIG / "fig10_masterplan.png", "The masterplan and its room schedule."),
+        (VIS / "facilities_crescent.png",
+         "Commercial & Service Facilities Map — required by the Scope of Work. "
+         "Souk, cafe, restrooms, drinking fountains, waste and recycling, "
+         "bicycle parking, drop-off and the service route."),
         (VIS / "circulation_crescent.png",
          "Circulation and accessibility — the shaded primary route, the radial "
          "sikkas, and Al Madar, the running loop."),

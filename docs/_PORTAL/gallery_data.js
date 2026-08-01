@@ -35,6 +35,14 @@ window.AS2_SHEETS = [
   "kb": 277
  },
  {
+  "src": "assets/drawings/facilities_crescent.png",
+  "group": "drawings",
+  "tag": "Facilities",
+  "title": "Commercial & service facilities",
+  "caption": "Where the park earns its running costs and where it is serviced. Souk and cafe on the convex face; restrooms at both gates; every facility reachable without a vehicle entering the walk.",
+  "kb": 243
+ },
+ {
   "src": "assets/drawings/planting_crescent.png",
   "group": "drawings",
   "tag": "Planting",

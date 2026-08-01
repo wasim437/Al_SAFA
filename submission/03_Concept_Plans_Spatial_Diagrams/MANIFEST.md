@@ -5,6 +5,7 @@ Files in this folder, and what produced each one.
 | File | What it is |
 |---|---|
 | `fig10_masterplan.png` | The masterplan and its room schedule. |
+| `facilities_crescent.png` | Commercial & Service Facilities Map — required by the Scope of Work. Souk, cafe, restrooms, drinking fountains, waste and recycling, bicycle parking, drop-off and the service route. |
 | `circulation_crescent.png` | Circulation and accessibility — the shaded primary route, the radial sikkas, and Al Madar, the running loop. |
 | `fig04_site_comfort_map.png` | Predicted July comfort per square metre — the spatial argument for where each room was placed. |
 | `Phase4_Concept_Development_Report.pdf` | Written report / supporting document. |

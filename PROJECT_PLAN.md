@@ -172,6 +172,27 @@ can be scheduled from an almanac with **no sensor network**.
 
 ## 4. Folder structure — what every folder is for
 
+### The only four things you actually touch
+
+| | |
+|---|---|
+| 📄 **`PROJECT_PLAN.md`** | this file — what to do and in what order |
+| 📥 **`00_BRIEF/`** | what Dubai Municipality asked for |
+| 📤 **`UPLOAD_THESE_12_FILES/`** | **the 12 PDFs you drag into the form.** Nothing else gets uploaded |
+| 🎨 **`RENDER_PROMPTS.md`** | the prompts for generating the visuals |
+
+Everything else below is machinery that produces those files. You never need to
+open it unless you are changing the design.
+
+> **Why the code folders are not renamed with numbers.** `src/`, `data/`,
+> `tools/`, `tests/`, `figures/`, `models/`, `docs/`, `design/` and `submission/`
+> are referenced by name in 6–18 code files each. Renaming them 14 days before a
+> deadline, on a pipeline that currently passes 38 tests, would risk breaking the
+> thing that generates the submission in order to make a folder list prettier.
+> `submission_upload/` was renamed to `UPLOAD_THESE_12_FILES/` because exactly
+> one file referenced it — that one was worth doing.
+
+
 ```
 AL SAFA/
 │
@@ -337,7 +358,7 @@ Ordered by marks at risk, not by effort.
 
 | # | Task | Why | Est. |
 |---|---|---|---|
-| ~~1~~ | ~~**Merge each of the 12 slots into ONE PDF**~~ | ✅ **DONE.** `python tools/build_submission_pdfs.py` → `submission_upload/`, 12 files, 131 pages, 34.9 MB, all under the 100 MB ceiling. Re-run it after any content change. | — |
+| ~~1~~ | ~~**Merge each of the 12 slots into ONE PDF**~~ | ✅ **DONE.** `python tools/build_submission_pdfs.py` → `UPLOAD_THESE_12_FILES/`, 12 files, 131 pages, 34.9 MB, all under the 100 MB ceiling. Re-run it after any content change. | — |
 | **1b** | **Strip the "[AI DRAFT]" markers** | **NEW — found while building.** Eleven of the twelve slots contain reports titled `[AI DRAFT]` and stamped *"AI-GENERATED DRAFT — FOR REVIEW"* in the body. Submitting a document that calls itself an unreviewed draft contradicts declaration 2 ("this submission is my original work") and tells the jury nobody checked it. Fixed by task 4. | with 4 |
 | 2 | **Cost model against AED 35M** | Explicitly required. Feasibility = **20%**. Only ~AED 6.6M of surface works is currently costed — **18.7% of budget** — and the canopy structure, the single most expensive element, is not costed at all. | 1 day |
 | 3 | **Commercial & Service Facilities Map** | Explicitly required as a deliverable, twice. **Currently does not exist.** | ½ day |

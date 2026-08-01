@@ -446,14 +446,26 @@ def sync_renders(d: dict) -> None:
             "The convex side takes the uses that run in the evening, when its "
             "exposure stops being a liability."),
     }
-    kept = []
+    # A caption is not evidence that the image says what the caption claims.
+    # Four of these renders were withdrawn after being opened and compared with
+    # the masterplan: they showed a serpentine canopy over a lagoon, a generic
+    # futuristic park, a dead-straight corridor, and a botanical pavilion —
+    # while these captions called them "the crescent" and "Al Mamsha". The file
+    # on disk is now the authority. If it is gone, the caption goes with it.
+    root = Path(__file__).resolve().parent.parent / "docs"
+    kept, dropped = [], []
     for r in d.get("renders", []):
         name = Path(r.get("src", "")).name
         if name not in captions:
             continue
+        if not (root / r.get("src", "")).exists():
+            dropped.append(name)
+            continue
         r["title"], r["caption"] = captions[name]
         kept.append(r)
     d["renders"] = kept
+    for name in dropped:
+        print(f"    dropped render (not on disk): {name}")
 
 
 def sync_audit(d: dict, zones: list[dict], headline: dict) -> None:
