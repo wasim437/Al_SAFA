@@ -185,7 +185,7 @@ this project is therefore about a *typical* year, and none is about extremes.**
 
 | Item | Status |
 |---|---|
-| **Site boundary** | The 150 × 100 m rectangle is an **assumption** pending confirmation against `archive/source_files/Al Safa Park 2 Plan (5).dwg`. Every area figure depends on it. |
+| **Site boundary** | The 150 × 100 m rectangle is an **assumption** pending confirmation against `00_BRIEF/Al Safa Park 2 Plan (5).dwg`. Every area figure depends on it. |
 | Hourly climate | Modelled, not measured — see §7. Resolved by purchasing an NCM AMY/TMY file. |
 | Shade relief (6 °C) | A literature value for hot-arid canopy shade, not a site measurement. |
 | Diffuse radiation | Excluded from the shade model, so shaded comfort is stated **conservatively**. |

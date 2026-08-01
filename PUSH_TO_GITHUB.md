@@ -91,23 +91,23 @@ there too if it changes.
 
 | Item | Why |
 |---|---|
-| `archive/source_files/UPLODED DOCUMENT DETAILS.txt` | Contains your name, email and mobile number. Gitignored — stays on your disk only. |
+| `00_BRIEF/UPLODED DOCUMENT DETAILS.txt` | Contains your name, email and mobile number. Gitignored — stays on your disk only. |
 | `__pycache__/`, `.ipynb_checkpoints/` | Build artefacts. |
 
 Everything else **is** published on purpose, including `data/`, `figures/` and
 `models/`. The point of the repository is that a juror can see the inputs, the
 outputs and the model metrics without running anything.
 
-The Dubai Municipality source documents in `archive/source_files/` (brief, parks
+The Dubai Municipality source documents in `00_BRIEF/` (brief, parks
 manual, DWG, master plan) are competition materials that were distributed to all
 entrants. If you would rather not republish them, add this to `.gitignore` before
 pushing:
 
 ```
-archive/source_files/
+00_BRIEF/
 ```
 
-then `git rm -r --cached archive/source_files` and commit.
+then `git rm -r --cached 00_BRIEF` and commit.
 
 ---
 

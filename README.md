@@ -230,10 +230,13 @@ Full descriptions, and which analysis backs each one:
 ## Repository layout
 
 ```
+PROJECT_PLAN.md    ⭐ start here — requirements, phases, status, what is left
+RENDER_PROMPTS.md  the generation-ready prompt sheet for every visualisation
+00_BRIEF/          the official Dubai Municipality competition documents
 data/raw/          6 documented source datasets + sources.json manifest
                    site_zoning_schedule.csv is DERIVED — written by src/plan.py
 data/processed/    the 8,760-hour and 15,000-cell ML datasets + schema.json
-notebooks/         ⭐ the complete analysis, outputs embedded — start here
+notebooks/         the complete analysis, outputs embedded
 src/               config · plan · climate · solar · dataset · models
                    viz · figures · drawings · boards
 models/            trained-model metrics and headline numbers
@@ -243,8 +246,9 @@ tests/             33 pipeline checks + the film runtime test
 submission/        the 12 official upload files, each with a MANIFEST.md
 reports/           written reports (PDF + editable Word)
 docs/              the project website and the analytics portal
-tools/             sync_portal · sync_film · sync_submission · cull_stale_visuals
-archive/           everything superseded — nothing was deleted
+tools/             sync_portal · sync_film · sync_submission · build_docs
+archive/           phases/ (working history) · withdrawn_visuals/ (see above)
+_TRASH/            not part of the submission; gitignored; safe to delete
 ```
 
 ---

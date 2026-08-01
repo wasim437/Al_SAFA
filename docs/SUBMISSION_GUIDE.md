@@ -57,7 +57,7 @@ The plan at scale.
 | **Figure** | [`figures/fig10_masterplan.png`](../figures/fig10_masterplan.png) — drawn from the *same* geometry the models use |
 
 > ⚠️ **Open item.** The 150 × 100 m site envelope is an **assumption**. Open
-> `archive/source_files/Al Safa Park 2 Plan (5).dwg` and confirm the real boundary
+> `00_BRIEF/Al Safa Park 2 Plan (5).dwg` and confirm the real boundary
 > before submitting. **Every area figure in the submission depends on this.**
 
 ---
