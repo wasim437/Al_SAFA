@@ -181,6 +181,7 @@ can be scheduled from an almanac with **no sensor network**.
 | 📥 **`00_BRIEF/`** | what Dubai Municipality asked for |
 | 📤 **`UPLOAD_THESE_12_FILES/`** | **the 12 PDFs you drag into the form.** Nothing else gets uploaded |
 | 🎨 **`RENDER_PROMPTS.md`** | the prompts for generating the visuals |
+| 🔗 **`LINKS.md`** | every public URL, and how to make them live |
 
 Everything else below is machinery that produces those files. You never need to
 open it unless you are changing the design.
