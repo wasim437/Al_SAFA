@@ -118,6 +118,19 @@ SITE = {
 #
 # The full plan — rooms, alleys, basin, berm — is generated from this arc in
 # src/plan.py. Nothing there is a hand-typed coordinate.
+# The sweep above, as data rather than only as a comment, so the reports and the
+# boards can cite it instead of restating it by hand. (name, mean cover %, worst
+# month %, hours with no shade anywhere, adopted?)
+PLAN_FORM_SWEEP = [
+    ("Straight east–west bar",      87.4, 68.7, 330, False),
+    ("Sine meander (superseded)",   85.0, 73.1,  63, False),
+    ("Arc, sagitta 10 m",           87.1, 70.2, 116, False),
+    ("Arc, sagitta 14 m",           86.6, 71.3,  62, False),
+    ("Arc, sagitta 18 m",           85.9, 72.1,  52, True),
+    ("Arc, sagitta 22 m",           84.9, 72.3,  61, False),
+    ("Closed elliptical loop",      79.1, 69.8,  89, False),
+]
+
 CRESCENT = {
     "chord_m": 138.0,             # east-west span, horn to horn
     "sagitta_m": 18.0,            # depth of the bow at midspan

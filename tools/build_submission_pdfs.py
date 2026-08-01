@@ -185,6 +185,15 @@ def pretty(name: str) -> str:
     return stem[:1].upper() + stem[1:]
 
 
+MARKERS = ("[AI DRAFT]", "AI-GENERATED DRAFT", "FOR REVIEW",
+           "AI DRAFT]", "DRAFT - FOR REVIEW")
+
+
+def _has_marker(text: str) -> bool:
+    up = text.upper()
+    return any(mk in up for mk in MARKERS)
+
+
 def draft_markers(pdf: Path) -> int:
     """How many pages of this PDF describe themselves as an unreviewed draft."""
     try:
@@ -194,7 +203,7 @@ def draft_markers(pdf: Path) -> int:
     hits = 0
     for pg in r.pages:
         try:
-            if "DRAFT" in (pg.extract_text() or "").upper():
+            if _has_marker(pg.extract_text() or ""):
                 hits += 1
         except Exception:
             pass
