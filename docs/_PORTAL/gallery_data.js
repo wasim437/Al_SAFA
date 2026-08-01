@@ -48,7 +48,7 @@ window.AS2_SHEETS = [
   "tag": "Board 1",
   "title": "Presentation board \u2014 concept",
   "caption": "The concept, the plan, the section and the circulation on one sheet.",
-  "kb": 3429
+  "kb": 957
  },
  {
   "src": "assets/boards/board_2_evidence.png",

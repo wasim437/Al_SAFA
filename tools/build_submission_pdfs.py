@@ -116,26 +116,34 @@ SLOTS: list[dict] = [
 # every one of these is printed in the build report.
 HOLD: dict[str, str] = {
     "masterplan_aerial_golden_hour.jpg":
-        "VERIFIED contradiction — shows a serpentine S-curve canopy over a large "
-        "free-form lagoon. The plan is ONE 141 m arc with a 0.9 m water channel. "
-        "Regenerate with RENDER_PROMPTS.md prompt 01.",
+        "VERIFIED — serpentine S-curve canopy over a large free-form lagoon. The "
+        "plan is ONE 141 m arc with a 0.9 m channel. Prompt 01 replaces it.",
     "dubai_futuristic_masterplan_aerial.jpg":
-        "Aerial from the same generation as the verified-contradicting one; an "
-        "aerial exposes the plan form, so it cannot be assumed safe. Open it, or "
-        "regenerate with RENDER_PROMPTS.md prompt 01.",
+        "VERIFIED — multiple free-form organic shells over winding canals and "
+        "rainforest planting, with the Museum of the Future on the skyline. This "
+        "is a generic 'futuristic Dubai park', not this project. Prompt 01.",
+    "spine_corridor_interior.jpg":
+        "VERIFIED — a DEAD STRAIGHT hexagonal gridshell corridor. This is the "
+        "superseded straight-spine scheme, the exact design the crescent "
+        "replaced. It is also nearly empty of people. Prompt 03.",
+    "dubai_futuristic_spine_interior.jpg":
+        "VERIFIED — a vaulted timber-and-glass botanical pavilion with tropical "
+        "planting (cycads, agave, flowering shrubs) and misting. Beautiful, but "
+        "it is not a 7 m walk under an 18 m arc, and the planting contradicts the "
+        "five-species desert palette in slot 09. Prompt 03 or 04.",
 }
 
 # Included, but the build report says why they are worth replacing.
 REVIEW: dict[str, str] = {
     "eyelevel_spine_1784970552956.jpg":
-        "Canopy reads as an S-curve rather than one arc, and no water channel is "
-        "visible at its edge. Good otherwise. Prompt 03 replaces it.",
+        "VERIFIED — the strongest of the existing set. Curved timber louvre walk, "
+        "families, good light. But it curves as an S rather than one arc, and no "
+        "water channel is visible at its edge. Prompt 03 replaces it.",
     "night_plaza_render_1784970565232.jpg":
-        "Does not contradict the plan, but the jet fountains work against the "
-        "water-scarcity argument in slot 08 (the falaj is 105 m² total). Prompt 05.",
-    "spine_corridor_interior.jpg":
-        "NOT visually verified. Filename says 'spine' — the superseded scheme. "
-        "Open it before submitting, or regenerate with prompt 03.",
+        "VERIFIED — does not contradict the plan (it shows no canopy), and it is "
+        "the only night image, which the brief requires. But the jet fountains "
+        "work against the water-scarcity argument in slot 08, where the falaj is "
+        "105 m² total. Prompt 02 or 05.",
     "Al_Safa_2_Park_3D_Spatial_Visualizations.pdf":
         "9-page package that likely embeds the held renders. Check its pages "
         "before submitting.",

@@ -27,18 +27,37 @@ OUT = C.ROOT / "design" / "boards"
 SHEET_W, SHEET_H = 16.54, 11.69
 
 
-def _panel(fig, rect, path, *, caption=None):
-    """Place an image inside a rect, preserving its aspect ratio."""
+def _panel(fig, rect, path, *, caption=None, pending=None):
+    """Place an image inside a rect, preserving its aspect ratio.
+
+    When the image is absent the panel draws a quiet "pending" placeholder
+    rather than an error. Four of the photoreal renders were withdrawn because
+    they showed a different park from the one in the plan — a serpentine canopy
+    over a lagoon, and a dead-straight corridor. A board that admits a view is
+    still being made costs far less than a board that captions the wrong park
+    as the crescent, which is what these panels used to do.
+    """
     ax = fig.add_axes(rect)
     ax.axis("off")
-    if not path.exists():
-        ax.text(0.5, 0.5, f"missing:\n{path.name}", ha="center", va="center",
-                fontsize=8, color=C.STATUS["critical"], transform=ax.transAxes)
-        return ax
-    ax.imshow(mpimg.imread(path))
     if caption:
         ax.set_title(caption, fontsize=8.5, loc="left", pad=4,
                      color=C.PALETTE["ink_secondary"], fontweight="normal")
+    if not path.exists():
+        ax.add_patch(plt.Rectangle(
+            (0.005, 0.005), 0.99, 0.99, transform=ax.transAxes, zorder=0,
+            facecolor=C.PALETTE["canvas"], edgecolor=C.PALETTE["muted"],
+            linestyle=(0, (5, 4)), linewidth=0.8))
+        ax.text(0.5, 0.57, "Visualisation in preparation", ha="center",
+                va="center", fontsize=9, color=C.PALETTE["ink_secondary"],
+                transform=ax.transAxes, zorder=1)
+        ax.text(0.5, 0.40, pending or f"{path.name} — see RENDER_PROMPTS.md",
+                ha="center", va="center", fontsize=6.6,
+                color=C.PALETTE["muted"], transform=ax.transAxes, zorder=1,
+                wrap=True)
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        return ax
+    ax.imshow(mpimg.imread(path))
     return ax
 
 
@@ -76,10 +95,12 @@ def board_concept():
     _panel(fig, [0.010, 0.415, 0.575, 0.505], F / "fig10_masterplan.png")
     _panel(fig, [0.600, 0.655, 0.392, 0.265],
            R / "Aerial" / "masterplan_aerial_golden_hour.jpg",
-           caption="The crescent from the north-west, at golden hour")
+           caption="The crescent from the north-west, at golden hour",
+           pending="Aerial view · RENDER_PROMPTS.md prompt 01")
     _panel(fig, [0.600, 0.400, 0.392, 0.215],
            R / "Eye_Level" / "spine_corridor_interior.jpg",
-           caption="Beneath Al Hilal — the perforated soffit at eye level")
+           caption="Beneath Al Hilal — the perforated soffit at eye level",
+           pending="Eye-level view · RENDER_PROMPTS.md prompt 03")
     _panel(fig, [0.010, 0.070, 0.500, 0.320], D / "section_crescent.png")
     _panel(fig, [0.520, 0.070, 0.472, 0.320], D / "circulation_crescent.png")
 

@@ -264,6 +264,44 @@ def test_no_leaky_features():
           not leaked, f"leaked: {sorted(leaked)}")
 
 
+def test_cost_plan():
+    """The cost plan must close inside the brief's budget, and measure the arc.
+
+    The failure this guards against already happened once: the estimate priced
+    only the ground surfaces and came to 19% of budget, because the canopy — the
+    most expensive element and the entire idea of the scheme — was missing from
+    it. A feasibility case with a hole that size is worse than none.
+    """
+    from src import costing
+
+    model = costing.build()
+    s = model["summary"]
+
+    check("capital cost falls inside the AED 35 M budget",
+          s["total_aed"] <= s["budget_aed"],
+          f"AED {s['total_aed']:,.0f} of {s['budget_aed']:,.0f} "
+          f"({s['utilisation_pct']:.1f}%)")
+
+    # A scheme costing a fraction of its budget is not thrift, it is an
+    # incomplete estimate — which is exactly the defect this module fixed.
+    check("capital cost uses a credible share of the budget (>50%)",
+          s["utilisation_pct"] > 50, f"{s['utilisation_pct']:.1f}%")
+
+    chord = C.CRESCENT["chord_m"]
+    check("canopy is priced on the arc, not the chord",
+          s["arc_length_m"] > chord,
+          f"arc {s['arc_length_m']:.1f} m vs chord {chord:.0f} m")
+
+    canopy = sum(ln["total"] for ln in model["lines"]
+                 if ln["group"].startswith("Al Hilal"))
+    check("the canopy appears in the cost plan at all",
+          canopy > 0, f"AED {canopy:,.0f}")
+
+    every_line_has_basis = all(ln["basis"].strip() for ln in model["lines"])
+    check("every cost line states its basis",
+          every_line_has_basis, f"{len(model['lines'])} lines")
+
+
 def main() -> int:
     sol = test_solar_positions()
     test_downscaling_reproduces_normals(sol)
@@ -273,6 +311,7 @@ def main() -> int:
     test_plan_geometry()
     test_spatial_zone_assignment()
     test_no_leaky_features()
+    test_cost_plan()
 
     width = max(len(n) for _, n, _ in _results) + 2
     print("\n" + "=" * (width + 34))

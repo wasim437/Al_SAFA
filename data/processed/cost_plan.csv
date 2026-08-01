@@ -1,0 +1,37 @@
+Group,Item,Quantity,Unit,Rate_AED,Total_AED,Assumed,Basis
+Ground surfaces,Al Mamsha — the Crescent Walk,871.2,m2,400.0,348480.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Al Falaj — the water channel,105.2,m2,100.0,10520.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Crescent Shade Margin (N),549.0,m2,100.0,54900.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Crescent Shade Margin (S),714.8,m2,100.0,71480.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,West Gate Majlis,439.0,m2,500.0,219500.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,East Gate Majlis,439.0,m2,500.0,219500.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Al Nakhil — the Oasis Basin,1139.5,m2,100.0,113950.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Quiet Contemplation Garden,707.5,m2,100.0,70750.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Children's Dune Play,1267.3,m2,900.0,1140570.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Family Picnic Grove,1267.3,m2,100.0,126730.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Outdoor Fitness Terrace,908.5,m2,700.0,635950.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Native Planting / Biodiversity Wadi,893.8,m2,100.0,89380.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Community Plaza & Event Lawn,787.5,m2,500.0,393750.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Souk Kiosks & Services,417.0,m2,4500.0,1876500.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Multipurpose Sports Lawn,630.0,m2,130.0,81900.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Al Kathib — the dune berm,1463.8,m2,100.0,146380.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Al Madar — the perimeter loop,985.6,m2,400.0,394240.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Ground surfaces,Al Sikkak — shaded alleys & setbacks,1414.0,m2,400.0,565600.0,RATED,Zone area is the shoelace area of the drawn polygon; rate from construction_unit_rates_aed.csv
+Al Hilal — the canopy,"Gridshell canopy, 18 m wide over 144 m of arc",2595.2,m2,2500.0,6488012.28,RATED,"Arc length computed from chord and sagitta, not the chord"
+Al Hilal — the canopy,"Southern louvre screen, 3 m deep",432.5,m2,1800,778561.47,ASSUMED,Vertical fin screen; lighter than the primary gridshell
+Planting and water,Canopy trees supplied and planted,131,no.,3500.0,458500.0,RATED,Tree count from the generated planting layout
+Planting and water,"Al Falaj — lined channel, recirculation and filtration",105.2,m2,3000,315600.0,ASSUMED,"Recirculating water feature, supply and install"
+Services and allowances,"Irrigation — subsurface drip, treated sewage effluent",6735.7,m2,85,572534.5,ASSUMED,"Gulf landscape irrigation rates 2025, TSE-fed drip"
+Services and allowances,"Site lighting — pole, bollard and canopy-integrated LED",15000.0,m2,60,900000.0,ASSUMED,Amenity lighting allowance across the whole site
+Services and allowances,"Site furniture — benches, litter and recycling stations, bike racks",15000.0,m2,35,525000.0,ASSUMED,Furniture and fittings allowance
+Services and allowances,Wayfinding and interpretation signage,15000.0,m2,12,180000.0,ASSUMED,"Signage allowance, bilingual"
+Services and allowances,"Stormwater, drainage and below-ground services",15000.0,m2,90,1350000.0,ASSUMED,"Civils allowance for a 15,000 m2 public realm"
+Services and allowances,Earthworks — Al Kathib dune berm shaping and topsoil,1463.8,m2,120,175656.0,ASSUMED,"Cut/fill, import and shaping of the perimeter berm"
+Amenity buildings,"Public restrooms — two blocks, universally accessible",180,m2,6500,1170000,ASSUMED,"Dubai light commercial build rate, sanitary fit-out"
+Amenity buildings,"Drinking fountains — six, chilled and bottle-fill",6,no.,12000,72000,ASSUMED,Per unit supplied and installed
+Amenity buildings,Service and maintenance store,60,m2,4500,270000,ASSUMED,Kiosk / built structure rate
+Amenity buildings,Bicycle parking and drop-off shelter,90,m2,3000,270000,ASSUMED,"Covered structure, lighter than enclosed build"
+On-costs and total,Preliminaries,,,,2410313.31,ASSUMED,Percentage on-cost
+On-costs and total,Contingency,,,,2249625.76,ASSUMED,Percentage on-cost
+On-costs and total,Design and supervision fees,,,,2227129.5,ASSUMED,Percentage on-cost
+On-costs and total,TOTAL,,,,26973012.82,ASSUMED,Percentage on-cost

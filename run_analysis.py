@@ -124,11 +124,32 @@ def main() -> None:
 
     metrics_path = models.save_metrics(m1, m2, m3)
 
-    print("\n[6/6] Generating figures ...")
+    print("\n[6/7] Generating figures ...")
     from src import figures
     made = figures.build_all(hourly, grid, trees, m1, m2, m3, normals)
     for p in made:
         print(f"      {p.name}")
+
+    # The brief requires the scheme to be shown feasible inside AED 35 M, and
+    # "Feasibility and Implementation" is 20% of the jury's score. The cost plan
+    # is therefore part of the analysis, not an afterthought bolted on later.
+    print("\n[7/7] Costing the scheme against the AED 35 M budget ...")
+    from src import costing
+    cost = costing.build()
+    costing.write_outputs(cost)
+    cost_fig = costing.figure(cost)
+    cs = cost["summary"]
+    print(f"      canopy {cs['canopy_area_sqm']:,.0f} m2 over "
+          f"{cs['arc_length_m']:.0f} m of arc")
+    print(f"      total AED {cs['total_aed']:,.0f} of "
+          f"AED {cs['budget_aed']:,.0f}  "
+          f"({cs['utilisation_pct']:.1f}%)")
+    print(f"      {cost_fig.name}")
+    headline["capital_cost_aed"] = round(cs["total_aed"], 2)
+    headline["budget_utilisation_pct"] = round(cs["utilisation_pct"], 1)
+    headline["cost_per_sqm_aed"] = round(cs["cost_per_sqm"], 2)
+    (C.MODELS / "headline_metrics.json").write_text(
+        json.dumps(headline, indent=2), encoding="utf-8")
 
     print("\n" + "=" * 72)
     print("  HEADLINE RESULTS")
@@ -141,6 +162,8 @@ def main() -> None:
     print(f"  Mean heat-index reduction            {headline['mean_heat_index_reduction_c']:>6.2f} C")
     print(f"  Peak heat index exposed / shaded     "
           f"{headline['peak_heat_index_exposed_c']:.1f} / {headline['peak_heat_index_shaded_c']:.1f} C")
+    print(f"  Capital cost / AED 35 M budget       "
+          f"{headline['budget_utilisation_pct']:>6.1f} %")
     print("=" * 72)
     print(f"  metrics -> {metrics_path}")
     print(f"  elapsed {time.time() - t0:.1f} s")

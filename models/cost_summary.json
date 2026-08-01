@@ -1,0 +1,16 @@
+{
+  "works_aed": 20085944.255318426,
+  "preliminaries_aed": 2410313.310638211,
+  "contingency_aed": 2249625.7565956637,
+  "fees_aed": 2227129.499029707,
+  "total_aed": 26973012.82158201,
+  "budget_aed": 35000000,
+  "headroom_aed": 8026987.178417992,
+  "utilisation_pct": 77.06575091880573,
+  "cost_per_sqm": 1798.2008547721339,
+  "arc_length_m": 144.17805070076238,
+  "canopy_area_sqm": 2595.204912613723,
+  "preliminaries_pct": 0.12,
+  "contingency_pct": 0.1,
+  "fees_pct": 0.09
+}
