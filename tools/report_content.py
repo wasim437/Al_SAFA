@@ -271,6 +271,105 @@ def build(D: dict) -> list[dict]:
             REPRO,
         ]))
 
+    # ═══════════════════════════════════════════════════════════ slot 05
+    # This slot held images and no document at all. A juror was being handed
+    # pictures with nothing stating which of them are measurements and which are
+    # impressions — the exact confusion that cost this project three visuals
+    # already. The classification is the argument, so it is written down.
+    reports.append(dict(
+        slug="Visualisation_Strategy_and_Image_Provenance", slot=5,
+        running="3D & Spatial Visualisations",
+        title="3D &amp; Spatial Visualisations",
+        subtitle="What each image is, what produced it, and which ones are "
+                 "evidence rather than illustration",
+        lead="Three of this project's images were withdrawn for presenting "
+             "invented data as measurement, and six photoreal renders were "
+             "withdrawn for showing a park that is not the one in the drawings. "
+             "What follows from that is a rule applied to every visual here: no "
+             "image appears without stating what produced it and what it may be "
+             "used to conclude.",
+        blocks=[
+            ("h1", "1. Three classes of image, never mixed"),
+            ("table", (["Class", "What it is", "What it may be used for"], [
+                ["<b>Technical drawing</b>",
+                 "Generated from the plan geometry in "
+                 "<font face='Courier'>src/plan.py</font> and drawn to scale",
+                 "Measuring. Dimensions and areas taken off it are correct "
+                 "because they are the drawn polygon's own dimensions"],
+                ["<b>Analysis output</b>",
+                 "Computed from project data by the pipeline — a chart of a "
+                 "model's behaviour or a simulation's result",
+                 "Reading a result. It reports what the model found, at the "
+                 "accuracy stated on the figure"],
+                ["<b>Artistic impression</b>",
+                 "AI-generated illustration of the design language",
+                 "Judging character and atmosphere only. It is not evidence of "
+                 "anything, and no number may be taken from it"],
+            ], "Every image in this submission carries its class on its own "
+               "sheet. A juror should never have to guess which they are "
+               "holding.", [26, 58, 66])),
+            ("h1", "2. What is in this slot"),
+            ("table", (["Image", "Class", "Produced by"], [
+                ["Board 1 — Concept", "Presentation board",
+                 "src/boards.py, reading src/plan.py"],
+                ["Board 2 — Evidence", "Presentation board",
+                 "src/boards.py, reading the trained-model metrics"],
+                ["Masterplan", "Technical drawing",
+                 "src/plan.py — areas are the shoelace area of each polygon"],
+            ], "", [46, 34, 70])),
+            ("h1", "3. The photoreal renders, and why this slot does not "
+                   "currently contain any"),
+            ("p", "Six photoreal renders were produced earlier in the project. "
+                  "Each was opened and compared against the masterplan, and all "
+                  "six failed: one showed a serpentine canopy over a large "
+                  "lagoon, one a dead-straight corridor — the superseded scheme "
+                  "the crescent replaced — one a vaulted pavilion planted with "
+                  "tropical species that contradict the five-species desert "
+                  "palette, and the remainder curved as an S rather than as one "
+                  "arc. All six were withdrawn."),
+            ("p", f"The design they were supposed to show is specific and "
+                  f"measurable: one continuous arc of {plan.ARC_R:.0f} m radius "
+                  f"bowing convex south, a {plan.FALAJ_WIDTH_M:.1f} m water "
+                  f"channel at its northern drip line, and "
+                  f"{cr['canopy_width_m']:.0f} m of canopy over a "
+                  f"{cr['path_width_m']:.0f} m walk. A render that shows a lake "
+                  f"where the design has a rill is not a stylistic difference. "
+                  f"It contradicts the sustainability argument, in which the "
+                  f"entire water surface of the park is "
+                  f"{water_area:,.0f} m² — {water_area / 15000 * 100:.2f}% of "
+                  f"the site."),
+            ("note", "This slot is therefore presented with its measured "
+                     "drawings and its two boards, and without photoreal "
+                     "imagery, until renders exist that pass the acceptance "
+                     "test published with this project. A submission that shows "
+                     "a juror two different parks forfeits the authority of "
+                     "everything else in it. Board 1 marks the two views still "
+                     "in preparation rather than filling them with an image "
+                     "that would have to be captioned dishonestly."),
+            ("h1", "4. The test every image must pass before it is admitted"),
+            ("list", [
+                "The canopy reads as <b>one continuous arc</b> — not straight, "
+                "not an S-curve, not a closed ring.",
+                "It bows <b>convex south</b>, so its midpoint lies further south "
+                "than its two ends.",
+                "The water is a <b>narrow channel a person could step across</b>, "
+                "on the canopy's northern edge — never a lagoon or a pool.",
+                "Light through the soffit is <b>dappled</b> at the stated "
+                f"{cr['etfe_transmittance'] * 100:.0f}% transmittance, not solid "
+                "shadow.",
+                "All planting is from the <b>five desert species</b> scheduled in "
+                "the landscape palette.",
+                "The context is <b>low-rise Dubai residential</b>, which is what "
+                "actually surrounds this site.",
+                "A juror comparing the image against the masterplan would "
+                "conclude they are <b>the same park</b>.",
+            ]),
+            ("figure", ("figures/fig10_masterplan.png",
+                        "The masterplan every visualisation in this submission "
+                        "must agree with. Technical drawing — to scale.")),
+            REPRO,
+        ]))
+
     # ═══════════════════════════════════════════════════════════ slot 06
     m1 = mods.get("M1_shade_surrogate", {})
     m2 = mods.get("M2_comfort_classifier", {})

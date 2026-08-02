@@ -155,12 +155,10 @@ SLOTS: list[dict] = [
 # prompt, applied by a person looking at the picture, not a filename blocklist.
 HOLD: dict[str, str] = {}
 
-# Included, but the build report says why they are worth replacing.
-REVIEW: dict[str, str] = {
-    "Al_Safa_2_Park_3D_Spatial_Visualizations.pdf":
-        "9-page legacy package that may still embed the withdrawn renders. Open "
-        "its pages and check before submitting.",
-}
+# Included, but the build report says why they are worth replacing. Empty: the
+# one entry was a 9-page legacy package in slot 05 suspected of embedding the
+# withdrawn renders, and it is no longer in the slot.
+REVIEW: dict[str, str] = {}
 
 # What each kind of image is, said plainly on its sheet. A juror must never have
 # to guess whether they are looking at a measurement or an illustration.

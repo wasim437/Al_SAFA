@@ -274,23 +274,38 @@ def main() -> int:
         n = len(pypdf.PdfReader(str(path)).pages)
         kb = path.stat().st_size / 1024
         print(f"  slot {r['slot']:02d}  {n:3d}pp  {kb:7.0f} KB  {path.name}")
-        written.append(path)
+        written.append((path, r["slot"]))
 
     # Push each regenerated report over every copy of itself in submission/,
     # so the upload package cannot keep serving the superseded text.
     import shutil
-    replaced = 0
-    for path in written:
-        for dest in (ROOT / "submission").glob(f"*/{path.name}"):
+    replaced = placed = 0
+    for path, slot in written:
+        dests = list((ROOT / "submission").glob(f"*/{path.name}"))
+        for dest in dests:
             shutil.copy2(path, dest)
             replaced += 1
+        if dests:
+            continue
+        # A report nobody has a copy of yet — a newly written one. Overwriting
+        # existing copies alone would silently produce nothing, which is how
+        # slot 05 came to hold images and no document at all. Place it in the
+        # folder its own `slot` declares.
+        folder = next((d for d in (ROOT / "submission").iterdir()
+                       if d.is_dir() and d.name.startswith(f"{slot:02d}_")), None)
+        if folder is None:
+            print(f"  ! no folder for slot {slot:02d} — {path.name} not placed")
+            continue
+        shutil.copy2(path, folder / path.name)
+        placed += 1
+        print(f"  + placed {path.name} in {folder.name}")
     print("")
-    print(f"  {replaced} copy(ies) refreshed in submission/")
+    print(f"  {replaced} copy(ies) refreshed, {placed} newly placed in submission/")
 
     # The whole point: none of these may describe themselves as a draft.
     import pypdf
     bad = []
-    for p in written:
+    for p, _slot in written:
         txt = " ".join((pg.extract_text() or "")
                        for pg in pypdf.PdfReader(str(p)).pages).upper()
         if any(mk in txt for mk in

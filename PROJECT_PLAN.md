@@ -14,14 +14,15 @@ Applicant: Mohamed Wasim · Individual Applicant
 
 | | |
 |---|---|
-| **Today** | 1 August 2026 |
+| **Today** | 3 August 2026 |
 | **Submission deadline** | **15 August 2026** |
-| **Time remaining** | **14 days** |
-| Questions & clarifications deadline | 5 August 2026 (4 days) — *if you want to ask DM anything, ask now* |
+| **Time remaining** | **12 days** |
+| Questions & clarifications deadline | 5 August 2026 — **2 days.** If you want to ask DM anything, ask now |
 
 Source: official Scope of Work, Schedule 5 "Program", and the challenge website.
-**The deadline is not today.** There are two full weeks. That is enough time to
-fix everything listed in §6, in order, without rushing the work that earns marks.
+**The deadline is not today.** Twelve days is enough to finish everything in §6
+in order, without rushing the work that earns marks. The clarifications window
+is the one that closes soon.
 
 ---
 
@@ -189,7 +190,7 @@ open it unless you are changing the design.
 
 > **Why the code folders are not renamed with numbers.** `src/`, `data/`,
 > `tools/`, `tests/`, `figures/`, `models/`, `docs/`, `design/` and `submission/`
-> are referenced by name in 6–18 code files each. Renaming them 14 days before a
+> are referenced by name in 6–18 code files each. Renaming them 12 days before a
 > deadline, on a pipeline that currently passes 38 tests, would risk breaking the
 > thing that generates the submission in order to make a folder list prettier.
 > `submission_upload/` was renamed to `UPLOAD_THESE_12_FILES/` because exactly

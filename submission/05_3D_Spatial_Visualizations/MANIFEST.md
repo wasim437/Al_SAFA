@@ -7,6 +7,7 @@ Files in this folder, and what produced each one.
 | `board_1_concept.png` | Presentation board 1 — concept. |
 | `board_2_evidence.png` | Presentation board 2 — evidence. |
 | `fig10_masterplan.png` | The masterplan the visualisations must agree with. Any render that does not show this park does not belong in this slot. |
+| `Visualisation_Strategy_and_Image_Provenance.pdf` | Written report / supporting document. |
 
 Every image here is generated. Rebuild them with:
 
