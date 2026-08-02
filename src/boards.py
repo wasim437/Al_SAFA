@@ -50,7 +50,7 @@ def _panel(fig, rect, path, *, caption=None, pending=None):
         ax.text(0.5, 0.57, "Visualisation in preparation", ha="center",
                 va="center", fontsize=9, color=C.PALETTE["ink_secondary"],
                 transform=ax.transAxes, zorder=1)
-        ax.text(0.5, 0.40, pending or f"{path.name} — see RENDER_PROMPTS.md",
+        ax.text(0.5, 0.40, pending or f"{path.name} — see AL_SAFA_MASTER_PROMPT.md",
                 ha="center", va="center", fontsize=6.6,
                 color=C.PALETTE["muted"], transform=ax.transAxes, zorder=1,
                 wrap=True)
@@ -96,11 +96,11 @@ def board_concept():
     _panel(fig, [0.600, 0.655, 0.392, 0.265],
            R / "Aerial" / "masterplan_aerial_golden_hour.jpg",
            caption="The crescent from the north-west, at golden hour",
-           pending="Aerial view · RENDER_PROMPTS.md prompt 01")
+           pending="Aerial view · AL_SAFA_MASTER_PROMPT.md prompt 01")
     _panel(fig, [0.600, 0.400, 0.392, 0.215],
            R / "Eye_Level" / "spine_corridor_interior.jpg",
            caption="Beneath Al Hilal — the perforated soffit at eye level",
-           pending="Eye-level view · RENDER_PROMPTS.md prompt 03")
+           pending="Eye-level view · AL_SAFA_MASTER_PROMPT.md prompt 03")
     _panel(fig, [0.010, 0.070, 0.500, 0.320], D / "section_crescent.png")
     _panel(fig, [0.520, 0.070, 0.472, 0.320], D / "circulation_crescent.png")
 

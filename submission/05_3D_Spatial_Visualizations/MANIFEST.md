@@ -6,7 +6,6 @@ Files in this folder, and what produced each one.
 |---|---|
 | `board_1_concept.png` | Presentation board 1 — concept. |
 | `board_2_evidence.png` | Presentation board 2 — evidence. |
-| `Al_Safa_2_Park_3D_Spatial_Visualizations.pdf` | Written report / supporting document. |
 
 Every image here is generated. Rebuild them with:
 

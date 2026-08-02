@@ -6,7 +6,6 @@ Files in this folder, and what produced each one.
 |---|---|
 | `fig01_climate_and_comfort.png` | Dubai monthly normals against the modelled heat index. |
 | `fig09_diurnal_comfort.png` | Hour-by-month comfort surface, exposed today and shaded as designed. |
-| `00_EXISTING_CONDITIONS_KNOWLEDGE_BASE.pdf` | Written report / supporting document. |
 | `Phase1.13_Catchment_Demand_Analysis_Report.pdf` | Written report / supporting document. |
 | `Phase2_Problem_Definition_Report.pdf` | Written report / supporting document. |
 
