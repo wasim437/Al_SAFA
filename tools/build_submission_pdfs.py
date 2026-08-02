@@ -840,16 +840,48 @@ def build_slot(slot: dict, act: bool) -> dict:
 
     writer = pypdf.PdfWriter()
     front = pypdf.PdfReader(str(tmp))
+    # Bookmarks as we go. A 17-page file with no outline is a scroll; with one
+    # it is a document a juror can navigate.
+    marks: list[tuple[str, int]] = []
+
     writer.add_page(front.pages[0])              # cover
+    marks.append(("Cover — what this file is", 0))
     writer.add_page(front.pages[1])              # how it was produced
+    marks.append(("How this document was produced", 1))
+
     for p in pdfs:                                # the written reports
         try:
+            start = len(writer.pages)
             for pg in pypdf.PdfReader(str(p)).pages:
                 writer.add_page(pg)
+            marks.append((pretty(p.name), start))
         except Exception as e:
             print(f"    ! could not merge {p.name}: {e}")
-    for pg in front.pages[2:]:                    # image sheets, then the index
+
+    n_front = len(front.pages)
+    for i, pg in enumerate(front.pages[2:], start=2):   # image sheets, then index
+        here = len(writer.pages)
         writer.add_page(pg)
+        if i - 2 < len(imgs):
+            marks.append((f"{pretty(imgs[i - 2].name)}  ({classify(imgs[i - 2])})",
+                          here))
+        elif i == 2 + len(imgs):
+            marks.append(("The complete project — every file, live", here))
+
+    for title, page in marks:
+        writer.add_outline_item(title, page)
+
+    writer.add_metadata({
+        "/Title": f"{slot['n']:02d} — {slot['title']} · {PROJECT}",
+        "/Author": APPLICANT,
+        "/Subject": slot["blurb"],
+        "/Keywords": ", ".join([
+            "Al Safa 2 Park", "Falaj Al Safa", CHALLENGE, "Dubai Municipality",
+            f"upload slot {slot['n']:02d}", "crescent canopy", "shade",
+            "thermal comfort", "machine learning", REPO_URL]),
+        "/Creator": "tools/build_submission_pdfs.py",
+        "/Producer": f"Reproducible from {REPO_URL}",
+    })
 
     try:
         with dest.open("wb") as fh:
