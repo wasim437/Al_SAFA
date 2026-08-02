@@ -248,7 +248,7 @@ reports/           written reports (PDF + editable Word)
 docs/              the project website and the analytics portal
 tools/             sync_portal · sync_film · sync_submission · build_docs
 archive/           phases/ (working history) · withdrawn_visuals/ (see above)
-_TRASH/            not part of the submission; gitignored; safe to delete
+EXPLAIN_THE_PROJECT/  a plain-language walkthrough, for readers who want no code
 ```
 
 ---

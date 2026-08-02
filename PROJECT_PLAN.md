@@ -173,14 +173,15 @@ can be scheduled from an almanac with **no sensor network**.
 
 ## 4. Folder structure — what every folder is for
 
-### The only four things you actually touch
+### The only six things you actually touch
 
 | | |
 |---|---|
+| 🟢 **`EXPLAIN_THE_PROJECT/START_HERE.md`** | the project in plain language, no code — read this first if any of it feels confusing |
 | 📄 **`PROJECT_PLAN.md`** | this file — what to do and in what order |
 | 📥 **`00_BRIEF/`** | what Dubai Municipality asked for |
 | 📤 **`UPLOAD_THESE_12_FILES/`** | **the 12 PDFs you drag into the form.** Nothing else gets uploaded |
-| 🎨 **`RENDER_PROMPTS.md`** | the prompts for generating the visuals |
+| 🎨 **`AL_SAFA_MASTER_PROMPT.md`** | **one file** teaching an image AI the whole design — real geometry, prompts, acceptance test |
 | 🔗 **`LINKS.md`** | every public URL, and how to make them live |
 
 Everything else below is machinery that produces those files. You never need to
@@ -242,8 +243,10 @@ AL SAFA/
 │   ├── phases/                the ten phase folders — real working history
 │   └── withdrawn_visuals/     images withdrawn on purpose (see §8)
 │
-└── _TRASH/                  nothing here is part of the submission. Gitignored.
-                             Delete the folder once the upload is done.
+└── EXPLAIN_THE_PROJECT/    the project in plain language, no code
+                             (_TRASH/ was deleted on 3 Aug 2026 — 49 MB of
+                              superseded reports, dead scripts and the six
+                              withdrawn renders. None of it was ever in git.)
 ```
 
 **The rule that makes the whole thing trustworthy:** everything in `figures/`,
@@ -345,7 +348,7 @@ every chart, drawing and figure moves with it — or a test fails loudly.
    a surviving canonical copy before deletion.
 2. Retired two dead website pages whose links pointed at an unpushed repo.
 3. Assembled `docs/` into one site that actually shows the drawings.
-4. Promoted the official brief to `00_BRIEF/`; moved all dead weight to `_TRASH/`.
+4. Promoted the official brief to `00_BRIEF/`; moved all dead weight out, then deleted it.
 5. Verified: 33 pipeline + 64 portal + film frame tests all pass.
 
 ### Phase 13 · Submission hardening — **NOT DONE YET.** This is §6.
@@ -365,7 +368,7 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 | Commercial & Service Facilities Map | Required deliverable, now exists — 20 facilities placed |
 | Restrooms, fountains, bike parking, drop-off, waste | All placed via `plan.facilities()` |
 | Fill the three phases with no analysis | Ph3 objectives table · Ph4 plan-form sweep · Ph8 personas + activation calendar |
-| Renders that contradicted the plan | All 6 withdrawn to `_TRASH/`; boards and portal self-heal |
+| Renders that contradicted the plan | All 6 withdrawn and deleted; boards and portal self-heal |
 
 ### 🔴 What only you can do
 
