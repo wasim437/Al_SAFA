@@ -65,8 +65,46 @@ PLAN: dict[str, list[tuple[Path, str]]] = {
     "05_3D_Spatial_Visualizations": [
         (BOARD / "board_1_concept.png", "Presentation board 1 — concept."),
         (BOARD / "board_2_evidence.png", "Presentation board 2 — evidence."),
-        (REND / "Aerial" / "dubai_futuristic_masterplan_aerial.jpg",
-         "Aerial — the canopy and the channel running the length of the crescent."),
+        (FIG / "fig10_masterplan.png",
+         "The masterplan the visualisations must agree with. Any render that "
+         "does not show this park does not belong in this slot."),
+        # Generated from AL_SAFA_MASTER_PROMPT.md. Absent until then — a missing
+        # source is reported, not fatal, so the slot still builds meanwhile.
+        (REND / "Aerial" / "masterplan_aerial_golden_hour.jpg",
+         "Aerial, golden hour — artistic impression, illustrative of design "
+         "intent. Master prompt 01."),
+        (REND / "Eye_Level" / "spine_corridor_interior.jpg",
+         "Eye level beneath Al Hilal — artistic impression. Master prompt 03."),
+        (REND / "Night" / "night_plaza_render_1784970565232.jpg",
+         "The plaza at night — artistic impression. Master prompt 02."),
+    ],
+    "07_User_Experience_Activation_Strategy": [
+        (FIG / "fig09_diurnal_comfort.png",
+         "Hour-by-month comfort surface — the calendar the activation "
+         "programme is built from. It is why summer midday is not programmed "
+         "outdoors and late afternoon is."),
+        (FIG / "fig08_microclimate_regimes.png",
+         "K-Means microclimate regimes across the site, k selected by "
+         "silhouette score. Different regimes take different programmes."),
+        (VIS / "circulation_crescent.png",
+         "Circulation and accessibility — how a visitor actually reaches each "
+         "room, step-free, from the shaded primary route."),
+    ],
+    "10_Complete_Design_Report": [
+        (FIG / "fig10_masterplan.png",
+         "The masterplan and its measured room schedule, closing on 15,000 m²."),
+        (BOARD / "board_2_evidence.png",
+         "Presentation board 2 — the evidence behind every claim in this report."),
+        (FIG / "fig11_cost_plan.png",
+         "The capital cost plan against the AED 35 M ceiling, line by line."),
+        (VIS / "section_crescent.png",
+         "Section A–A through the Crescent Canopy — the detail the whole "
+         "thermal argument rests on."),
+    ],
+    "12_Concept_Animation_Video": [
+        (FIG / "fig10_masterplan.png",
+         "The masterplan the sixty-second film flies over. Every frame of the "
+         "film reads the same geometry, asserted by tests/test_film.js."),
     ],
     "08_Sustainability_Concept_Strategy": [
         (FIG / "fig03_shade_by_zone.png",

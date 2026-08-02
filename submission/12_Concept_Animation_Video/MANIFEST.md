@@ -1,12 +1,13 @@
-# Slot 05 3D Spatial Visualizations
+# Slot 12 Concept Animation Video
 
 Files in this folder, and what produced each one.
 
 | File | What it is |
 |---|---|
-| `board_1_concept.png` | Presentation board 1 — concept. |
-| `board_2_evidence.png` | Presentation board 2 — evidence. |
-| `fig10_masterplan.png` | The masterplan the visualisations must agree with. Any render that does not show this park does not belong in this slot. |
+| `fig10_masterplan.png` | The masterplan the sixty-second film flies over. Every frame of the film reads the same geometry, asserted by tests/test_film.js. |
+| `Concept_Animation_Storyboard.pdf` | Written report / supporting document. |
+| `concept_film.html` | Written report / supporting document. |
+| `README_VIDEO.txt` | Written report / supporting document. |
 
 Every image here is generated. Rebuild them with:
 

@@ -142,39 +142,24 @@ SLOTS: list[dict] = [
 
 # Assets left OUT of the package, with the reason. Nothing disappears silently —
 # every one of these is printed in the build report.
-HOLD: dict[str, str] = {
-    "masterplan_aerial_golden_hour.jpg":
-        "VERIFIED — serpentine S-curve canopy over a large free-form lagoon. The "
-        "plan is ONE 141 m arc with a 0.9 m channel. Prompt 01 replaces it.",
-    "dubai_futuristic_masterplan_aerial.jpg":
-        "VERIFIED — multiple free-form organic shells over winding canals and "
-        "rainforest planting, with the Museum of the Future on the skyline. This "
-        "is a generic 'futuristic Dubai park', not this project. Prompt 01.",
-    "spine_corridor_interior.jpg":
-        "VERIFIED — a DEAD STRAIGHT hexagonal gridshell corridor. This is the "
-        "superseded straight-spine scheme, the exact design the crescent "
-        "replaced. It is also nearly empty of people. Prompt 03.",
-    "dubai_futuristic_spine_interior.jpg":
-        "VERIFIED — a vaulted timber-and-glass botanical pavilion with tropical "
-        "planting (cycads, agave, flowering shrubs) and misting. Beautiful, but "
-        "it is not a 7 m walk under an 18 m arc, and the planting contradicts the "
-        "five-species desert palette in slot 09. Prompt 03 or 04.",
-}
+#
+# This list is EMPTY on purpose. It once named six renders that contradicted the
+# plan — a serpentine canopy over a lagoon, a dead-straight corridor, a tropical
+# pavilion. All six were withdrawn and then deleted on 3 August 2026, and their
+# reasons are preserved in archive/withdrawn_visuals/README.md.
+#
+# It must stay empty, because AL_SAFA_MASTER_PROMPT.md directs the replacement
+# renders to those same filenames — src/boards.py reads them by name. Re-adding
+# a name here would silently reject the correct new image along with the old bad
+# one. The guard against a bad render is the acceptance test in the master
+# prompt, applied by a person looking at the picture, not a filename blocklist.
+HOLD: dict[str, str] = {}
 
 # Included, but the build report says why they are worth replacing.
 REVIEW: dict[str, str] = {
-    "eyelevel_spine_1784970552956.jpg":
-        "VERIFIED — the strongest of the existing set. Curved timber louvre walk, "
-        "families, good light. But it curves as an S rather than one arc, and no "
-        "water channel is visible at its edge. Prompt 03 replaces it.",
-    "night_plaza_render_1784970565232.jpg":
-        "VERIFIED — does not contradict the plan (it shows no canopy), and it is "
-        "the only night image, which the brief requires. But the jet fountains "
-        "work against the water-scarcity argument in slot 08, where the falaj is "
-        "105 m² total. Prompt 02 or 05.",
     "Al_Safa_2_Park_3D_Spatial_Visualizations.pdf":
-        "9-page package that likely embeds the held renders. Check its pages "
-        "before submitting.",
+        "9-page legacy package that may still embed the withdrawn renders. Open "
+        "its pages and check before submitting.",
 }
 
 # What each kind of image is, said plainly on its sheet. A juror must never have
@@ -412,6 +397,236 @@ def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
                  "python run_analysis.py   ·   python -m tests.test_pipeline")
 
 
+# The ten phases the project actually ran, and what each one produced. Every
+# slot names the phases behind it, so a juror can see where in the process this
+# particular document came from rather than being handed a finished artefact.
+PHASES: list[tuple[int, str, str]] = [
+    (1, "Site & Context Analysis",
+     "39 years of NCM normals rebuilt into an 8,760-hour year, verified back to "
+     "within 0.39 °C; sun position for every hour via NREL/pvlib; shadow "
+     "geometry; 7,640 residents inside a ten-minute walk"),
+    (2, "Problem Definition",
+     "Phase 1 findings turned into problems and scored by severity rather than "
+     "listed flat — thermal discomfort dominates everything else"),
+    (3, "Opportunity & Objectives",
+     "The ranked problems converted into measurable targets, including the "
+     "comfort-hours target the finished design is scored against"),
+    (4, "Concept Development",
+     "Multiple plan forms generated and swept against the solar model; the "
+     "crescent selected on hours-with-no-shade, not on mean coverage"),
+    (5, "Masterplan Development",
+     "Every room struck off the crescent's centre; areas taken as the shoelace "
+     "area of the drawn polygon, so the schedule closes on 15,000 m²"),
+    (6, "Detailed Design",
+     "The canopy section solved against shadow geometry — 7 m walk, 18 m "
+     "gridshell at 4.5 m, 3 m southern louvre; 131 trees at mature canopy"),
+    (7, "Performance & Sustainability",
+     "Water balance, carbon, the canopy PV deficit, and ray-traced shade "
+     "performance by zone"),
+    (8, "User Experience & Activation",
+     "K-Means microclimate regimes and the hour-by-month comfort surface; "
+     "programming targeted at late afternoon, spring and autumn"),
+    (9, "AI Workflow & Visualisation",
+     "The four models and the anti-leakage discipline; drawings, boards, the "
+     "analytics portal and the sixty-second film"),
+    (10, "Submission Assembly",
+     "Every report and visual mapped onto the twelve upload slots, each with a "
+     "manifest naming what produced it"),
+]
+
+# Which phases produced each slot.
+SLOT_PHASES: dict[int, list[int]] = {
+    1: [2, 3, 4], 2: [5], 3: [4, 5], 4: [6], 5: [9], 6: [9],
+    7: [8], 8: [7], 9: [6], 10: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    11: [1], 12: [9],
+}
+
+# The evidence index printed at the back of every slot. Grouped, and every row
+# is a live link, so a juror holding any one of the twelve files can reach the
+# whole project from it.
+INDEX: list[tuple[str, list[tuple[str, str]]]] = [
+    ("Start here", [
+        ("EXPLAIN_THE_PROJECT/START_HERE.md", "The project in plain language"),
+        ("PROJECT_PLAN.md", "Requirements, phases, status, what is left"),
+        ("README.md", "The design argument, written for a juror"),
+        ("notebooks/AL_SAFA_2_PARK_COMPLETE_ANALYSIS.ipynb",
+         "The complete analysis, outputs embedded"),
+    ]),
+    ("The geometry and the models", [
+        ("src/plan.py", "Single source of the crescent geometry"),
+        ("src/climate.py", "The 8,760-hour year rebuilt from NCM normals"),
+        ("src/solar.py", "Sun position and shadow ray-tracing"),
+        ("src/dataset.py", "Assembles the ML training tables"),
+        ("src/models.py", "The four models"),
+        ("src/costing.py", "The cost model against the AED 35 M ceiling"),
+    ]),
+    ("The data, as issued and as processed", [
+        ("data/raw/sources.json", "Every source dataset, with its period"),
+        ("DATA_SOURCES.md", "Sources and their stated limitations"),
+        ("data/raw/site_zoning_schedule.csv", "The measured room schedule"),
+        ("data/processed/hourly_climate_comfort_8760.csv",
+         "The 8,760-hour climate and comfort series"),
+        ("data/processed/cost_plan.csv", "The capital cost plan, line by line"),
+    ]),
+    ("The results, and the checks on them", [
+        ("models/model_metrics.json", "Trained-model metrics"),
+        ("models/headline_metrics.json", "The headline numbers"),
+        ("tests/test_pipeline.py", "38 correctness checks"),
+        ("archive/withdrawn_visuals/README.md",
+         "Images withdrawn on purpose, and why"),
+    ]),
+    ("The drawings", [
+        ("figures/fig10_masterplan.png", "Masterplan and room schedule"),
+        ("design/visuals/section_crescent.png", "Section A–A at midspan"),
+        ("design/visuals/circulation_crescent.png", "Circulation and accessibility"),
+        ("design/visuals/facilities_crescent.png",
+         "Commercial & Service Facilities Map"),
+        ("design/visuals/planting_crescent.png", "Planting plan, 131 trees"),
+    ]),
+]
+
+
+def method_page(c: rl_canvas.Canvas, slot: dict) -> None:
+    """How this document came to exist — the process, not the artefact."""
+    c.setPageSize(A4)
+    w, h = A4
+
+    c.setFillColor(ACCENT)
+    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+
+    x = 20 * mm
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 15)
+    c.drawString(x, h - 28 * mm, "How this document was produced")
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 9)
+    y = h - 36 * mm
+    intro = ("This submission is the output of a ten-phase process in which "
+             "each phase is checked against the one before it. Nothing "
+             "downstream is hand-drawn or hand-typed: change an input, re-run, "
+             "and every chart, drawing and figure moves with it — or a test "
+             "fails loudly. The phases behind this particular document are "
+             "marked.")
+    for line in _wrap(c, intro, "Helvetica", 9, w - 40 * mm):
+        c.drawString(x, y, line)
+        y -= 4.6 * mm
+
+    y -= 5 * mm
+    mine = SLOT_PHASES.get(slot["n"], [])
+    for n, name, what in PHASES:
+        here = n in mine
+        if here:
+            c.setFillColor(ACCENT)
+            c.rect(x - 3 * mm, y - 1.5 * mm, 1.6 * mm, 5.5 * mm, stroke=0, fill=1)
+        c.setFillColor(INK if here else MUTED)
+        c.setFont("Helvetica-Bold" if here else "Helvetica", 8.8)
+        c.drawString(x, y, f"Phase {n} — {name}")
+        y -= 4.4 * mm
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 7.8)
+        for line in _wrap(c, what, "Helvetica", 7.8, w - 46 * mm):
+            c.drawString(x + 4 * mm, y, line)
+            y -= 3.9 * mm
+        y -= 2.2 * mm
+
+    y -= 2 * mm
+    c.setStrokeColor(RULE)
+    c.line(x, y, w - 20 * mm, y)
+    y -= 7 * mm
+
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(x, y, "THE CODE AND DATA BEHIND THIS DOCUMENT")
+    y -= 6 * mm
+    for src in slot.get("sources", []):
+        _link(c, src, f"{BLOB}/{src}", x + 3 * mm, y, size=8.2)
+        y -= 4.8 * mm
+
+    y -= 3 * mm
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(x, y, "REPRODUCE IT")
+    y -= 6 * mm
+    c.setFont("Courier", 8)
+    c.setFillColor(MUTED)
+    for cmd in ("pip install -r requirements.txt",
+                "python run_analysis.py           # data, models, figures",
+                "python -m src.drawings           # section, elevation, planting",
+                "python -m src.boards             # the presentation boards",
+                "python tools/build_submission_pdfs.py",
+                "python -m tests.test_pipeline    # 38 checks"):
+        c.drawString(x + 3 * mm, y, cmd)
+        y -= 4.4 * mm
+
+    c.setFont("Helvetica", 8)
+    c.setFillColor(MUTED)
+    c.drawString(x, 16 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    c.showPage()
+
+
+def index_page(c: rl_canvas.Canvas, slot: dict) -> None:
+    """Every part of the project, live, from whichever file a juror opened."""
+    c.setPageSize(A4)
+    w, h = A4
+
+    c.setFillColor(ACCENT)
+    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+
+    x = 20 * mm
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 15)
+    c.drawString(x, h - 28 * mm, "The complete project, and where to check it")
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 9)
+    y = h - 36 * mm
+    intro = ("Every link below is live. The repository holds the data, the "
+             "code, the trained models and the tests, and runs end to end with "
+             "one command. A juror who wants to know where a number came from "
+             "can be given a file path rather than an opinion.")
+    for line in _wrap(c, intro, "Helvetica", 9, w - 40 * mm):
+        c.drawString(x, y, line)
+        y -= 4.6 * mm
+
+    y -= 4 * mm
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8.5)
+    c.drawString(x, y, "Repository")
+    _link(c, REPO_URL.replace("https://", ""), REPO_URL, x + 24 * mm, y)
+    y -= 5 * mm
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8.5)
+    c.drawString(x, y, "Live portal")
+    _link(c, PORTAL_URL.replace("https://", ""), PORTAL_URL, x + 24 * mm, y)
+    y -= 9 * mm
+
+    for heading, rows in INDEX:
+        c.setStrokeColor(RULE)
+        c.line(x, y + 4.5 * mm, w - 20 * mm, y + 4.5 * mm)
+        c.setFillColor(INK)
+        c.setFont("Helvetica-Bold", 8.6)
+        c.drawString(x, y, heading.upper())
+        y -= 5.4 * mm
+        for path, what in rows:
+            _link(c, path, f"{BLOB}/{path}", x + 3 * mm, y, size=7.8)
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 7.6)
+            c.drawRightString(w - 20 * mm, y, what)
+            y -= 4.3 * mm
+        y -= 4 * mm
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 7.6)
+    c.drawString(x, 20 * mm,
+                 "Links resolve once the repository is published. GitHub "
+                 "renders PDFs and notebooks in the browser — nothing needs to "
+                 "be downloaded or cloned.")
+    c.setFont("Helvetica", 8)
+    c.drawString(x, 14 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    c.showPage()
+
+
 def _wrap(c, text: str, font: str, size: float, maxw: float) -> list[str]:
     out, line = [], ""
     for word in text.split():
@@ -517,21 +732,24 @@ def build_slot(slot: dict, act: bool) -> dict:
 
     tmp = OUT / f".{stem}.front.pdf"
     c = rl_canvas.Canvas(str(tmp), pagesize=A4)
-    cover_page(c, slot, ordered)
-    for img in imgs:
+    cover_page(c, slot, ordered)                  # page 0
+    method_page(c, slot)                          # page 1
+    for img in imgs:                              # pages 2 .. 2+len(imgs)
         image_sheet(c, img, slot)
+    index_page(c, slot)                           # last page
     c.save()
 
     writer = pypdf.PdfWriter()
     front = pypdf.PdfReader(str(tmp))
     writer.add_page(front.pages[0])              # cover
+    writer.add_page(front.pages[1])              # how it was produced
     for p in pdfs:                                # the written reports
         try:
             for pg in pypdf.PdfReader(str(p)).pages:
                 writer.add_page(pg)
         except Exception as e:
             print(f"    ! could not merge {p.name}: {e}")
-    for pg in front.pages[1:]:                    # then the image sheets
+    for pg in front.pages[2:]:                    # image sheets, then the index
         writer.add_page(pg)
 
     try:
