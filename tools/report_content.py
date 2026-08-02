@@ -379,6 +379,12 @@ def build(D: dict) -> list[dict]:
                   "</font> (64 checks) and a frame-by-frame test of the concept "
                   "film. A juror who wants to know where a number comes from can "
                   "be given a file path rather than an opinion."),
+            ("p", f"The full repository — every dataset, every model, every line "
+                  f"of the pipeline above — is published at "
+                  f"<font face='Courier'>{C.GITHUB_URL}</font> and the live "
+                  f"analytics portal at <font face='Courier'>{C.PAGES_URL}"
+                  f"</font>. Both run from the same code that produced this "
+                  f"document."),
         ]))
 
     # ═══════════════════════════════════════════════════════════ slot 07
