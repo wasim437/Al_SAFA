@@ -8,8 +8,8 @@ endobj
 2 0 obj
 <<
 /Type /Pages
-/Count 13
-/Kids [ 4 0 R 16 0 R 22 0 R 29 0 R 33 0 R 35 0 R 41 0 R 45 0 R 49 0 R 54 0 R 59 0 R 64 0 R 69 0 R ]
+/Count 15
+/Kids [ 4 0 R 16 0 R 22 0 R 29 0 R 33 0 R 35 0 R 41 0 R 45 0 R 49 0 R 54 0 R 59 0 R 64 0 R 69 0 R 115 0 R 161 0 R ]
 >>
 endobj
 3 0 obj
@@ -887,8 +887,8 @@ endstream
 endobj
 69 0 obj
 <<
-/Annots [ 70 0 R 71 0 R 72 0 R 73 0 R 74 0 R 75 0 R 76 0 R 77 0 R 78 0 R 79 0 R 80 0 R 81 0 R 82 0 R 83 0 R 84 0 R 85 0 R 86 0 R 87 0 R 88 0 R 89 0 R 90 0 R 91 0 R 92 0 R 93 0 R 94 0 R 95 0 R ]
-/Contents 96 0 R
+/Annots [ 70 0 R 71 0 R 72 0 R 73 0 R 74 0 R 75 0 R 76 0 R 77 0 R 78 0 R 79 0 R 80 0 R 81 0 R 82 0 R 83 0 R 84 0 R 85 0 R 86 0 R 87 0 R 88 0 R 89 0 R 90 0 R 91 0 R 92 0 R 93 0 R 94 0 R 95 0 R 96 0 R 97 0 R 98 0 R 99 0 R 100 0 R 101 0 R 102 0 R 103 0 R 104 0 R 105 0 R 106 0 R 107 0 R 108 0 R 109 0 R 110 0 R 111 0 R 112 0 R 113 0 R ]
+/Contents 114 0 R
 /MediaBox [ 0 0 595.2756 841.8898 ]
 /Resources <<
 /Font 12 0 R
@@ -909,7 +909,7 @@ endobj
 /URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 124.7244 685.9843 251.7824 698.4567 ]
+/Rect [ 124.7244 688.8189 251.7824 701.2913 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -922,7 +922,7 @@ endobj
 /URI (https\072\057\057wasim437\056github\056io\057Al\137SAFA\057)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 124.7244 671.811 244.2259 684.2835 ]
+/Rect [ 124.7244 674.6457 244.2259 687.1181 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -932,10 +932,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057EXPLAIN\137THE\137PROJECT\057START\137HERE\056md)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05701\137Design\137Narrative\137and\137Concept\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 630.9921 228.1545 643.4646 ]
+/Rect [ 65.19685 634.3937 308.8833 646.8661 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -945,10 +945,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057PROJECT\137PLAN\056md)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05702\137Neighborhood\137Park\137Preliminary\137Design\137Masterplan\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 618.8031 141.4731 631.2756 ]
+/Rect [ 65.19685 622.4882 386.1753 634.9606 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -958,10 +958,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057README\056md)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05703\137Concept\137Plans\137and\137Spatial\137Organization\137Diagrams\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 606.6142 112.8627 619.0866 ]
+/Rect [ 65.19685 610.5827 385.3317 623.0551 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -971,10 +971,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057notebooks\057AL\137SAFA\1372\137PARK\137COMPLETE\137ANALYSIS\056ipynb)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05704\137Key\137Sections\137and\137Elevations\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 594.4252 292.2939 606.8976 ]
+/Rect [ 65.19685 598.6772 303.8293 611.1496 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -984,10 +984,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057plan\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05705\1373D\137and\137Spatial\137Visualizations\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 555.5906 106.3809 568.063 ]
+/Rect [ 65.19685 586.7717 305.5165 599.2441 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -997,10 +997,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057climate\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05706\137AI\137Methodology\137Report\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 543.4016 117.2229 555.874 ]
+/Rect [ 65.19685 574.8661 281.8349 587.3386 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1010,10 +1010,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057solar\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05707\137User\137Experience\137and\137Activation\137Strategy\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 531.2126 108.9861 543.685 ]
+/Rect [ 65.19685 562.9606 349.0189 575.4331 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1023,10 +1023,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057dataset\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05708\137Sustainability\137Concept\137and\137Strategy\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 519.0236 117.6519 531.4961 ]
+/Rect [ 65.19685 551.0551 330.4217 563.5276 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1036,10 +1036,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057models\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05709\137Material\137and\137Landscape\137Palette\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 506.8346 117.6519 519.3071 ]
+/Rect [ 65.19685 539.1496 313.5421 551.622 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1049,10 +1049,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057costing\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05710\137Complete\137Design\137Report\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 494.6457 118.0809 507.1181 ]
+/Rect [ 65.19685 527.2441 286.9117 539.7165 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1062,10 +1062,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057sources\056json)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05711\137Site\137Analysis\137and\137Human\055Centric\137Research\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 455.811 147.1281 468.2835 ]
+/Rect [ 65.19685 515.3386 358.3061 527.811 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1075,10 +1075,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057DATA\137SOURCES\056md)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057UPLOAD\137THESE\13712\137FILES\05712\137One\055minute\137Concept\137Animation\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 443.622 143.6337 456.0945 ]
+/Rect [ 65.19685 503.4331 312.2425 515.9055 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1088,10 +1088,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057site\137zoning\137schedule\056csv)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057AL\137SAFA\137MASTER\137PROMPT\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 431.4331 195.2463 443.9055 ]
+/Rect [ 65.19685 466.8661 186.8045 479.3386 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1101,10 +1101,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057hourly\137climate\137comfort\1378760\056csv)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057DATA\137SOURCES\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 419.2441 249.8697 431.7165 ]
+/Rect [ 65.19685 454.9606 141.6225 467.4331 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1114,10 +1114,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057cost\137plan\056csv)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057LINKS\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 407.0551 176.1753 419.5276 ]
+/Rect [ 65.19685 443.0551 101.5097 455.5276 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1127,10 +1127,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057models\057model\137metrics\056json)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057PROJECT\137PLAN\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 368.2205 167.9307 380.6929 ]
+/Rect [ 65.19685 431.1496 139.5173 443.622 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1140,10 +1140,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057models\057headline\137metrics\056json)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057PUSH\137TO\137GITHUB\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 356.0315 176.6043 368.5039 ]
+/Rect [ 65.19685 419.2441 147.9609 431.7165 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1153,10 +1153,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tests\057test\137pipeline\056py)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057README\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 343.8425 144.5229 356.315 ]
+/Rect [ 65.19685 407.3386 111.6405 419.811 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1166,10 +1166,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057withdrawn\137visuals\057README\056md)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057RENDER\137PROMPTS\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 331.6535 213.8727 344.126 ]
+/Rect [ 65.19685 395.4331 152.6045 407.9055 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1179,10 +1179,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig10\137masterplan\056png)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057EXPLAIN\137THE\137PROJECT\057START\137HERE\056md)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 292.8189 173.9913 305.2913 ]
+/Rect [ 65.19685 383.5276 223.9761 396 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1192,10 +1192,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057section\137crescent\056png)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Al\137Safa\1372\137Park\137Complete\137Design\137Report\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 280.6299 201.3147 293.1024 ]
+/Rect [ 65.19685 346.9606 275.5117 359.4331 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1205,10 +1205,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057circulation\137crescent\056png)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Concept\137Animation\137Storyboard\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 268.4409 213.4515 280.9134 ]
+/Rect [ 65.19685 335.0551 237.8993 347.5276 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1218,10 +1218,10 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057facilities\137crescent\056png)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase2\137Problem\137Definition\137Report\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 256.252 205.2225 268.7244 ]
+/Rect [ 65.19685 323.1496 250.5837 335.622 ]
 /Subtype /Link
 /Type /Annot
 >>
@@ -1231,128 +1231,1652 @@ endobj
 /A <<
 /S /URI
 /Type /Action
-/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057planting\137crescent\056png)
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase3\137Opportunity\137and\137Objectives\137Report\056pdf)
 >>
 /Border [ 0 0 0 ]
-/Rect [ 65.19685 244.063 204.3411 256.5354 ]
+/Rect [ 65.19685 311.2441 284.7989 323.7165 ]
 /Subtype /Link
 /Type /Annot
 >>
 endobj
 96 0 obj
 <<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase4\137Concept\137Development\137Report\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 299.3386 263.2529 311.811 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+97 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase5\137Masterplan\137Development\137Report\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 287.4331 272.9733 299.9055 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+98 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase6\137Detailed\137Design\137Report\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 275.5276 240.0349 288 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+99 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase7\137Performance\137and\137Sustainability\137Report\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 263.622 298.7449 276.0945 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+100 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase8\137User\137Experience\137and\137Activation\137Report\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 251.7165 301.2833 264.189 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+101 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Phase9\137AI\137Workflow\137and\137Visualization\137Report\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 239.811 295.3553 252.2835 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+102 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057reports\057pdf\057Visualisation\137Strategy\137and\137Image\137Provenance\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 227.9055 294.1089 240.378 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+103 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig01\137climate\137and\137comfort\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 191.3386 207.0965 203.811 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+104 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig02\137comfort\137bands\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 179.4331 185.5505 191.9055 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+105 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig03\137shade\137by\137zone\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 167.5276 187.2529 180 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+106 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig04\137site\137comfort\137map\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 155.622 196.1145 168.0945 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+107 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig05\137surrogate\137performance\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 143.7165 215.9657 156.189 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+108 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig06\137feature\137importance\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 131.811 201.1837 144.2835 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+109 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig07\137confusion\137matrix\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 119.9055 194.0017 132.378 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+110 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig08\137microclimate\137regimes\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 108 210.9117 120.4724 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+111 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig09\137diurnal\137comfort\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 96.09449 188.5069 108.5669 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+112 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig10\137masterplan\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 84.18898 171.2017 96.66142 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+113 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057figures\057fig11\137cost\137plan\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 72.28346 166.1325 84.75591 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+114 0 obj
+<<
 /Filter [ /ASCII85Decode /FlateDecode ]
-/Length 2505
+/Length 3109
 >>
 stream
-Gau0E?#SIW(4FN4\5/%95t[%L,ta5i6uBN!03BiM#:O!,&oFt;81dEPaSbl<,s/BEh/7k-?7^d?I-r.2cTSqZ&3p6*q^cK4hj,tnL]J/kD?*U'@<i76ncE6OUGrEF_hb*&:`'EgTjY;F$3Ea"L(Zs!8g?`+'LPDgJ0Ph\&[;*(!oX-W0o#:tfj8cV"E;j6-3q3@QA;+e6nsQtP%%fR5nQj0/8P#l\J%g'\uC>rcku^U'^cUD.Ug(*7Y&ralpU@Hdet2PhdH7q7t]eX%MCaN*ok%tG$tO;LOk+-8goP-5dG$2?D*JH$.bj!H]T!mq(**P&<1A1Ptmebf]fECi-#/omeCAf<p3HRDpE=$6j^7R7:eP)h6=-/p:O)"/-nJCrSrR]G@MmQ8qIUu1%(mmJQCTceQe@Fk4#K1g;&08@F(4Fr`>_VhB/VUK50_[0Mq7B^rGRV$Edbg?n7k'!Y-/P$#$j'J`1Jo%(I<Z^t&IC$\sPW@FE,k)l]W6kZo^'TKZ?W7"2@0EK[%MM0b]2lRJDKrU5t7jQ$i60VO:78r#rAl#uG4'tU"(\Wo#]fkauso(g?%'I6h7#UXNrI4Lon1tjoq9u6B7l:;@)kXp7K3BMq,#n8VCoB5,^Kf\0('1AU_5n-\YTI:uMD6/?e-aY*anUX"$_qCb5@R8?o<5+kUQ>i$>Z?K"Yo>7__'SZ(,,K183Bq.R&LD5GVfIKtqYK,DnkPNg#-<iVc*r_:-/S?+#b+k`CHrjd]Snj4r7%X]LBn4Vg@D`)X%NQ5rUk5K';F/:P[cL^J"a`QI$"siu@(^fuS_oLN2,"l[#u67p$h<[d)Gpn(A[C'0/*nQaa'EI6@DCj*dq>q*;\6u8=7uD\ZMF1LaNGMj-mImnOC-jB=LhGIc*m;p04AdpF$d]4)rSE\:I$m3)+mHTmjP$'=DRkGBCjkQ$W^g23+)Tt\pCl5]ZlbqC48C^r?M?4,MB`.opD]iTd7EdnI-B==1ijadU%NC?.1hBU0`b`']lq1.nUWcU'R@uf'CteJe^"t8=G^5c:nM8ZA6&.\bH9hpXe=.mN/O;gO+mDN=qJQUpglc'XO[r$8jJH-?G,JMX_6-QYK_2Ydu]G!57W&OqG,6b/%-B>.AcWnXh(#:]-A'>ZA#k:5m=U9J?feRL[_mU*c3X%R06$CZ%X#"%K@r=h3C7h-\uhd\c/lSUu,X;2crLASuY0c+%PK,8A0a35isD"e@<1g)J'Fm#IEY%u.iHE/#0,D5X%"#biSjU[-aG'lI9n,Xud_d&1PuCIPq>7"5QR]Br>-<*O=s%o:$mgU](fA)!V/`[.+--tZch:VhEZDgXbCL_Fa&Bn?E/hRF<S3iTP4DqPu(@@@\RqV#Ca:Cd/c94_D<XRkcs_?fS&&@+>iiLd,'1h$>#qP:j<Nf@4L.&/-plC/3bkKEZIb]EQLk?kO\Y0>+2G[*@9AU0kQ:U,^QqKB%2>B+9MIb*i"7Gk1IA'.W,,)ji5qZHbiiZ,np'"T<oF;>d'Ub8QQ:)OCps-FXQnM@r&+20;/Z@#p'8-0KKS58,7IX[>p#&-,V/4ujO/KOSC4NWTm.7upQ^=^kjeXtP'iQ;ot;7;`TKmb"^&jh?4&?!DGr$JQM\#g5g(p.R5U/+(G&/<TGAacQV7MipF;9jRBY?k67a0@+9^!Xj%&f(`4c9l6/EQj0bSGA45(gV#!63/TqS>8>G*:tWWmnAWUfN%)ra%Zc$+QgB6!4u0OhFP\f?J.L2V=3^V=Ej^,nSTW`dhI(j-UN8%)HFhi)Wb=d3ki]+0=T.&o(AMlFd$,0T#8IZs6FQSFUT-W1$OU+?grE?Z1<?L(8EC*9Mh14G_!Em>GrY?RX>+,JnpSp)BR-"Ja?/$dc\]9Hs%!jZ$jn=JIh_58bc2<#c0[rf8uU"cW)2/iM":LP9!Sf%T1+H$>k_MS.aEHSc)-YL/EG\pRp:U48CF>h?oL%n($]+g6Pf`2G%hBU6m7c0SIb0h[0ap&V*p/[&25O*%sB[hChNT,*IUH>rn"*.ngeTLp6[!?nUUAr-\NYMN.j3@mil7?cm3G[PbqI2KF_.<R%WZVXIn$%JaA='bh70ar=aG]qY2O2A7#;P#)jGrqai?d&mm=46ELWKsu*'@fp:Qq@Q)Z7;!e)4XSCf&e`NA4/c_)S&*(jB\XJS]8/Q/?:\#%'q^XRN=_cl&&Yo'_sQ$I(Z*HY[B-0nU2`Vr'ZErEh)X-W_S\uSVj[Z\;%c_aN8dI][4m<q(&SM]@@h$Ri8\T(E6"Fs-A"!@j5]*-3"^TuqUWGm4!?m@oU0Y:_rCdi?mTfK_&4u7d=2W"X]'Upkq<+gP6E24Y+>f1<J[e4@G\/]V1kdP=46M)M;XS>2shNB:o,i]*j7g%#K,/J^:uPr^T]VBDhWbGKJ<GncBD0nphOa6mtOKK=-_pE-pd`_KN=g0^"bbWDYB%'Z^<,kg"YS<p3j7SEk^Kti/sM,*r[Cfpbt0]o9I6&^,-lMCo&01^c.</3<=nnrr>Wo"3U~>
+Gb!$J?$"c/&r,lH/+tIAG$LC7pj&iB9'fL0ejsh-c:hh(&.(p!83dEQXLc0\"&]b']2>&s)!<6gd'EE%#KpE>K#HSu#IsUh/HC6f_rWrgR)"(UfLJ-La"Wss6($RQ9E=lF+GgVbL0bSk?rh1[GS#36MBa3p,X<U^6D-O5E"E1\">#%KK<U,p&B"*8Z[,PQ,_1Ni@_B2EbBtrM6P,tG+UNlO,UgH""S2\DR'-[h]%H)<'X0=gP=Wk)i$sB8=r7::L3,#qcQLCQ@K$Sq5?2Ur3!m88Spqf'?q;ab*]ba'-7JRZ:^J"&$M+C($.)<nf)dWt+IDB"Kn[V@%]"e`4phEfZ4S$mAZ<ofXEC,fl8LJ)Eo7_/[9Jbn:2oNh8qjYs];WH.l:f_-.h.h;A1b:i;BuQGlqq#E/9E4Z>Q9"]peIiSXmB#::Y=+HlspE7X"4PN,@,`aA@\ku96F*NPp%![Vle>NG&%OKY"J#oqH<(=*^0NbAXK2?UiE5)D2X*%ORb`Rdc^a1Y$`D\,p.gB%SN2tf^NnjL6l[aTNlOA>_1a&-+-'H[CS)m_otL/`;52p6%jLUqG*)%f!b54gL22M-S8cdUPS\of@!9Wlg4bM]"$O8.gqt=Q\1gQ#4DbE3#T]Vo-7/$*m7%S)f83=pYf]<eA4#LG?='^PF$.8;=%6J_t24=q_tP:6b'U%5X8fn`$B*#jY6Q:GpdbaY4B@iFj#O@5lhGm3qlm?@/enor*]^=PO\TZ#k)ZNUDX&ZquN"B5CO?a#_c#=Jm?TLDEeO@:;Su@O@CWj!a=9\NO&BQBJs=eYfcg=LY5L+\PhdS)oG>E-l?#']@&/DRhBSDj]@.5<0N/9r"iag5BI53RBYC/*::XJfN[eH#mjEJ-h/W2K\ZsF=td6cCRq^:2kSdALg1]nEV"8PG0=_ObU2N<]Td(tO@R![X0jMcS0Vc>Jj%"@;BP*V77lj<N$`iV*&bpLZ;i<t2S>8:BD6#WQ2H9$;CaYiHt@P2c]*sZ0Skpqf"E?-,ZPRp0+$?qi#o!0F<3_S'M#(Jq<V2Q`+C39@VTqY>Wc'@cA]jU#U3T<FERO3T&<uthEk_b#9Z=l+WO@"$:qtrYS08DUttTh^KbDAiZT:f\>tPuiU&@%]&rm?'#fZ[dE*dCg#.V@MK5gTSa4f>F#shPmQ;L&P^"J<.N7)-b:qG#qnNbtLkau$CddX+$H#?JDhO6>V010(Unt/&QH`%>9<ie(1Didtp&k.bUD3tO.I\)k+`J"@#H5F.ILr*0Q^H%+[cC?VL!4-(FNi(]NR\Ob&u-i`UTV>6N'i;C[o\W@I"HscIHAY&&pDGk@9e8$8B+nG2WYmo-9N)U.F,U/_C-Qakt4#cJ@BL)%t"2%@%eVKrSUZ1@#nU\qrGY<VjBdb6mr>9B9Eaj&%e;01(B7@jEmfa"(O6QV-jDEo-Z'S\pV1C\GH"nW7&bO9na>;V!Bh3nL09p*8D=o[(ns8]S2@Y3%4"nPo$0^qV`l&K\\0KF!9)B'ZW<l:pR#TiL05_!7?<b?"&`k@tH_ps6;eq:EntLdd@d0f?W(tqJh$J01m]9-I_klN3;:s]YAd&*So!+%PdCJ61cD*<Sths6d9KRZh\:W-I_kHaW)&KH"3:r+mn!+'<^.pk5qsSI_Pkenks#&e-6u[9p^:5K]aNj`(_Bs%d!jO]762SNFlgHgdAeGSscX7J6$S_.P<uP(>KZlB8<IT)Z^_[ltsN%g@8[$*oGcOH=!L`&u-jGU9:'@l-4C6b7l"p@josWK&&$dBs$,DD7"E66/G,KpSm%Lh>N>Q-KDquGo_qj6jUb;F&VW/XYca`b0<X>CMnj.6[cS=U[H^GX9QFKfo,HT1c9II0Y:rgHhRGNIf8cZH%S9"aR^g.B!@l86`/>7A'g!`fP;tuF>OikNm<"g-hUlEA&tLM3cP0ZX3.mZfGRhX6<,Inf9>YE*-QPYZ1^m^GJdqET(TFa*J<6W7;3a9W^9aSj1gfJi9&=%44sPh]q!=PdlG#]:!^K#5"1$<@6+JF9(*:M5UtFI>Umh*>&F(-I.d2b7M-gNVX<cin_.-T(Y&!I82H#"D0e"1O7$C:RbU^5)[q[PfjW7CCC6Xpa"jL)ggnTCI*\.LOa=b<9tCd+O<=;./*afE_KDMSI?N[:[bStDnGOuO%k'8P$=XssMbQ!s\ML%8jsKDP79drNYTR@Q,MOarY!NaZ0m\t?Jdo[s.TnLj2`BB9?@rLVS"f_1#A*WKGA4,5/B@FXpC!=KjJ/qBF(srd%5&]9C@2H^rit?#MFWfpN@RO_")/-h"X#)\RTfUj8C0DhqK>OnRU1V<'K>.M"d>#W7EK*nZ>WWP3auCt7Mm;0cn>Mm`$W>P[41lZHN%_Wgb5/*[b"n#":4&_$\8rjh<@8@CtdTLK8iY=_;kuDPIL^nhmE3lbk8-udQ&-0),4>hCS7@<;(m552BUX_WoLW^L$,>k/)dokO$^C(XY2MJBjZMT+#PR%?ke>eVcc#d4);/h]EJ&87utp;i,17Jhs=qZmr$uH9Lld>.ld'gR_G#eXV(8I.9@R&C$rFjFXBY%Z)iO^Xj/pa$;laLg_Fh!p$6J*fp;,iOJmJYEI1sH6VH\c#jd189U_F,AjQtIfYSY4ogPWmr]?bbGth.Se"FpfGp_2'M>a-5k_hpbr-(CN8=D<jVVs>s:<a7L;XdCf5hZRZ"!E'BeF#5VJD%%ZHKA&GVV-4e7AVTr4.nomVJN`@KPW)^\M\u\U3_p.7jMp\hZ4?VRr[=S'!YE:jjkH+Y_&32rn\HQ[Y!rJ#fas[nB2Z*=Wp_=&,"P1Pq5=AeY]J.oq<W;nrqFI#pj#Jg`"0'T(aEL!O'foN_kg^61CBLp/o^g)RgLs*S[cY+pq-`#G1qs"_OaB-0p[]a7R+hnaGNq:J\JJ6$uj[%--Un)C)?/*sK0B@+G4_hOp">5(0kTOWes&bNnNsN)5or(+-qCp&^I2`Brn:p&_C/+6l@NV/,+m483`EDdi:`4nVm%X)tn<C'@38pMQ"7Dk^cgVfL$<Ob#EPk$!VCrRT*LXc%M%_c*Hl(uZ>#drZ)fcico<"F+MV*RFO/3;hh^#pX]I37D8V>ls`T.n5o5Cr;`,!>B[D#l~>
+endstream
+endobj
+115 0 obj
+<<
+/Annots [ 116 0 R 117 0 R 118 0 R 119 0 R 120 0 R 121 0 R 122 0 R 123 0 R 124 0 R 125 0 R 126 0 R 127 0 R 128 0 R 129 0 R 130 0 R 131 0 R 132 0 R 133 0 R 134 0 R 135 0 R 136 0 R 137 0 R 138 0 R 139 0 R 140 0 R 141 0 R 142 0 R 143 0 R 144 0 R 145 0 R 146 0 R 147 0 R 148 0 R 149 0 R 150 0 R 151 0 R 152 0 R 153 0 R 154 0 R 155 0 R 156 0 R 157 0 R 158 0 R 159 0 R ]
+/Contents 160 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font 12 0 R
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+116 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057circulation\137crescent\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 721.7008 209.6501 734.1732 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+117 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057elevation\137crescent\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 709.7953 204.1629 722.2677 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+118 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057facilities\137crescent\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 697.8898 201.6321 710.3622 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+119 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057planting\137crescent\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 685.9843 200.7733 698.4567 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+120 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057visuals\057section\137crescent\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 674.0787 197.8245 686.5512 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+121 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057boards\057board\1371\137concept\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 662.1732 198.2273 674.6457 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+122 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057design\057boards\057board\1372\137evidence\056png)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 650.2677 201.6169 662.7402 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+123 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057\137\137init\137\137\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 613.7008 118.0017 626.1732 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+124 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057boards\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 601.7953 115.0377 614.2677 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+125 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057climate\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 589.8898 115.8889 602.3622 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+126 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057config\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 577.9843 112.4993 590.4567 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+127 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057costing\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 566.0787 116.7249 578.5512 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+128 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057dataset\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 554.1732 116.3069 566.6457 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+129 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057drawings\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 542.2677 123.0633 554.7402 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+130 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057figures\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 530.3622 115.0377 542.8346 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+131 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057models\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 518.4567 116.3069 530.9291 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+132 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057plan\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 506.5512 105.3249 519.0236 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+133 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057solar\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 494.6457 107.8633 507.1181 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+134 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057src\057viz\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 482.7402 99.83765 495.2126 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+135 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057run\137analysis\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 470.8346 122.6453 483.3071 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+136 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057\137\137init\137\137\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 434.2677 124.7505 446.7402 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+137 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057build\137docs\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 422.3622 136.5685 434.8346 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+138 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057build\137links\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 410.4567 136.1505 422.9291 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+139 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057build\137notebook\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 398.5512 153.0301 411.0236 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+140 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057build\137reports\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 386.6457 145.0121 399.1181 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+141 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057build\137submission\137pdfs\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 374.7402 181.3325 387.2126 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+142 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057organize\137repo\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 362.8346 148.3941 375.3071 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+143 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057report\137content\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 350.9291 150.0737 363.4016 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+144 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057sync\137film\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 339.0236 131.5069 351.4961 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+145 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057sync\137portal\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 327.1181 139.1069 339.5906 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+146 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tools\057sync\137submission\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 315.2126 160.2273 327.685 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+147 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057construction\137unit\137rates\137aed\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 278.6457 216.8245 291.1181 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+148 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057dubai\137climate\137normals\137ncm\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 266.7402 217.2577 279.2126 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+149 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057dubai\137population\137dsc\1372023\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 254.8346 214.7193 267.3071 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+150 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057site\137zoning\137schedule\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 242.9291 191.9117 255.4016 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+151 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057sources\056json)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 231.0236 145.0273 243.4961 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+152 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057species\137water\137carbon\137rates\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 219.1181 216.8473 231.5906 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+153 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057raw\057walk\137catchment\137rings\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 207.2126 194.4501 219.685 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+154 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057cost\137plan\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 170.6457 173.3297 183.1181 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+155 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057hourly\137climate\137comfort\1378760\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 158.7402 245.1345 171.2126 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+156 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057masterplan\137geometry\056json)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 146.8346 219.7809 159.3071 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+157 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057planting\137layout\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 134.9291 194.0169 147.4016 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+158 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057schema\056json)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 123.0236 169.1041 135.4961 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+159 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057data\057processed\057spatial\137grid\137comfort\056csv)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 111.1181 213.0245 123.5906 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+160 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 2577
+>>
+stream
+Gb!$I?#SK-&r,lH/*:kriFTt]M7RdB[geEG7I6Uu"UYOB7,)Nhd3.O]h-YXsagNHR?1afLU,PrB!.!aqTfBq-@Yc-.h#,C*!3[4.l4!qk@'KdW&;.qBbSF7c'?oJN&>Pbk$kSDn6nkk2WsU$^;1_3QJ>XBLKZ?=qMD.gc=9Y`iXq6V4)Ip:)g@\I@8-&6N;&o7809/M1i%^*fP%$skJiHL==DZs*`C<.2[_#Gf$?k!J<d>.H#Y?-t<NW=8.Xm/lB3>)ZR%FXR0n[[4j4gW7-bp%G.-@`;:'KX/,i-'Fk!+A>]Z4'',8C)$$;HXjKXWAuB!@Y.^Uq7oT&.<.j7L*qpM]4K]t]-M&(ARg3<4I'/c#$c+6`Ul3*MK<fNXL_+3R;E@ZGCG$P!L%#Y0P*L(qepFnP#k]=fcOX'FD,?clQA.a+r7\Z0DOX4D\T(f'*^^ub/u#)8prLd9r'J']H0N6hqg(+S3@3gV-,<^,hah8XT>.V31n$<UH;"_[F.]2D[CG6m.D9`8no97Ba7HMViudPp0Pn4J?G8MPY8.k@%R;V,*_i,7d`nLM*q(+Gu0MjN5Y<GPmB6T\je__9u5,XG*l0<Q%fnpf]s)49ndpa#!X-Z$"`Q:BTF[>t`/\Z'VW$g*Sc!Pa:X3(7hWddML8AEl`&Wle<iQh2m).@9s/N=du?9oX.A2en<a;`q-9VYAQO^ZN"H\:1rU2)PQ76&LO:-XAY)cH7nJkrR!?*;4FcA:gKX8'+SF>06?n["GJ0p8&*^(\'+.Hb+C6Nm#EZ&eVYco/1IbCg^n@;cVZ'+OI+ni8c?Sd]DWU9>-Uu)ASJD0?5`q4K+VmEV/G6ln'3AZs_F)YKONU!q3>M6Y5UbQ9iRqmW*#/DQ8t.NuMM"&<#RZ-oQEMp>A_#Y*N&soqjh*==(k<3DR13ftodWY`'O`1dWXN0%AT2S?)UtW_/@gW@QRu:M2UO3P:,Pku&$Nris7adcEe+?H?;2<KA)2Os8ban%RN*3ON.Yau-9hn"@*e=$GHid_?8XbBTB9)VR*cNOs++5nHUj16e9;jk^-c-`7:C%[Rhg(!.-Q:(\Xs5Uf<7g-pCcf6aPfhRXAT"ASD_bqF3b8ko+Ng,]K^_+8Om"hFH57cs;(2GTF/R-.]L]t.2P_%rjqjeN:@$Ph=?DGglT)Pog#q<e.8],Ag75!E<!^oWu#p2k8)[5(rdgCU299*L2T6I*BlPgYR29.Z/q3?Dq[pD*%RdnP*2Wrh'G(?QL94T&>dR>9IUR>;Ge3'$"_l*"O\`IUq^HI6X:KZ:-4mCp_<qnU:0L7m&b]E>^bIF[JIkD^o*m.=&<\l,3$!c$a;s7ZPK`=299Yl4[cr,1!d%-%Jq-p9Hlhp(*Pa4n4qVCt"1li%e<%hEl$D\V4Sk86[P/rA,uPV10OL.;;R(1.?]hWrT[acmsq#k*pTMrr4K+tH@T!l=OU_noj9AYqXrWN.\Gkk^`Vkp"noV`nBtC:,n\9-D$aCf!BH=?%\'5+kn;A*ZA\*2nVR915+rqL!1qghQ#"B674V6?2_L_fEb:Q\em@A(S$7?W@c^5^\"1Y^Dra8u$hTgD0"C\969O%Kb:L%1C5_@YFIXkRLUaX`V)_`7@uub=87ER+u3CnWRN,]"VcY3\4*dff,&ZG*kOJIGL4rJ#LGaO[*Un%uSU&]2=J[P/\p?<u4V#k08!&S\T=W\+BF9fhK983t\:33554\b0"ASCNQu?[f`qL0/idi_.?LZ.!JHsSqdF]32/c%k%8OQ"ijqO#jN]#o$<`8fIs)HNZI9Kf\4TMHlIsRDaen_0"RQp_7VS9dj9phjV`m\%E7,3,!7Z>]/4YBG.L`-=6"XuREIP3T=IJ3AJ$-GdK&0sg+)@\<Y]#%+6"<k6_IB/A[)`Yn[LrYSZ0VFiM7kF1`_I^Es+FXnH>G+]`DD#fI<jq&V?PFY%Vt=4-f\i+j[Gp2Tqq&R]>2o6ETmo)<"XXNk2$1L45HMQRnJG^=fNdc>:sF%tr[ri;:#KP^,h7I?Ss&mmbR7=GZEVh@GYXf<b;NR!dp:aVQ>k,5LZ.ad$qIBI7+idp=(S?500%EB;TeL1#&"CK\*`0J>P>VG4N^1sZa.0tGBB*PS/VQA9N:cHUOo%lGPfUN%;@dhM>*-:;Q$L;-57RRZqs'QD3LR1NdJ>pS^\/R.ISAUS[+;qHNc]ppj2U\)D3mglUJSi'2,3`(>'PKNBXlW?oTiZ`Gf:,lTn/*4V6l]FCCN_pu'*a6qQ1/k1$n-)`![8gWN!/W@,GK9,%L92FWk+!XCC^PUP\*",hb<pUai7PRNJW/8NcL)kEA?BF2XfX3N)o:1gRQuuWO:TS)CEE(='LdN6W[qRqc+Y[CRk`p%[2UqFar,&C[s,PV$s#Ae4t6!1nX9IQcApA]Ym8VcG5GjMh*r+bhWjsnIL0%TKsD1Pgq7V?3435O"KpqfER!XB[rSSjkc4H.95C,iZL.Urb1%@prNDG8S0,s+'bof@.ZGuY!QOS[VG[T__&itP)r^Q6n0gb.@,-dS8smee"9K[@rR.^\OeqsaVn[U'E<75+?5d'_C;>u3n1a*@_q"bemQm\8~>
+endstream
+endobj
+161 0 obj
+<<
+/Annots [ 162 0 R 163 0 R 164 0 R 165 0 R 166 0 R 167 0 R 168 0 R 169 0 R 170 0 R 171 0 R 172 0 R 173 0 R 174 0 R 175 0 R 176 0 R 177 0 R 178 0 R 179 0 R 180 0 R 181 0 R 182 0 R 183 0 R 184 0 R 185 0 R 186 0 R 187 0 R 188 0 R 189 0 R 190 0 R 191 0 R 192 0 R 193 0 R 194 0 R 195 0 R 196 0 R 197 0 R 198 0 R 199 0 R 200 0 R 201 0 R 202 0 R 203 0 R 204 0 R ]
+/Contents 205 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font 12 0 R
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+162 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057models\057cost\137summary\056json)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 721.7008 165.2965 734.1732 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+163 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057models\057headline\137metrics\056json)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 709.7953 173.7477 722.2677 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+164 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057models\057model\137metrics\056json)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 697.8898 165.2965 710.3622 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+165 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tests\057test\137pipeline\056py)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 661.3228 142.4889 673.7953 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+166 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057tests\057test\137film\056js)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 649.4173 124.7505 661.8898 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+167 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057notebooks\057AL\137SAFA\1372\137PARK\137COMPLETE\137ANALYSIS\056ipynb)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 612.8504 286.4709 625.3228 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+168 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057index\056html)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 576.2835 123.0557 588.7559 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+169 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057SUBMISSION\137GUIDE\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 564.378 174.9941 576.8504 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+170 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057gallery\137data\056js)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 552.4724 175.4349 564.9449 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+171 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057plan\137geometry\056js)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 540.5669 185.1401 553.0394 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+172 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057portal\056js)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 528.6614 152.1941 541.1339 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+173 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057portal\137data\056js)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 516.7559 172.0453 529.2283 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+174 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057selftest\056js)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 504.8504 157.6889 517.3228 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+175 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057DATA\137AUDIT\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 492.9449 184.6917 505.4173 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+176 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057docs\057\137PORTAL\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 481.0394 169.0737 493.5118 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+177 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057Ai Park \055 Master Plan \0504\051\056jpg)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 444.4724 203.3041 456.9449 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+178 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057Ai Park Scope of Work \046 General Terms \046 Conditions \0505\051\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 432.5669 321.9629 445.0394 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+179 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057Al Safa Park 2 Plan \0505\051\056dwg)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 420.6614 200.3553 433.1339 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+180 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057MAIN WEBSITE DETAILS\056txt)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 408.7559 204.9685 421.2283 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+181 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057Neighborhood Parks Manual \0504\051\056pdf)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 396.8504 231.1581 409.3228 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+182 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057NEIGHBORHOOD\137PARKS\137MANUAL\137TEXT\056txt)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 384.9449 269.5685 397.4173 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+183 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\05700\137BRIEF\057SCOPE\137OF\137WORK\137FULL\137TEXT\056txt)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 373.0394 231.1581 385.5118 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+184 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05701\137Design\137Narrative\137Concept\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 336.4724 273.8245 348.9449 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+185 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05702\137Preliminary\137Design\137Masterplan\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 324.5669 291.9961 337.0394 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+186 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05703\137Concept\137Plans\137Spatial\137Diagrams\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 312.6614 299.5961 325.1339 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+187 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05704\137Key\137Sections\137Elevations\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 300.7559 268.7705 313.2283 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+188 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05705\1373D\137Spatial\137Visualizations\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 288.8504 270.4577 301.3228 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+189 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05706\137AI\137Methodology\137Report\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 276.9449 264.5145 289.4173 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+190 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05707\137User\137Experience\137Activation\137Strategy\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 265.0394 313.9601 277.5118 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+191 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05708\137Sustainability\137Concept\137Strategy\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 253.1339 295.3629 265.6063 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+192 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05709\137Material\137Landscape\137Palette\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 241.2283 278.4833 253.7008 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+193 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05710\137Complete\137Design\137Report\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 229.3228 269.5913 241.7953 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+194 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05711\137Site\137Analysis\137Human\137Centric\137Research\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 217.4173 324.9421 229.8898 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+195 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057submission\05712\137Concept\137Animation\137Video\057MANIFEST\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 205.5118 273.3913 217.9843 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+196 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057withdrawn\137visuals\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 168.9449 210.0605 181.4173 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+197 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05702\137PHASE2\137PROBLEM\137DEFINITION\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 157.0394 303.3885 169.5118 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+198 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05703\137PHASE3\137OPPORTUNITY\137AND\137OBJECTIVES\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 145.1339 346.0473 157.6063 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+199 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05704\137PHASE4\137CONCEPT\137DEVELOPMENT\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 133.2283 317.3269 145.7008 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+200 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05705\137PHASE5\137MASTERPLAN\137DEVELOPMENT\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 121.3228 332.9449 133.7953 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+201 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05706\137PHASE6\137DETAILED\137DESIGN\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 109.4173 289.4577 121.8898 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+202 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05707\137PHASE7\137PERFORMANCE\137AND\137SUSTAINABILITY\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 97.51181 365.4501 109.9843 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+203 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05708\137PHASE8\137USER\137EXPERIENCE\137AND\137ACTIVATION\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 85.6063 363.7781 98.07874 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+204 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057github\056com\057wasim437\057Al\137SAFA\057blob\057main\057archive\057phases\05709\137PHASE9\137AI\137WORKFLOW\137AND\137VISUALIZATION\057README\056md)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 65.19685 73.70079 359.5373 86.17323 ]
+/Subtype /Link
+/Type /Annot
+>>
+endobj
+205 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 2822
+>>
+stream
+Gb!$J?$"^Z(WZ"9.F-I=]@0b2^W?,F""*OR0S<**h8tUFfEsSq2Ii/Nm&,>&FoXn`Sb?49jsDeEigg$E7m;F9"G6msi9"s`!k=-HEe"2V&3g.QOU:Ohr:g>%*F$GcA/^d%RXbg@fo?Bhih?D^*6gs5D1^kQ8@L/PL5@a'fbRO,*e(jh=Mlc-E;E]h/t.SW@&o.J]YqF>?]r96&O]m[`F'?"=kL,*?GX6uaWW*7l^ZQHelDOeP8`k3h1h^VlE&Y-oKC-R&HCU_D`ahI9fW*A?=+D;!1&X%"'_u2bA`R)kk<t<%afLAE$V[n^`(Z#<Jo`Za4.4lb)Hr%e-j9F+%B\r+%?6Ls3A-(hc915!I+of,9fLe8.OKjA7?_K'#t&X[h.,4Z\c=E;kAojU_G[$S(3Br>P'>dU)V_&0$tXurS5B2@(2:>jEsD$kuu0U%-'>88B-@(;m/-f$B<]"hqYBS-"gq`'qDFO?"JjP[n^BVQY?.R[Ofj4?mmq63Nn)C]c'AOMiFmrk!PtI7lQG1`tcc)T)R,*L6otG49p_$&[@:i3OjQ^ei?9;(R`2eLH4QgEBEi8,u]j9'A9tM:4\jl>$T4bFIfPEX:VbqT"?-4PGj3<8Qf%UW=(<],YO_V<`,!tdZK/&pJgEFQESZ13290"+Nld)kWeTP$P*tVE@;p%DL+a6n9#0qK-)a=dm2R%po#Tbcd#aZL5&r7a8;SNLTu=DL*)nr`+nQM';SiY'='$%4tk+*imJdoa;]A'V\="FOnQZ>AE_&tou>kX;\VVJ>AoGqq*reO?"@)uH^)fQQY-KF[iuJ-?93iA^7+XMrBE>+d0LrKe;jfUp["s`C:PZHpMt/!\FZnu+SNVjpRu"5#JCBiiAC7_bojVj#2-:f,X5iYBpje#X@W.'[&d@))/#]r`L?Kt1c^:PKD*OP,-/6]IDeU`m</V%Z`?q776ro1f<_.=UK)V8?R*7_D'-fhD!$!iQ95=N.P7^kfmAjg/Y'ufbB%!,C!(16hA>NbBIC05SYgt,0<^&3F&pWk0;ZG9.T4t0Y$S-%,E3OI;-I!Xb8!V8"BDX%f2/dhr.[V)7GA9R?E!#Q44fTi_=IorIh[b+KN52&F9s]rns.&XHa-)S=[._m]P3ENX4QU'a>>dK[Ebc?oganNa\gQ+C]#fG,Fbs5)+UQHs6Qg.a!>usS9>rDRRKFNiZK5YeMQb#+2EdWLn^<pD`j&^`8d4s]*fq6cnsHE^@X1JYj+%B!@&q+?GRn""l-jKn)'n\p#:p_Lg=O1fJlKu^R;D:7[kSpZ8Kh3H4-J&<!e>e9K"D-W7_,(%I;BV?@doqEnr:)m`OfNr!(cci"aEYk1*)>DpU"m1omsg&9.Zp\podll%9=8h'@IZ-JdH9_#pMR,5/fU<;Nb",_kqo8[3B#pb`biIV=jj$mRDBn!>MP5PB\;K^(4u$3K#dILQ?QgGdJBJMGIdbB[5Bb;*q76,89k)j\7O3u#qs:+F#3L#G"H/pi--#M1n9iUeH*qosRT6q?*Yjpc%krtR%6N2'@$%1J^Gg@64Re-dWf%0uMXS:78dfha8SD@Sm#iO`oX6-(RGY^^gsRp]@\Yt^&Cr8FagLP7bt_I;>o[[XL'bq?(@O'Z/(Ze3K'R1NM(>\]Z"\]>Ni*ODbTFnWafYMD"I*-pRPi()u'[>&06$X<=%6?c('6REp+RS?G;Qh:Sk71.B3LNQUoRtR]T=gF8RR4=0!U"b@:g]aM&8]C:;PngCSmU3Go8hS7d;sL7Q(,01&n(V,?`ia'TZjq[WCK>(!Vu;Q+.^fti0m1oj$^<L>d+c1"9_sliBuH4TBMq(X:TXAlRSPl92ZQBmomOUDo!,.@hq-.j-8mF$rqS!r\f&0b5`U"A!F8$FH3#&VH<I+V?7r[.b2mf0C-(0mh?"bX*8EgrO%j8==4I8Uk#KEZKMsP'ZZ_MZW307I(L,Fo]#hVh=;F2g@D2+-%ZNB@Am)t4R5@q@GPKJceP5B^J20heFSBoX\TGc)?HJP^O;4`cfUC7qbB[B7eVq("]`gl[IQ1Et0Z"aq]pr3m9[_741Ni;7$[d'`E$4'"K5$S#S9cid\b'L?@Kl/h6=(M&;_C&1P,2nsh<`u"/^6R62I9IK^4-rE7CHr<hmZb29@\R($2kZ*hmEa/Y1qePlmtKtcd'*-`K#p7LU=O>j8qL^?c,SL`SpHQ_W,iVlNc;ilT9IQQd8gJ9IogAd&4nB#pj3lnoRFOnSnoPMCl>gI0NL`Yhi@F;XiM`DH1'eg;+Bf0W^U7E7$3jDnO0Cl!t]=%K-n+qh&;3S0B?^j#G,u%R*W[DMi)G!\0e+<N6+Oko>$J.0?85@*ij::RbtV+T=dBEM%teJ,6i<\Fh)S.([O"7q%KH90YjR[O=i'$cbD['%=RElOUnTa</H;)0E2_cTpr(cT>]G[1"TIntOd/:57X#k@*R$VB,j->i.W^5["SL[KdCnTD&43\5rN.k[pVs^SW%*mAYQHeSion595F+OZ2^MH['rWc(`hu`nj]L%,t&tEHDjnNl,k!VV.".<?+bl_kFEXT2P]mM*DII*>2/^,sC?Qj![4T3,DgUSN"VkEO[S1=71i76SfR6G7BGa+I[Sni,A9FNq3'*NW0d]E8A;rL1M:j-Kd'54q"=!..\erdOI0k[GpLMA9D$lV/KZ.DGhUecK^nD*%G9j]Flp_&&\_*hg55$^$&KR"t47-dYm4X=66dH<Vmjb79M:?_LhAY5[D63T"dB(H-&sU6<QU;QN^/^8,S93V]BXFDoX-5]iQc8m7sGLp,opC5%$BtK\\<U3jE,%QD#7)%Tnp-qcN=*L5Z'4LUs:b~>
 endstream
 endobj
 xref
-0 97
+0 206
 0000000000 65535 f 
 0000000015 00000 n 
 0000000054 00000 n 
-0000000198 00000 n 
-0000000247 00000 n 
-0000000497 00000 n 
-0000000705 00000 n 
-0000000916 00000 n 
-0000001165 00000 n 
-0000001410 00000 n 
-0000001658 00000 n 
-0000001924 00000 n 
-0000003233 00000 n 
-0000003288 00000 n 
-0000003396 00000 n 
-0000003509 00000 n 
-0000003615 00000 n 
-0000003857 00000 n 
-0000004107 00000 n 
-0000004353 00000 n 
-0000004602 00000 n 
-0000004868 00000 n 
-0000007560 00000 n 
-0000007762 00000 n 
-0000008872 00000 n 
-0000008938 00000 n 
-0000009046 00000 n 
-0000009159 00000 n 
-0000009265 00000 n 
-0000009381 00000 n 
-0000009647 00000 n 
-0000011740 00000 n 
-0000470883 00000 n 
-0000472120 00000 n 
-0000472322 00000 n 
-0000474211 00000 n 
-0000474526 00000 n 
-0000475235 00000 n 
-0000731707 00000 n 
-0000732709 00000 n 
-0001016361 00000 n 
-0001017444 00000 n 
-0001017710 00000 n 
-0001019742 00000 n 
-0001229811 00000 n 
-0001230799 00000 n 
-0001231065 00000 n 
-0001233037 00000 n 
-0001429896 00000 n 
-0001431226 00000 n 
-0001431511 00000 n 
-0001431820 00000 n 
-0001432334 00000 n 
-0002397748 00000 n 
-0002400031 00000 n 
-0002400316 00000 n 
-0002400622 00000 n 
-0002401215 00000 n 
-0002860358 00000 n 
-0002861595 00000 n 
-0002861880 00000 n 
-0002862188 00000 n 
-0002862726 00000 n 
-0003059585 00000 n 
-0003060915 00000 n 
-0003061200 00000 n 
-0003061506 00000 n 
-0003062023 00000 n 
-0003272092 00000 n 
-0003273080 00000 n 
-0003273476 00000 n 
-0003273685 00000 n 
-0003273896 00000 n 
-0003274173 00000 n 
-0003274423 00000 n 
-0003274664 00000 n 
-0003274962 00000 n 
-0003275207 00000 n 
-0003275455 00000 n 
-0003275701 00000 n 
-0003275950 00000 n 
-0003276198 00000 n 
-0003276447 00000 n 
-0003276705 00000 n 
-0003276954 00000 n 
-0003277231 00000 n 
-0003277524 00000 n 
-0003277793 00000 n 
-0003278056 00000 n 
-0003278322 00000 n 
-0003278581 00000 n 
-0003278856 00000 n 
-0003279122 00000 n 
-0003279398 00000 n 
-0003279678 00000 n 
-0003279956 00000 n 
-0003280232 00000 n 
+0000000214 00000 n 
+0000000263 00000 n 
+0000000513 00000 n 
+0000000721 00000 n 
+0000000932 00000 n 
+0000001181 00000 n 
+0000001426 00000 n 
+0000001674 00000 n 
+0000001940 00000 n 
+0000003249 00000 n 
+0000003304 00000 n 
+0000003412 00000 n 
+0000003525 00000 n 
+0000003631 00000 n 
+0000003873 00000 n 
+0000004123 00000 n 
+0000004369 00000 n 
+0000004618 00000 n 
+0000004884 00000 n 
+0000007576 00000 n 
+0000007778 00000 n 
+0000008888 00000 n 
+0000008954 00000 n 
+0000009062 00000 n 
+0000009175 00000 n 
+0000009281 00000 n 
+0000009397 00000 n 
+0000009663 00000 n 
+0000011756 00000 n 
+0000470899 00000 n 
+0000472136 00000 n 
+0000472338 00000 n 
+0000474227 00000 n 
+0000474542 00000 n 
+0000475251 00000 n 
+0000731723 00000 n 
+0000732725 00000 n 
+0001016377 00000 n 
+0001017460 00000 n 
+0001017726 00000 n 
+0001019758 00000 n 
+0001229827 00000 n 
+0001230815 00000 n 
+0001231081 00000 n 
+0001233053 00000 n 
+0001429912 00000 n 
+0001431242 00000 n 
+0001431527 00000 n 
+0001431836 00000 n 
+0001432350 00000 n 
+0002397764 00000 n 
+0002400047 00000 n 
+0002400332 00000 n 
+0002400638 00000 n 
+0002401231 00000 n 
+0002860374 00000 n 
+0002861611 00000 n 
+0002861896 00000 n 
+0002862204 00000 n 
+0002862742 00000 n 
+0003059601 00000 n 
+0003060931 00000 n 
+0003061216 00000 n 
+0003061522 00000 n 
+0003062039 00000 n 
+0003272108 00000 n 
+0003273096 00000 n 
+0003273633 00000 n 
+0003273842 00000 n 
+0003274054 00000 n 
+0003274367 00000 n 
+0003274702 00000 n 
+0003275040 00000 n 
+0003275352 00000 n 
+0003275666 00000 n 
+0003275969 00000 n 
+0003276296 00000 n 
+0003276616 00000 n 
+0003276930 00000 n 
+0003277234 00000 n 
+0003277564 00000 n 
+0003277877 00000 n 
+0003278142 00000 n 
+0003278392 00000 n 
+0003278632 00000 n 
+0003278881 00000 n 
+0003279136 00000 n 
+0003279376 00000 n 
+0003279628 00000 n 
+0003279900 00000 n 
+0003280209 00000 n 
+0003280497 00000 n 
+0003280791 00000 n 
+0003281097 00000 n 
+0003281392 00000 n 
+0003281691 00000 n 
+0003281978 00000 n 
+0003282287 00000 n 
+0003282600 00000 n 
+0003282912 00000 n 
+0003283221 00000 n 
+0003283502 00000 n 
+0003283775 00000 n 
+0003284046 00000 n 
+0003284324 00000 n 
+0003284604 00000 n 
+0003284881 00000 n 
+0003285156 00000 n 
+0003285431 00000 n 
+0003285706 00000 n 
+0003285973 00000 n 
+0003286242 00000 n 
+0003289445 00000 n 
+0003290013 00000 n 
+0003290294 00000 n 
+0003290573 00000 n 
+0003290853 00000 n 
+0003291131 00000 n 
+0003291408 00000 n 
+0003291686 00000 n 
+0003291965 00000 n 
+0003292228 00000 n 
+0003292477 00000 n 
+0003292727 00000 n 
+0003292976 00000 n 
+0003293226 00000 n 
+0003293476 00000 n 
+0003293727 00000 n 
+0003293977 00000 n 
+0003294226 00000 n 
+0003294473 00000 n 
+0003294721 00000 n 
+0003294967 00000 n 
+0003295218 00000 n 
+0003295483 00000 n 
+0003295741 00000 n 
+0003296000 00000 n 
+0003296262 00000 n 
+0003296523 00000 n 
+0003296795 00000 n 
+0003297056 00000 n 
+0003297318 00000 n 
+0003297575 00000 n 
+0003297834 00000 n 
+0003298096 00000 n 
+0003298384 00000 n 
+0003298670 00000 n 
+0003298956 00000 n 
+0003299234 00000 n 
+0003299494 00000 n 
+0003299781 00000 n 
+0003300058 00000 n 
+0003300328 00000 n 
+0003300622 00000 n 
+0003300903 00000 n 
+0003301179 00000 n 
+0003301444 00000 n 
+0003301728 00000 n 
+0003304399 00000 n 
+0003304959 00000 n 
+0003305222 00000 n 
+0003305489 00000 n 
+0003305753 00000 n 
+0003306014 00000 n 
+0003306271 00000 n 
+0003306570 00000 n 
+0003306821 00000 n 
+0003307083 00000 n 
+0003307356 00000 n 
+0003307630 00000 n 
+0003307894 00000 n 
+0003308166 00000 n 
+0003308432 00000 n 
+0003308703 00000 n 
+0003308967 00000 n 
+0003309253 00000 n 
+0003309571 00000 n 
+0003309852 00000 n 
+0003310124 00000 n 
+0003310411 00000 n 
+0003310702 00000 n 
+0003310989 00000 n 
+0003311287 00000 n 
+0003311590 00000 n 
+0003311897 00000 n 
+0003312194 00000 n 
+0003312493 00000 n 
+0003312788 00000 n 
+0003313100 00000 n 
+0003313405 00000 n 
+0003313705 00000 n 
+0003314001 00000 n 
+0003314317 00000 n 
+0003314614 00000 n 
+0003314891 00000 n 
+0003315195 00000 n 
+0003315510 00000 n 
+0003315815 00000 n 
+0003316123 00000 n 
+0003316424 00000 n 
+0003316743 00000 n 
+0003317064 00000 n 
+0003317385 00000 n 
 trailer
 <<
-/Size 97
+/Size 206
 /Root 3 0 R
 /Info 1 0 R
 >>
 startxref
-3282830
+3320301
 %%EOF

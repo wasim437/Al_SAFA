@@ -254,5 +254,11 @@ PROJECT_STAMP = "Al Safa 2 Park · Falaj Al Safa · Dubai Municipality AI Design
 # ---------------------------------------------------------------------------
 GITHUB_USER = "wasim437"
 GITHUB_REPO = "Al_SAFA"
+
+# Optional Google Drive mirror of the twelve upload PDFs. Set it to a folder
+# share link ("Anyone with the link -> Viewer") and it appears on every slot
+# cover as a second route to the evidence. Left empty, nothing is printed —
+# an unset link is better than a dead one in front of a juror.
+GDRIVE_URL = ""
 GITHUB_URL = f"https://github.com/{GITHUB_USER}/{GITHUB_REPO}"
 PAGES_URL = f"https://{GITHUB_USER}.github.io/{GITHUB_REPO}/"

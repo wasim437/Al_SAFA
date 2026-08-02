@@ -58,6 +58,7 @@ OUT = ROOT / "UPLOAD_THESE_12_FILES"
 # Where a juror goes to check any claim in these files for themselves.
 REPO_URL = C.GITHUB_URL
 PORTAL_URL = C.PAGES_URL
+DRIVE_URL = getattr(C, "GDRIVE_URL", "")
 BLOB = f"{REPO_URL}/blob/main"
 
 PROJECT = "Al Safa 2 Park — Falaj Al Safa"
@@ -362,6 +363,8 @@ def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
         ("Repository", REPO_URL.replace("https://", ""), REPO_URL),
         ("Live portal", PORTAL_URL.replace("https://", ""), PORTAL_URL),
     ]
+    if DRIVE_URL:
+        rows.append(("Drive mirror", "the twelve upload files", DRIVE_URL))
     y = top - 12 * mm
     for label, shown, url in rows:
         c.setFillColor(MUTED)
@@ -439,49 +442,122 @@ SLOT_PHASES: dict[int, list[int]] = {
     11: [1], 12: [9],
 }
 
-# The evidence index printed at the back of every slot. Grouped, and every row
-# is a live link, so a juror holding any one of the twelve files can reach the
-# whole project from it.
-INDEX: list[tuple[str, list[tuple[str, str]]]] = [
-    ("Start here", [
-        ("EXPLAIN_THE_PROJECT/START_HERE.md", "The project in plain language"),
-        ("PROJECT_PLAN.md", "Requirements, phases, status, what is left"),
-        ("README.md", "The design argument, written for a juror"),
-        ("notebooks/AL_SAFA_2_PARK_COMPLETE_ANALYSIS.ipynb",
-         "The complete analysis, outputs embedded"),
-    ]),
-    ("The geometry and the models", [
-        ("src/plan.py", "Single source of the crescent geometry"),
-        ("src/climate.py", "The 8,760-hour year rebuilt from NCM normals"),
-        ("src/solar.py", "Sun position and shadow ray-tracing"),
-        ("src/dataset.py", "Assembles the ML training tables"),
-        ("src/models.py", "The four models"),
-        ("src/costing.py", "The cost model against the AED 35 M ceiling"),
-    ]),
-    ("The data, as issued and as processed", [
-        ("data/raw/sources.json", "Every source dataset, with its period"),
-        ("DATA_SOURCES.md", "Sources and their stated limitations"),
-        ("data/raw/site_zoning_schedule.csv", "The measured room schedule"),
-        ("data/processed/hourly_climate_comfort_8760.csv",
-         "The 8,760-hour climate and comfort series"),
-        ("data/processed/cost_plan.csv", "The capital cost plan, line by line"),
-    ]),
-    ("The results, and the checks on them", [
-        ("models/model_metrics.json", "Trained-model metrics"),
-        ("models/headline_metrics.json", "The headline numbers"),
-        ("tests/test_pipeline.py", "38 correctness checks"),
-        ("archive/withdrawn_visuals/README.md",
-         "Images withdrawn on purpose, and why"),
-    ]),
-    ("The drawings", [
-        ("figures/fig10_masterplan.png", "Masterplan and room schedule"),
-        ("design/visuals/section_crescent.png", "Section A–A at midspan"),
-        ("design/visuals/circulation_crescent.png", "Circulation and accessibility"),
-        ("design/visuals/facilities_crescent.png",
-         "Commercial & Service Facilities Map"),
-        ("design/visuals/planting_crescent.png", "Planting plan, 131 trees"),
-    ]),
+# What a file is, where the name alone does not say it. Anything not named here
+# falls back to its group's default, so a new file added to the project still
+# appears in the index rather than being silently dropped.
+NOTE: dict[str, str] = {
+    "PROJECT_PLAN.md": "Requirements, phases, status, and what is left",
+    "README.md": "The design argument, written for a juror",
+    "DATA_SOURCES.md": "Every source, its period, and its limitations",
+    "AL_SAFA_MASTER_PROMPT.md": "The whole design, stated for visualisation",
+    "EXPLAIN_THE_PROJECT/START_HERE.md": "The project in plain language",
+    "LINKS.md": "Every public URL this submission points at",
+    "src/plan.py": "SINGLE SOURCE of the crescent geometry",
+    "src/climate.py": "The 8,760-hour year rebuilt from NCM normals",
+    "src/solar.py": "Sun position and shadow ray-tracing",
+    "src/dataset.py": "Assembles the ML training tables",
+    "src/models.py": "The four models",
+    "src/costing.py": "The cost model against the AED 35 M ceiling",
+    "src/config.py": "Every constant the project reads",
+    "src/drawings.py": "Section, elevation, circulation, planting, facilities",
+    "src/boards.py": "The two presentation boards",
+    "src/figures.py": "The analysis charts",
+    "run_analysis.py": "Runs the whole pipeline end to end",
+    "data/raw/sources.json": "Every source dataset, with its period",
+    "data/raw/site_zoning_schedule.csv": "The measured room schedule",
+    "data/processed/hourly_climate_comfort_8760.csv":
+        "The 8,760-hour climate and comfort series",
+    "data/processed/spatial_grid_comfort.csv": "The 15,000-cell ground grid",
+    "data/processed/cost_plan.csv": "The capital cost plan, line by line",
+    "data/processed/masterplan_geometry.json": "The plan geometry, as exported",
+    "data/processed/planting_layout.csv": "Every one of the 131 trees",
+    "models/model_metrics.json": "Trained-model metrics",
+    "models/headline_metrics.json": "The headline numbers",
+    "tests/test_pipeline.py": "38 correctness checks",
+    "tests/test_film.js": "Every frame of the concept film",
+    "docs/index.html": "The project website",
+    "archive/withdrawn_visuals/README.md":
+        "Images withdrawn on purpose, and why",
+}
+
+# Every group in the index: heading, what to glob, and the fallback description.
+# Ordered as a juror would want to read it — deliverables first, then the
+# machinery, then the raw material.
+GROUPS: list[tuple[str, list[str], str]] = [
+    ("Project documents", ["*.md", "EXPLAIN_THE_PROJECT/*.md"],
+     "Project document"),
+    # NB: the twelve upload files are injected separately, not globbed. This
+    # index is generated *during* the build, when the output folder has been
+    # cleared and only the slots built so far exist — globbing it listed five.
+    ("The written reports", ["reports/pdf/*.pdf"],
+     "Generated from the live analysis"),
+    ("The analysis figures", ["figures/*.png"],
+     "Analysis output — computed from project data"),
+    ("The technical drawings and boards",
+     ["design/visuals/*.png", "design/boards/*.png"],
+     "Technical drawing — generated from src/plan.py"),
+    ("The analysis code", ["src/*.py", "run_analysis.py"],
+     "Analysis module"),
+    ("The build and sync tools", ["tools/*.py"], "Build tool"),
+    ("The data, as issued", ["data/raw/*"], "Source dataset"),
+    ("The data, as processed", ["data/processed/*"],
+     "Generated by the pipeline"),
+    ("The trained models", ["models/*"], "Model output"),
+    ("The tests", ["tests/*.py", "tests/*.js"], "Correctness checks"),
+    ("The notebook", ["notebooks/*.ipynb"],
+     "The complete analysis, outputs embedded"),
+    ("The website and analytics portal",
+     ["docs/index.html", "docs/*.md", "docs/_PORTAL/*.js",
+      "docs/_PORTAL/*.md"],
+     "Published site"),
+    ("The competition brief, as issued", ["00_BRIEF/*"],
+     "Dubai Municipality source document"),
+    ("The twelve submission folders", ["submission/*/MANIFEST.md"],
+     "What is in the slot, and what produced each file"),
+    ("Working history", ["archive/*/README.md", "archive/*/*/README.md"],
+     "Working record"),
 ]
+
+# Never published, or noise in an index.
+SKIP = ("__pycache__", "/vendor/", ".ipynb_checkpoints", "UPLODED",
+        "desktop.ini", ".gitkeep")
+
+
+def out_name(slot: dict) -> str:
+    """The upload filename for a slot. One definition, used to write the file
+    and to cite it, so the two can never disagree."""
+    stem = f"{slot['n']:02d}_{slot['title'].replace(' ', '_').replace('&', 'and')}"
+    return "".join(ch for ch in stem if ch.isalnum() or ch in "_-") + ".pdf"
+
+
+def evidence_index() -> list[tuple[str, list[tuple[str, str]]]]:
+    """Walk the project and group every file worth citing.
+
+    Discovered rather than hand-listed, so a file added to the project turns up
+    in the index by itself. Hand-curation is how things go missing.
+    """
+    out: list[tuple[str, list[tuple[str, str]]]] = []
+    seen: set[str] = set()
+
+    # Computed from SLOTS, never globbed — see the note in GROUPS.
+    out.append(("The twelve upload files", [
+        (f"UPLOAD_THESE_12_FILES/{out_name(s)}", s["title"]) for s in SLOTS]))
+    seen.update(f"UPLOAD_THESE_12_FILES/{out_name(s)}" for s in SLOTS)
+
+    for heading, patterns, fallback in GROUPS:
+        rows: list[tuple[str, str]] = []
+        for pat in patterns:
+            for p in sorted(ROOT.glob(pat)):
+                if not p.is_file():
+                    continue
+                rel = p.relative_to(ROOT).as_posix()
+                if rel in seen or any(s in rel for s in SKIP):
+                    continue
+                seen.add(rel)
+                rows.append((rel, NOTE.get(rel, fallback)))
+        if rows:
+            out.append((heading, rows))
+    return out
 
 
 def method_page(c: rl_canvas.Canvas, slot: dict) -> None:
@@ -563,66 +639,92 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> None:
     c.showPage()
 
 
-def index_page(c: rl_canvas.Canvas, slot: dict) -> None:
-    """Every part of the project, live, from whichever file a juror opened."""
-    c.setPageSize(A4)
+def index_page(c: rl_canvas.Canvas, slot: dict) -> int:
+    """Every part of the project, live, from whichever file a juror opened.
+
+    Paginates itself: the list is discovered from the filesystem, so it grows
+    with the project and must not be allowed to run off the bottom of a page.
+    Returns how many pages it used.
+    """
+    index = evidence_index()
+    total = sum(len(rows) for _, rows in index)
     w, h = A4
-
-    c.setFillColor(ACCENT)
-    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
-
     x = 20 * mm
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 15)
-    c.drawString(x, h - 28 * mm, "The complete project, and where to check it")
+    floor = 24 * mm
+    pages = 1
 
+    def new_page(first: bool) -> float:
+        c.setPageSize(A4)
+        c.setFillColor(ACCENT)
+        c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+        c.setFillColor(INK)
+        c.setFont("Helvetica-Bold", 15)
+        c.drawString(x, h - 28 * mm,
+                     "The complete project, and where to check it"
+                     if first else
+                     "The complete project — continued")
+        return h - 36 * mm
+
+    def footer() -> None:
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 7.4)
+        c.drawString(x, 16 * mm,
+                     "Links resolve once the repository is published. GitHub "
+                     "renders PDFs, notebooks, CSVs and images in the browser — "
+                     "nothing needs to be downloaded or cloned.")
+        c.setFont("Helvetica", 8)
+        c.drawString(x, 11 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+
+    y = new_page(True)
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 9)
-    y = h - 36 * mm
-    intro = ("Every link below is live. The repository holds the data, the "
-             "code, the trained models and the tests, and runs end to end with "
-             "one command. A juror who wants to know where a number came from "
-             "can be given a file path rather than an opinion.")
+    intro = (f"Every one of the {total} links below is live. The repository "
+             f"holds the data as issued and as processed, the code, the "
+             f"trained models, the drawings and the tests, and it runs end to "
+             f"end with one command. A juror who wants to know where a number "
+             f"came from can be given a file path rather than an opinion.")
     for line in _wrap(c, intro, "Helvetica", 9, w - 40 * mm):
         c.drawString(x, y, line)
         y -= 4.6 * mm
 
+    y -= 3 * mm
+    for label, url in (("Repository", REPO_URL), ("Live portal", PORTAL_URL)):
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 8.5)
+        c.drawString(x, y, label)
+        _link(c, url.replace("https://", ""), url, x + 24 * mm, y)
+        y -= 5 * mm
     y -= 4 * mm
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8.5)
-    c.drawString(x, y, "Repository")
-    _link(c, REPO_URL.replace("https://", ""), REPO_URL, x + 24 * mm, y)
-    y -= 5 * mm
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8.5)
-    c.drawString(x, y, "Live portal")
-    _link(c, PORTAL_URL.replace("https://", ""), PORTAL_URL, x + 24 * mm, y)
-    y -= 9 * mm
 
-    for heading, rows in INDEX:
+    for heading, rows in index:
+        # Never strand a heading at the foot of a page.
+        if y < floor + 14 * mm:
+            footer()
+            c.showPage()
+            pages += 1
+            y = new_page(False)
         c.setStrokeColor(RULE)
-        c.line(x, y + 4.5 * mm, w - 20 * mm, y + 4.5 * mm)
+        c.line(x, y + 4.3 * mm, w - 20 * mm, y + 4.3 * mm)
         c.setFillColor(INK)
-        c.setFont("Helvetica-Bold", 8.6)
-        c.drawString(x, y, heading.upper())
-        y -= 5.4 * mm
+        c.setFont("Helvetica-Bold", 8.4)
+        c.drawString(x, y, f"{heading.upper()}   ({len(rows)})")
+        y -= 5.2 * mm
         for path, what in rows:
-            _link(c, path, f"{BLOB}/{path}", x + 3 * mm, y, size=7.8)
+            if y < floor:
+                footer()
+                c.showPage()
+                pages += 1
+                y = new_page(False)
+            _link(c, path, f"{BLOB}/{path}", x + 3 * mm, y, size=7.6)
             c.setFillColor(MUTED)
-            c.setFont("Helvetica", 7.6)
+            c.setFont("Helvetica", 7.4)
             c.drawRightString(w - 20 * mm, y, what)
-            y -= 4.3 * mm
-        y -= 4 * mm
+            y -= 4.2 * mm
+        y -= 3.5 * mm
 
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 7.6)
-    c.drawString(x, 20 * mm,
-                 "Links resolve once the repository is published. GitHub "
-                 "renders PDFs and notebooks in the browser — nothing needs to "
-                 "be downloaded or cloned.")
-    c.setFont("Helvetica", 8)
-    c.drawString(x, 14 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    footer()
     c.showPage()
+    return pages
 
 
 def _wrap(c, text: str, font: str, size: float, maxw: float) -> list[str]:
@@ -719,8 +821,7 @@ def build_slot(slot: dict, act: bool) -> dict:
         return report
 
     OUT.mkdir(exist_ok=True)
-    stem = f"{slot['n']:02d}_{slot['title'].replace(' ', '_').replace('&', 'and')}"
-    stem = "".join(ch for ch in stem if ch.isalnum() or ch in "_-")
+    stem = out_name(slot)[:-4]
     dest = OUT / f"{stem}.pdf"
     report["out"] = dest.name
 
