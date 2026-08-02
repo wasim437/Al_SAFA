@@ -252,7 +252,7 @@ PROJECT_STAMP = "Al Safa 2 Park · Falaj Al Safa · Dubai Municipality AI Design
 # ---------------------------------------------------------------------------
 # Repository / publication
 # ---------------------------------------------------------------------------
-GITHUB_USER = "wasimmisaw437"
-GITHUB_REPO = "al-safa-2-park-ai"
+GITHUB_USER = "wasim437"
+GITHUB_REPO = "Al_SAFA"
 GITHUB_URL = f"https://github.com/{GITHUB_USER}/{GITHUB_REPO}"
 PAGES_URL = f"https://{GITHUB_USER}.github.io/{GITHUB_REPO}/"

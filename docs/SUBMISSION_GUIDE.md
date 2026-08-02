@@ -303,7 +303,7 @@ the analysis is real rather than asserted. Put the repository URL in that PDF, o
 the first page:
 
 > *The complete analysis — data, code, models and tests — is published at
-> `github.com/wasimmisaw437/al-safa-2-park-ai` and runs end to end with
+> `github.com/wasim437/Al_SAFA` and runs end to end with
 > `python run_analysis.py`.*
 
 Most entries cannot offer that. It costs one line.

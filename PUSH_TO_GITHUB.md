@@ -29,7 +29,7 @@ Then, from the project folder:
 ```powershell
 cd "c:\Users\LENOVO\Downloads\AL SAFA"
 gh auth login                      # choose GitHub.com → HTTPS → login with a browser
-gh repo create al-safa-2-park-ai --public --source=. --remote=origin --push
+gh repo create Al_SAFA --public --source=. --remote=origin --push
 ```
 
 That creates the repository and pushes in one command.
@@ -38,7 +38,7 @@ That creates the repository and pushes in one command.
 
 ## Option B — Plain git (no extra install)
 
-1. Create an empty repository on GitHub named **`al-safa-2-park-ai`**.
+1. Create an empty repository on GitHub named **`Al_SAFA`**.
    Do **not** let GitHub add a README, .gitignore or licence — this repo already
    has them and an initialised remote will cause a conflict.
 
@@ -46,7 +46,7 @@ That creates the repository and pushes in one command.
 
 ```powershell
 cd "c:\Users\LENOVO\Downloads\AL SAFA"
-git remote add origin https://github.com/wasimmisaw437/al-safa-2-park-ai.git
+git remote add origin https://github.com/wasim437/Al_SAFA.git
 git push -u origin main
 ```
 
@@ -64,14 +64,14 @@ The site lives in `docs/`. After the first push:
 
 It goes live in a minute or two at:
 
-**https://wasimmisaw437.github.io/al-safa-2-park-ai/**
+**https://wasim437.github.io/Al_SAFA/**
 
 ---
 
 ## Check the username first
 
 Every link in `README.md`, `docs/index.html` and `src/config.py` assumes the
-GitHub username **`wasimmisaw437`** — taken from the email on your submission
+GitHub username **`wasim437`** — taken from the email on your submission
 form. Your Hugging Face account is `wasimmisaw`, so it is worth confirming which
 one your GitHub account actually uses.
 
@@ -117,7 +117,7 @@ Add the URL to the **AI Methodology Report** (submission slot 06), on the first
 page:
 
 > *The complete analysis — data, code, models and tests — is published at
-> `github.com/wasimmisaw437/al-safa-2-park-ai` and runs end to end with
+> `github.com/wasim437/Al_SAFA` and runs end to end with
 > `python run_analysis.py`.*
 
 Most entries cannot offer a juror that. It costs one line.

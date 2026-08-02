@@ -24,20 +24,20 @@ git ls-files | grep _TRASH         # must print NOTHING
 ### Step 2 — create the repository and push
 
 ```bash
-gh repo create al-safa-2-park-ai --public --source=. --remote=origin
+gh repo create Al_SAFA --public --source=. --remote=origin
 git push -u origin main
 ```
 
 Or, if you make the repo on github.com by hand:
 
 ```bash
-git remote add origin https://github.com/wasimmisaw437/al-safa-2-park-ai.git
+git remote add origin https://github.com/wasim437/Al_SAFA.git
 git push -u origin main
 ```
 
 ### Step 3 — turn on GitHub Pages for the portal
 
-On https://github.com/wasimmisaw437/al-safa-2-park-ai/settings/pages set **Source = Deploy from a branch**, **Branch = `main`**, **Folder = `/docs`**. It takes a minute or two to go live.
+On https://github.com/wasim437/Al_SAFA/settings/pages set **Source = Deploy from a branch**, **Branch = `main`**, **Folder = `/docs`**. It takes a minute or two to go live.
 
 ---
 
@@ -45,12 +45,12 @@ On https://github.com/wasimmisaw437/al-safa-2-park-ai/settings/pages set **Sourc
 
 | | URL |
 |---|---|
-| **The repository** | https://github.com/wasimmisaw437/al-safa-2-park-ai |
-| **The live analytics portal** | https://wasimmisaw437.github.io/al-safa-2-park-ai/ |
+| **The repository** | https://github.com/wasim437/Al_SAFA |
+| **The live analytics portal** | https://wasim437.github.io/Al_SAFA/ |
 
 Put both on **page 1 of the AI Methodology Report (upload slot 06)**. Suggested wording:
 
-> *The complete analysis — data, code, trained models and tests — is published at `github.com/wasimmisaw437/al-safa-2-park-ai` and runs end to end with `python run_analysis.py`. A live analytics portal is at `wasimmisaw437.github.io/al-safa-2-park-ai/`.*
+> *The complete analysis — data, code, trained models and tests — is published at `github.com/wasim437/Al_SAFA` and runs end to end with `python run_analysis.py`. A live analytics portal is at `wasim437.github.io/Al_SAFA/`.*
 
 Most entries cannot offer a reproducible pipeline. It costs one line.
 
@@ -62,18 +62,18 @@ GitHub renders PDFs in the browser, so these open directly. Nothing downloads an
 
 | # | Slot | Link |
 |---|---|---|
-| 01 | Design Narrative and Concept | [01_Design_Narrative_and_Concept.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/01_Design_Narrative_and_Concept.pdf) |
-| 02 | Neighborhood Park Preliminary Design Masterplan | [02_Neighborhood_Park_Preliminary_Design_Masterplan.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/02_Neighborhood_Park_Preliminary_Design_Masterplan.pdf) |
-| 03 | Concept Plans and Spatial Organization Diagrams | [03_Concept_Plans_and_Spatial_Organization_Diagrams.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/03_Concept_Plans_and_Spatial_Organization_Diagrams.pdf) |
-| 04 | Key Sections and Elevations | [04_Key_Sections_and_Elevations.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/04_Key_Sections_and_Elevations.pdf) |
-| 05 | 3D and Spatial Visualizations | [05_3D_and_Spatial_Visualizations.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/05_3D_and_Spatial_Visualizations.pdf) |
-| 06 | AI Methodology Report | [06_AI_Methodology_Report.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/06_AI_Methodology_Report.pdf) |
-| 07 | User Experience and Activation Strategy | [07_User_Experience_and_Activation_Strategy.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/07_User_Experience_and_Activation_Strategy.pdf) |
-| 08 | Sustainability Concept and Strategy | [08_Sustainability_Concept_and_Strategy.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/08_Sustainability_Concept_and_Strategy.pdf) |
-| 09 | Material and Landscape Palette | [09_Material_and_Landscape_Palette.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/09_Material_and_Landscape_Palette.pdf) |
-| 10 | Complete Design Report | [10_Complete_Design_Report.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/10_Complete_Design_Report.pdf) |
-| 11 | Site Analysis and Human-Centric Research | [11_Site_Analysis_and_Human-Centric_Research.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/11_Site_Analysis_and_Human-Centric_Research.pdf) |
-| 12 | One-minute Concept Animation | [12_One-minute_Concept_Animation.pdf](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/UPLOAD_THESE_12_FILES/12_One-minute_Concept_Animation.pdf) |
+| 01 | Design Narrative and Concept | [01_Design_Narrative_and_Concept.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/01_Design_Narrative_and_Concept.pdf) |
+| 02 | Neighborhood Park Preliminary Design Masterplan | [02_Neighborhood_Park_Preliminary_Design_Masterplan.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/02_Neighborhood_Park_Preliminary_Design_Masterplan.pdf) |
+| 03 | Concept Plans and Spatial Organization Diagrams | [03_Concept_Plans_and_Spatial_Organization_Diagrams.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/03_Concept_Plans_and_Spatial_Organization_Diagrams.pdf) |
+| 04 | Key Sections and Elevations | [04_Key_Sections_and_Elevations.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/04_Key_Sections_and_Elevations.pdf) |
+| 05 | 3D and Spatial Visualizations | [05_3D_and_Spatial_Visualizations.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/05_3D_and_Spatial_Visualizations.pdf) |
+| 06 | AI Methodology Report | [06_AI_Methodology_Report.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/06_AI_Methodology_Report.pdf) |
+| 07 | User Experience and Activation Strategy | [07_User_Experience_and_Activation_Strategy.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/07_User_Experience_and_Activation_Strategy.pdf) |
+| 08 | Sustainability Concept and Strategy | [08_Sustainability_Concept_and_Strategy.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/08_Sustainability_Concept_and_Strategy.pdf) |
+| 09 | Material and Landscape Palette | [09_Material_and_Landscape_Palette.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/09_Material_and_Landscape_Palette.pdf) |
+| 10 | Complete Design Report | [10_Complete_Design_Report.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/10_Complete_Design_Report.pdf) |
+| 11 | Site Analysis and Human-Centric Research | [11_Site_Analysis_and_Human-Centric_Research.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/11_Site_Analysis_and_Human-Centric_Research.pdf) |
+| 12 | One-minute Concept Animation | [12_One-minute_Concept_Animation.pdf](https://github.com/wasim437/Al_SAFA/blob/main/UPLOAD_THESE_12_FILES/12_One-minute_Concept_Animation.pdf) |
 
 ---
 
@@ -81,29 +81,29 @@ GitHub renders PDFs in the browser, so these open directly. Nothing downloads an
 
 | Drawing | Link |
 |---|---|
-| Circulation | [circulation_crescent.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/visuals/circulation_crescent.png) |
-| Elevation | [elevation_crescent.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/visuals/elevation_crescent.png) |
-| Facilities | [facilities_crescent.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/visuals/facilities_crescent.png) |
-| Planting | [planting_crescent.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/visuals/planting_crescent.png) |
-| Section | [section_crescent.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/visuals/section_crescent.png) |
-| Board 1 Concept | [board_1_concept.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/boards/board_1_concept.png) |
-| Board 2 Evidence | [board_2_evidence.png](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/design/boards/board_2_evidence.png) |
+| Circulation | [circulation_crescent.png](https://github.com/wasim437/Al_SAFA/blob/main/design/visuals/circulation_crescent.png) |
+| Elevation | [elevation_crescent.png](https://github.com/wasim437/Al_SAFA/blob/main/design/visuals/elevation_crescent.png) |
+| Facilities | [facilities_crescent.png](https://github.com/wasim437/Al_SAFA/blob/main/design/visuals/facilities_crescent.png) |
+| Planting | [planting_crescent.png](https://github.com/wasim437/Al_SAFA/blob/main/design/visuals/planting_crescent.png) |
+| Section | [section_crescent.png](https://github.com/wasim437/Al_SAFA/blob/main/design/visuals/section_crescent.png) |
+| Board 1 Concept | [board_1_concept.png](https://github.com/wasim437/Al_SAFA/blob/main/design/boards/board_1_concept.png) |
+| Board 2 Evidence | [board_2_evidence.png](https://github.com/wasim437/Al_SAFA/blob/main/design/boards/board_2_evidence.png) |
 
 ## 5. The analysis figures
 
 | Figure | Link |
 |---|---|
-| fig01_climate_and_comfort.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig01_climate_and_comfort.png) |
-| fig02_comfort_bands.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig02_comfort_bands.png) |
-| fig03_shade_by_zone.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig03_shade_by_zone.png) |
-| fig04_site_comfort_map.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig04_site_comfort_map.png) |
-| fig05_surrogate_performance.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig05_surrogate_performance.png) |
-| fig06_feature_importance.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig06_feature_importance.png) |
-| fig07_confusion_matrix.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig07_confusion_matrix.png) |
-| fig08_microclimate_regimes.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig08_microclimate_regimes.png) |
-| fig09_diurnal_comfort.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig09_diurnal_comfort.png) |
-| fig10_masterplan.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig10_masterplan.png) |
-| fig11_cost_plan.png | [open](https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/figures/fig11_cost_plan.png) |
+| fig01_climate_and_comfort.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig01_climate_and_comfort.png) |
+| fig02_comfort_bands.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig02_comfort_bands.png) |
+| fig03_shade_by_zone.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig03_shade_by_zone.png) |
+| fig04_site_comfort_map.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig04_site_comfort_map.png) |
+| fig05_surrogate_performance.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig05_surrogate_performance.png) |
+| fig06_feature_importance.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig06_feature_importance.png) |
+| fig07_confusion_matrix.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig07_confusion_matrix.png) |
+| fig08_microclimate_regimes.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig08_microclimate_regimes.png) |
+| fig09_diurnal_comfort.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig09_diurnal_comfort.png) |
+| fig10_masterplan.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig10_masterplan.png) |
+| fig11_cost_plan.png | [open](https://github.com/wasim437/Al_SAFA/blob/main/figures/fig11_cost_plan.png) |
 
 ---
 
@@ -111,24 +111,24 @@ GitHub renders PDFs in the browser, so these open directly. Nothing downloads an
 
 | What | Link |
 |---|---|
-| **The analysis notebook** (outputs embedded — start here) | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/notebooks/AL_SAFA_2_PARK_COMPLETE_ANALYSIS.ipynb |
-| The project plan | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/PROJECT_PLAN.md |
-| Data sources, with limitations stated | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/DATA_SOURCES.md |
-| Headline metrics (JSON) | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/models/headline_metrics.json |
-| Trained-model metrics | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/models/model_metrics.json |
-| Cost plan, line by line | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/data/processed/cost_plan.csv |
-| Room schedule | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/data/raw/site_zoning_schedule.csv |
-| The 38 pipeline tests | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/tests/test_pipeline.py |
-| The masterplan geometry generator | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/src/plan.py |
-| The cost model | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/src/costing.py |
-| Withdrawn visuals, with reasons | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/archive/withdrawn_visuals/README.md |
+| **The analysis notebook** (outputs embedded — start here) | https://github.com/wasim437/Al_SAFA/blob/main/notebooks/AL_SAFA_2_PARK_COMPLETE_ANALYSIS.ipynb |
+| The project plan | https://github.com/wasim437/Al_SAFA/blob/main/PROJECT_PLAN.md |
+| Data sources, with limitations stated | https://github.com/wasim437/Al_SAFA/blob/main/DATA_SOURCES.md |
+| Headline metrics (JSON) | https://github.com/wasim437/Al_SAFA/blob/main/models/headline_metrics.json |
+| Trained-model metrics | https://github.com/wasim437/Al_SAFA/blob/main/models/model_metrics.json |
+| Cost plan, line by line | https://github.com/wasim437/Al_SAFA/blob/main/data/processed/cost_plan.csv |
+| Room schedule | https://github.com/wasim437/Al_SAFA/blob/main/data/raw/site_zoning_schedule.csv |
+| The 38 pipeline tests | https://github.com/wasim437/Al_SAFA/blob/main/tests/test_pipeline.py |
+| The masterplan geometry generator | https://github.com/wasim437/Al_SAFA/blob/main/src/plan.py |
+| The cost model | https://github.com/wasim437/Al_SAFA/blob/main/src/costing.py |
+| Withdrawn visuals, with reasons | https://github.com/wasim437/Al_SAFA/blob/main/archive/withdrawn_visuals/README.md |
 
 ## 7. The concept film
 
 | | Link |
 |---|---|
-| Watch it (once Pages is on) | https://wasimmisaw437.github.io/al-safa-2-park-ai/ — the portal embeds it |
-| Source | https://github.com/wasimmisaw437/al-safa-2-park-ai/blob/main/submission/12_Concept_Animation_Video/concept_film.html |
+| Watch it (once Pages is on) | https://wasim437.github.io/Al_SAFA/ — the portal embeds it |
+| Source | https://github.com/wasim437/Al_SAFA/blob/main/submission/12_Concept_Animation_Video/concept_film.html |
 
 > An HTML file on a `/blob/` link shows the **source code**, not the running film. To let someone watch it, either record it to MP4 and upload that, or serve it from GitHub Pages.
 

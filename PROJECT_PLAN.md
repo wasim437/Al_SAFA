@@ -442,7 +442,7 @@ never click a link.
 3. Enable **GitHub Pages** on `docs/` → the analytics portal becomes a live URL.
 4. Put both links on **page 1 of the AI Methodology Report (slot 06)**:
    > *The complete analysis — data, code, models and tests — is published at
-   > `github.com/<user>/al-safa-2-park-ai` and runs end to end with
+   > `github.com/<user>/Al_SAFA` and runs end to end with
    > `python run_analysis.py`. Live analytics portal: `<pages-url>`.*
 5. Optionally mirror the 12 PDFs to Google Drive as a backup link.
 

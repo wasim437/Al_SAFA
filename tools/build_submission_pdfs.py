@@ -36,7 +36,7 @@ Output goes to `UPLOAD_THESE_12_FILES/` — twelve files, named for their slot.
 from __future__ import annotations
 
 import argparse
-import shutil
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -48,8 +48,17 @@ from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas as rl_canvas
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from src import config as C  # noqa: E402
+
 SRC = ROOT / "submission"
 OUT = ROOT / "UPLOAD_THESE_12_FILES"
+
+# Where a juror goes to check any claim in these files for themselves.
+REPO_URL = C.GITHUB_URL
+PORTAL_URL = C.PAGES_URL
+BLOB = f"{REPO_URL}/blob/main"
 
 PROJECT = "Al Safa 2 Park — Falaj Al Safa"
 APPLICANT = "Mohamed Wasim · Individual Applicant"
@@ -67,49 +76,68 @@ SLOTS: list[dict] = [
     dict(n=1, folder="01_Design_Narrative_Concept",
          title="Design Narrative & Concept",
          blurb="The argument: what is wrong with Al Safa 2 Park today, and what "
-               "Falaj Al Safa does about it."),
+               "Falaj Al Safa does about it.",
+         sources=["src/plan.py", "tools/report_content.py",
+                  "data/processed/hourly_climate_comfort_8760.csv"]),
     dict(n=2, folder="02_Preliminary_Design_Masterplan",
          title="Neighborhood Park Preliminary Design Masterplan",
          blurb="The plan at scale. Every room struck off the crescent's centre; "
-               "every area the measured area of the drawn polygon."),
+               "every area the measured area of the drawn polygon.",
+         sources=["src/plan.py", "src/figures.py",
+                  "data/raw/site_zoning_schedule.csv"]),
     dict(n=3, folder="03_Concept_Plans_Spatial_Diagrams",
          title="Concept Plans and Spatial Organization Diagrams",
          blurb="How the park is organised — the crescent, the radial alleys, and "
-               "the rooms between them."),
+               "the rooms between them.",
+         sources=["src/plan.py", "src/drawings.py"]),
     dict(n=4, folder="04_Key_Sections_Elevations",
          title="Key Sections & Elevations",
          blurb="The canopy section solved against the shadow geometry: a 7 m walk "
-               "under an 18 m gridshell with a 3 m southern louvre."),
+               "under an 18 m gridshell with a 3 m southern louvre.",
+         sources=["src/drawings.py", "src/solar.py", "src/config.py"]),
     dict(n=5, folder="05_3D_Spatial_Visualizations",
          title="3D & Spatial Visualizations",
          blurb="Presentation boards and illustrative views. Renders are artistic "
-               "impressions; the analysis outputs are computed."),
+               "impressions; the analysis outputs are computed.",
+         sources=["src/boards.py", "src/plan.py",
+                  "archive/withdrawn_visuals/README.md"]),
     dict(n=6, folder="06_AI_Methodology_Report",
          title="AI Methodology Report",
          blurb="Four models, the anti-leakage discipline behind them, and what "
-               "each one changed about the design."),
+               "each one changed about the design.",
+         sources=["src/models.py", "src/dataset.py",
+                  "models/model_metrics.json", "tests/test_pipeline.py"]),
     dict(n=7, folder="07_User_Experience_Activation_Strategy",
          title="User Experience & Activation Strategy",
          blurb="Who uses the park, when, and why the programme targets late "
-               "afternoon in spring and autumn."),
+               "afternoon in spring and autumn.",
+         sources=["src/models.py", "src/climate.py",
+                  "data/processed/hourly_climate_comfort_8760.csv"]),
     dict(n=8, folder="08_Sustainability_Concept_Strategy",
          title="Sustainability Concept & Strategy",
          blurb="Water, carbon, energy and shade — stated conservatively, "
-               "including where the scheme runs a deficit."),
+               "including where the scheme runs a deficit.",
+         sources=["src/plan.py", "src/costing.py", "src/climate.py"]),
     dict(n=9, folder="09_Material_Landscape_Palette",
          title="Material & Landscape Palette",
          blurb="131 trees across 5 desert species, and the materials that carry "
-               "the crescent's language."),
+               "the crescent's language.",
+         sources=["src/config.py", "src/plan.py", "src/drawings.py"]),
     dict(n=10, folder="10_Complete_Design_Report",
          title="Complete Design Report",
-         blurb="The full concept and preliminary design proposal."),
+         blurb="The full concept and preliminary design proposal.",
+         sources=["run_analysis.py", "src/plan.py", "src/costing.py",
+                  "models/headline_metrics.json"]),
     dict(n=11, folder="11_Site_Analysis_Human_Centric_Research",
          title="Site Analysis & Human-Centric Research",
          blurb="39 years of climate normals, 8,760 modelled hours, and the "
-               "7,640 residents within a ten-minute walk."),
+               "7,640 residents within a ten-minute walk.",
+         sources=["src/climate.py", "src/solar.py", "data/raw/sources.json",
+                  "DATA_SOURCES.md"]),
     dict(n=12, folder="12_Concept_Animation_Video",
          title="One-minute Concept Animation",
-         blurb="Storyboard and supporting documentation for the 60-second film."),
+         blurb="Storyboard and supporting documentation for the 60-second film.",
+         sources=["tools/sync_film.py", "tests/test_film.js"]),
 ]
 
 # Assets left OUT of the package, with the reason. Nothing disappears silently —
@@ -298,8 +326,12 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     for it in items:
         c.drawString(23 * mm, y, f"·  {pretty(it.name)}")
         y -= 5 * mm
-        if y < 45 * mm:
+        if y < 78 * mm:
             break
+
+    # Sits directly under the contents list, but never low enough to collide
+    # with the footer.
+    verify_panel(c, slot, w, max(y - 9 * mm, 70 * mm))
 
     c.setFont("Helvetica", 8.5)
     c.setFillColor(MUTED)
@@ -309,6 +341,75 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
                  f"Generated {date.today().isoformat()} · "
                  f"reproducible: python tools/build_submission_pdfs.py")
     c.showPage()
+
+
+def _link(c, label: str, url: str, x: float, y: float,
+          font: str = "Helvetica-Bold", size: float = 8.5) -> None:
+    """Draw `label` as a live hyperlink to `url`."""
+    c.setFillColor(ACCENT)
+    c.setFont(font, size)
+    c.drawString(x, y, label)
+    wide = c.stringWidth(label, font, size)
+    c.linkURL(url, (x, y - 1.2 * mm, x + wide, y + 3.2 * mm), relative=0)
+
+
+def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
+    """The evidence block: where to go to check any claim in this file.
+
+    Every slot carries it, because the point of the submission is that no
+    number in it was typed by hand — each one is regenerated from the code and
+    data named here, and a juror can open that code in a browser.
+    """
+    x = 20 * mm
+
+    c.setStrokeColor(RULE)
+    c.line(x, top + 6 * mm, w - 20 * mm, top + 6 * mm)
+
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(x, top, "VERIFY THIS DOCUMENT")
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8)
+    c.drawString(x, top - 5 * mm,
+                 "Every quantity in this file is regenerated from data by code. "
+                 "Nothing is typed by hand.")
+
+    rows = [
+        ("Repository", REPO_URL.replace("https://", ""), REPO_URL),
+        ("Live portal", PORTAL_URL.replace("https://", ""), PORTAL_URL),
+    ]
+    y = top - 12 * mm
+    for label, shown, url in rows:
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 8)
+        c.drawString(x, y, label)
+        _link(c, shown, url, x + 24 * mm, y)
+        y -= 5 * mm
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8)
+    c.drawString(x, y, "Produced by")
+    sx = x + 24 * mm
+    for i, src in enumerate(slot.get("sources", [])):
+        if sx + c.stringWidth(src, "Helvetica-Bold", 8.5) > w - 22 * mm:
+            y -= 4.6 * mm
+            sx = x + 24 * mm
+        _link(c, src, f"{BLOB}/{src}", sx, y)
+        sx += c.stringWidth(src, "Helvetica-Bold", 8.5) + 3 * mm
+        if i < len(slot.get("sources", [])) - 1:
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 8)
+            c.drawString(sx - 2.4 * mm, y, "·")
+    y -= 5 * mm
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8)
+    c.drawString(x, y, "Reproduce")
+    c.setFont("Courier", 8)
+    c.setFillColor(INK)
+    c.drawString(x + 24 * mm, y,
+                 "python run_analysis.py   ·   python -m tests.test_pipeline")
 
 
 def _wrap(c, text: str, font: str, size: float, maxw: float) -> list[str]:
@@ -325,8 +426,8 @@ def _wrap(c, text: str, font: str, size: float, maxw: float) -> list[str]:
     return out
 
 
-def image_sheet(c: rl_canvas.Canvas, img: Path) -> None:
-    """One image, one A3 landscape sheet, titled and classified."""
+def image_sheet(c: rl_canvas.Canvas, img: Path, slot: dict) -> None:
+    """One image, one A3 landscape sheet, titled, classified and sourced."""
     pw, ph = landscape(A3)
     c.setPageSize((pw, ph))
 
@@ -355,14 +456,25 @@ def image_sheet(c: rl_canvas.Canvas, img: Path) -> None:
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 7.5)
     c.drawString(16 * mm, 8 * mm, f"{PROJECT} · {CHALLENGE}")
-    c.drawRightString(pw - 16 * mm, 8 * mm, img.name)
+
+    # The image's own file, live. A juror who doubts a drawing can open the
+    # exact asset this sheet was built from.
+    rel = f"submission/{slot['folder']}/{img.name}"
+    url = f"{BLOB}/{rel}"
+    label = img.name
+    c.setFillColor(ACCENT)
+    c.setFont("Helvetica", 7.5)
+    c.drawRightString(pw - 16 * mm, 8 * mm, label)
+    wide = c.stringWidth(label, "Helvetica", 7.5)
+    c.linkURL(url, (pw - 16 * mm - wide, 6.8 * mm, pw - 16 * mm, 11 * mm),
+              relative=0)
     c.showPage()
 
 
 def build_slot(slot: dict, act: bool) -> dict:
     folder = SRC / slot["folder"]
     report = dict(slot=slot["n"], title=slot["title"], pages=0, mb=0.0,
-                  drafts=[], held=[], review=[], stale=[],
+                  drafts=[], held=[], review=[], stale=[], locked=False,
                   missing=not folder.exists(), out=None)
     if not folder.exists():
         return report
@@ -407,7 +519,7 @@ def build_slot(slot: dict, act: bool) -> dict:
     c = rl_canvas.Canvas(str(tmp), pagesize=A4)
     cover_page(c, slot, ordered)
     for img in imgs:
-        image_sheet(c, img)
+        image_sheet(c, img, slot)
     c.save()
 
     writer = pypdf.PdfWriter()
@@ -422,8 +534,15 @@ def build_slot(slot: dict, act: bool) -> dict:
     for pg in front.pages[1:]:                    # then the image sheets
         writer.add_page(pg)
 
-    with dest.open("wb") as fh:
-        writer.write(fh)
+    try:
+        with dest.open("wb") as fh:
+            writer.write(fh)
+    except PermissionError:
+        # Open in a viewer. Say so instead of dying, so the other eleven slots
+        # still build and the summary can name what went stale.
+        tmp.unlink(missing_ok=True)
+        report["locked"] = True
+        return report
     tmp.unlink(missing_ok=True)
 
     report["pages"] = len(writer.pages)
@@ -437,12 +556,27 @@ def main() -> int:
     args = ap.parse_args()
     act = not args.dry_run
 
+    locked: list[str] = []
     if act and OUT.exists():
-        shutil.rmtree(OUT)
+        # Not rmtree: on Windows a PDF open in a viewer cannot be deleted, and
+        # a half-cleared folder that then fails to rewrite one slot would leave
+        # a STALE file sitting in the upload folder looking current. Delete what
+        # we can, remember what we could not, and refuse to finish quietly.
+        for old in OUT.iterdir():
+            try:
+                old.unlink()
+            except PermissionError:
+                locked.append(old.name)
 
     print("=" * 78)
     print("  BUILDING 12 UPLOAD PDFs - one file per Dubai Municipality slot")
     print("=" * 78)
+    if locked:
+        print()
+        print("  [!] LOCKED — open in another program, could not be replaced:")
+        for name in locked:
+            print(f"      {name}")
+        print("      Close the viewer and re-run, or these stay OUT OF DATE.")
 
     reports = [build_slot(s, act) for s in SLOTS]
 
@@ -450,6 +584,9 @@ def main() -> int:
     for r in reports:
         if r["missing"]:
             print(f"  {r['slot']:02d}  MISSING FOLDER — {r['title']}")
+            continue
+        if r["locked"]:
+            print(f"  {r['slot']:02d}  LOCKED — STALE, not rewritten   {r['out']}")
             continue
         size = f"{r['mb']:5.1f} MB" if act else "   dry  "
         pages = f"{r['pages']:3d}pp" if act else "  ?pp"
@@ -507,6 +644,12 @@ def main() -> int:
         print("=" * 78)
         print(f"  {built}/12 slots built | {total:.1f} MB total -> UPLOAD_THESE_12_FILES/")
         print("=" * 78)
+        stuck = locked or [r["out"] for r in reports if r["locked"]]
+        if stuck:
+            print(f"  [X] BUILD INCOMPLETE — {len(set(stuck))} file(s) could not "
+                  f"be rewritten and are STALE. Close them and re-run before "
+                  f"uploading.")
+            return 1
     else:
         print("\n  DRY RUN — nothing written.")
     return 0
