@@ -336,6 +336,36 @@ def test_published_site() -> None:
               not missing, f"missing: {missing[:3] or 'none'}")
 
 
+def test_film_narration() -> None:
+    """The film's voice-over must be inlined, not merely sitting beside it.
+
+    Opened as a local file — which is how it gets used — a browser will not
+    load a sibling audio file at all, and Web Audio cannot tap a media element
+    it treats as cross-origin, so a `narration/` folder next to the HTML gives
+    a silent film AND a silent recording. The audio is embedded as data: URIs
+    by tools/embed_narration.py; this asserts it is still there, because the
+    failure is silent in the most literal sense.
+    """
+    film = (C.ROOT / "submission" / "12_Concept_Animation_Video" /
+            "concept_film.html")
+    html = film.read_text(encoding="utf-8", errors="replace")
+
+    clips = html.count("data:audio/wav;base64,")
+    check("the film carries its narration inline", clips == 4,
+          f"{clips} embedded clip(s), expected 4")
+
+    # A data: URI that got truncated would still match the count above.
+    shortest = min((len(m) for m in
+                    re.findall(r'"data:audio/wav;base64,([^"]*)"', html)),
+                   default=0)
+    check("each embedded clip holds real audio", shortest > 200_000,
+          f"smallest clip {shortest/1024:.0f} KB of base64")
+
+    check("narration is never fetched from a sibling file",
+          'new Audio("narration/' not in html,
+          "a file:// browser refuses those, silently")
+
+
 def main() -> int:
     sol = test_solar_positions()
     test_downscaling_reproduces_normals(sol)
@@ -347,6 +377,7 @@ def main() -> int:
     test_no_leaky_features()
     test_cost_plan()
     test_published_site()
+    test_film_narration()
 
     width = max(len(n) for _, n, _ in _results) + 2
     print("\n" + "=" * (width + 34))

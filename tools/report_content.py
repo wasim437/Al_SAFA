@@ -1024,13 +1024,26 @@ def build(D: dict) -> list[dict]:
                 "NaN or undefined value, so a geometry change cannot break the "
                 "film quietly.",
             ]),
-            ("h1", "3. How to produce the video file"),
+            ("h1", "3. The narration"),
+            ("p", "The film carries a spoken commentary in four fifteen-second "
+                  "segments, cued to 0, 15, 30 and 45 seconds. The voice is "
+                  "synthesised; the words are not. Every figure it speaks — "
+                  "56.8 °C in the open, a 141 m radius, 44.5% rising to 64.6% "
+                  "— is the same figure the analysis produces and the same one "
+                  "printed elsewhere in this submission."),
+            ("p", "The audio is embedded in the page rather than kept in files "
+                  "beside it. Opened as a local file, a browser refuses to "
+                  "load a sibling audio file at all, and cannot route one into "
+                  "a recording; inlined, it does both. That also keeps the "
+                  "film a single standalone file, which is the same reason its "
+                  "geometry is inlined rather than fetched."),
+            ("h1", "4. How to produce the video file"),
             ("p", "The film records itself. Every frame is a pure function of "
                   "one number — the time in seconds — so the page can hand the "
-                  "canvas straight to the browser's recorder and write the "
-                  "video out. Nothing is screen-captured, so the file carries "
-                  "no browser chrome, no desktop behind it, and no dependence "
-                  "on what the window happened to be scaled to."),
+                  "canvas and the narration straight to the browser's recorder "
+                  "and write the video out. Nothing is screen-captured, so the "
+                  "file carries no browser chrome, no desktop behind it, and "
+                  "no dependence on what the window was scaled to."),
             ("bullets", [
                 "Open <font face='Courier'>concept_film.html</font> in Chrome "
                 "or Edge.",
@@ -1038,7 +1051,9 @@ def build(D: dict) -> list[dict]:
                 "in front for sixty seconds.",
                 "The file downloads on its own as "
                 "<font face='Courier'>Falaj_Al_Safa_Concept_Film_60s.mp4</font> "
-                "— 1920&#215;1080, sixty seconds, about 11 MB.",
+                "— 1920&#215;1080, sixty seconds with narration, about 9 MB.",
+                "<b>Narration on / off</b> beside it records a silent version "
+                "instead, if a voice-over is not wanted.",
             ]),
             ("note", "Browsers that cannot write MP4 fall back to WebM, and a "
                      "WebM written this way carries no duration in its header — "

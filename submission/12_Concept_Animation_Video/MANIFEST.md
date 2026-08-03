@@ -7,6 +7,7 @@ Files in this folder, and what produced each one.
 | `fig10_masterplan.png` | The masterplan the sixty-second film flies over. Every frame of the film reads the same geometry, asserted by tests/test_film.js. |
 | `Concept_Animation_Storyboard.pdf` | Written report / supporting document. |
 | `concept_film.html` | Written report / supporting document. |
+| `narration` | Written report / supporting document. |
 | `README_VIDEO.txt` | Written report / supporting document. |
 
 Every image here is generated. Rebuild them with:

@@ -77,6 +77,19 @@ const el = () => {
   return e;
 };
 
+// The narration is four <audio> elements fed from inlined data: URIs, and the
+// film builds them at load. Node has no Audio, so without a stub the whole
+// script throws before a single frame is drawn — which reads as "the film is
+// broken" when the film is fine and the harness is short a browser API.
+function AudioStub(src) {
+  return {
+    src: src || "", preload: "", currentTime: 0, duration: 15, paused: true,
+    play(){ this.paused = false; return Promise.resolve(); },
+    pause(){ this.paused = true; },
+    addEventListener(){}, removeEventListener(){},
+  };
+}
+
 const sandbox = {
   console,
   document: { getElementById: () => el(), createElement: () => el(),
@@ -85,6 +98,8 @@ const sandbox = {
   requestAnimationFrame: () => 0,
   performance: { now: () => 0 },
   localStorage: { getItem(){return null}, setItem(){} },
+  Audio: AudioStub,
+  AudioContext: function(){ throw new Error("no audio graph under test"); },
   Math, Date, JSON, Object, Array, String, Number, isFinite, parseInt, parseFloat,
   Uint8ClampedArray,
 };

@@ -265,13 +265,22 @@ the film cannot drift away from the drawings the way the previous one did.
 1. Open `concept_film.html` in Chrome or Edge.
 2. Press **Record the film to a video file** and leave the tab in front.
 3. Sixty seconds later `Falaj_Al_Safa_Concept_Film_60s.mp4` downloads on its own
-   — 1920 × 1080, about 11 MB.
+   — 1920 × 1080, sixty seconds **with narration**, about 9 MB.
 4. Upload it.
+
+**Narration on / off** beside it records a silent version instead.
 
 The page records the canvas directly rather than the screen, so the file carries
 no browser chrome, no desktop behind it, and no dependence on the window size.
 Every frame in the film is a pure function of the elapsed time, which is what
 makes recording it a matter of reading the canvas rather than filming a monitor.
+
+The voice is four fifteen-second segments cued to 0, 15, 30 and 45 seconds,
+embedded in the page as audio data rather than kept in files beside it — a
+browser opened on a local file will not load a sibling audio file, and cannot
+route one into a recording. Regenerate the embedding with
+`python tools/embed_narration.py`. The voice is synthesised; every number it
+speaks is the number the analysis produces.
 
 A browser that cannot write MP4 falls back to WebM, and a WebM written this way
 carries no duration in its header — it plays, but some players show no timeline.
