@@ -15,6 +15,7 @@ every comfort figure in the submission is wrong.
 from __future__ import annotations
 
 import sys
+import re
 
 import numpy as np
 import pandas as pd
@@ -302,6 +303,39 @@ def test_cost_plan():
           every_line_has_basis, f"{len(model['lines'])} lines")
 
 
+def test_published_site() -> None:
+    """The portal must survive GitHub Pages.
+
+    Pages runs the published folder through Jekyll, and Jekyll silently skips
+    every path beginning with an underscore. The portal's stylesheet, scripts
+    and data all live in docs/_PORTAL/, so without a .nojekyll marker the site
+    serves index.html with no CSS and no JavaScript — a 200, not a 404, which
+    is why it looked fine from here and broken in a browser. It happened once.
+    """
+    docs = C.ROOT / "docs"
+    check("docs/.nojekyll exists so GitHub Pages skips Jekyll",
+          (docs / ".nojekyll").exists(),
+          "underscore folders are dropped without it")
+
+    underscored = [p.name for p in docs.iterdir()
+                   if p.is_dir() and p.name.startswith("_")]
+    check("underscore asset folders are accounted for",
+          not underscored or (docs / ".nojekyll").exists(),
+          f"{underscored or 'none'}")
+
+    index = docs / "index.html"
+    if index.exists():
+        html = index.read_text(encoding="utf-8", errors="replace")
+        # Local file references only: skip absolute URLs, protocol-relative
+        # ones, in-page anchors and data/mailto URIs.
+        refs = re.findall(
+            r'(?:href|src)="((?!https?:|//|#|data:|mailto:)[^"]+)"', html)
+        missing = [r for r in refs
+                   if not (docs / r.split("?")[0].split("#")[0]).exists()]
+        check("every local asset index.html references exists",
+              not missing, f"missing: {missing[:3] or 'none'}")
+
+
 def main() -> int:
     sol = test_solar_positions()
     test_downscaling_reproduces_normals(sol)
@@ -312,6 +346,7 @@ def main() -> int:
     test_spatial_zone_assignment()
     test_no_leaky_features()
     test_cost_plan()
+    test_published_site()
 
     width = max(len(n) for _, n, _ in _results) + 2
     print("\n" + "=" * (width + 34))
