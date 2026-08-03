@@ -66,8 +66,8 @@ So right now, **`design/renders/` is genuinely empty.** That's not a bug you're
 missing — it's the truth of where the project is. The park has **no finished
 photo-pictures yet.** The correct prompts to generate new, accurate ones (that
 actually match the curve, the water channel, the desert trees) are already
-written and waiting in `RENDER_PROMPTS.md`. Generating them is the single
-biggest thing left to do.
+written and waiting in `AL_SAFA_MASTER_PROMPT.md`. Generating them is the
+single biggest thing left to do.
 
 ---
 
@@ -88,9 +88,13 @@ This is the actual step-by-step process behind the design, in order:
 | 9 | AI Workflow & Visualization | Documented how AI was used; built renders & film | The competition's "how did AI help" answer |
 | 10 | Submission Assembly | Packaged everything into the 12 required upload files | What now sits in `submission/` |
 
-Full detail on each phase, if you ever want it, is in `archive/phases/`
-(folders `01_` through `10_`) — but you don't need to open those to understand
-the project.
+The detailed phase-by-phase working drafts used to sit in `archive/phases/` —
+243 files, 34.6 MB of scripts and intermediate outputs. They were removed on
+3 August 2026 because nothing in the live pipeline reads them (the design
+itself is fully reproduced by the four commands in §6 below), and they're
+recoverable from git history if ever needed. A handful of the actual output
+files are kept because the public portal still cites them as historical
+sources — see `docs/_PORTAL/DATA_AUDIT.md`.
 
 ---
 
@@ -104,7 +108,7 @@ not made up. You personally only ever need to open **four things**:
 |---|---|
 | `PROJECT_PLAN.md` | the full, detailed version of this explanation |
 | `00_BRIEF/` | what Dubai Municipality actually asked for |
-| `RENDER_PROMPTS.md` | the instructions for generating the missing pictures |
+| `AL_SAFA_MASTER_PROMPT.md` | the instructions for generating the missing pictures |
 | `UPLOAD_THESE_12_FILES/` | the 12 finished PDFs you will actually submit |
 
 Everything else (`src/`, `data/`, `models/`, `tests/`, `figures/`, `docs/`) is
@@ -117,16 +121,18 @@ any more than you need to understand a printing press to read a book.
 
 **Already done:** the design itself, the cost budget check, the compliance
 items Dubai Municipality requires, all 12 submission PDFs assembled, all the
-reports rewritten to match the crescent design, all analysis and testing.
+reports rewritten to match the crescent design, all analysis and testing, and
+the repository published live at `github.com/wasim437/Al_SAFA` with the portal
+running at `wasim437.github.io/Al_SAFA/`.
 
-**Still open — and only a human can close these:**
+**Still open — and only a human can close these, because none of them is
+code:**
 
-1. **Generate the missing renders** using `RENDER_PROMPTS.md` (biggest gap — see §3 above)
+1. **Generate the missing renders** using `AL_SAFA_MASTER_PROMPT.md` (biggest gap — see §3 above)
 2. **Confirm the real park boundary** by opening the official site drawing in `00_BRIEF/`
-3. **Read the written reports and approve them** — they're AI-assisted drafts; the final judgement is yours
-4. **Record the 60-second concept video** (optional, but the public gets to vote)
-5. **Publish the project online and add the links** to the submission (optional, but strengthens the "AI" scoring criterion)
-6. **Submit before 15 August 2026** and tick the 4 required declarations
+3. **Read the written reports and approve them** — the design judgement in them is yours to stand behind
+4. **Record the 60-second concept video** to MP4 — the interactive film itself already runs and is tested
+5. **Submit before 15 August 2026** and tick the 4 required declarations
 
 That's it. The design is not broken and the project is not "collapsed" — it's
 a finished, coherent design that is missing its final photographs and a human

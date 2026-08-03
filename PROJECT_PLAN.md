@@ -237,7 +237,7 @@ AL SAFA/
 ├── notebooks/               the complete analysis, outputs embedded
 ├── reports/                 written reports (Word + PDF)
 ├── docs/                    the public website / analytics portal
-├── tests/                   33 pipeline checks + portal + film tests
+├── tests/                   41 pipeline checks + portal + film tests
 ├── tools/                   the sync + build scripts
 │
 ├── archive/
@@ -354,7 +354,7 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 2. Retired two dead website pages whose links pointed at an unpushed repo.
 3. Assembled `docs/` into one site that actually shows the drawings.
 4. Promoted the official brief to `00_BRIEF/`; moved all dead weight out, then deleted it.
-5. Verified: 33 pipeline + 64 portal + film frame tests all pass.
+5. Verified: 41 pipeline + 64 portal + film frame tests all pass.
 
 ### Phase 13 · Submission hardening — **NOT DONE YET.** This is §6.
 
@@ -374,16 +374,17 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 | Restrooms, fountains, bike parking, drop-off, waste | All placed via `plan.facilities()` |
 | Fill the three phases with no analysis | Ph3 objectives table · Ph4 plan-form sweep · Ph8 personas + activation calendar |
 | Renders that contradicted the plan | All 6 withdrawn and deleted; boards and portal self-heal |
+| Push to GitHub, links in slot 06 | **Live** at `github.com/wasim437/Al_SAFA` and `wasim437.github.io/Al_SAFA/`, cited in every one of the 12 PDFs |
+| Unwanted files removed | 223 superseded working-draft files gone (see §12); every remaining link verified live |
 
 ### 🔴 What only you can do
 
 | # | Task | Why it matters |
 |---|---|---|
-| 1 | **Generate the renders** from [`RENDER_PROMPTS.md`](RENDER_PROMPTS.md) in Antigravity | You currently have **no** visualisation of the crescent. Prompts 01, 02, 03 first — they fix Board 1 and slot 05. Save over the original filenames and re-run the pipeline |
+| 1 | **Generate the renders** from [`AL_SAFA_MASTER_PROMPT.md`](AL_SAFA_MASTER_PROMPT.md) | You currently have **no** visualisation of the crescent. Prompts 01, 02, 03 first — they fix Board 1 and slot 05. Save over the original filenames and re-run the pipeline |
 | 2 | **Open the DWG** in `00_BRIEF/` and confirm the real boundary | The 150 × 100 m envelope is an assumption. Every area figure depends on it |
-| 3 | **Record the 60-second film** to MP4 | Slot 12. Optional, but the shortlist goes to a community vote, and a community votes on what it can see |
+| 3 | **Record the 60-second film** to MP4 | Slot 12. The interactive film itself runs and passes every frame test — this is screen-recording it, not building it |
 | 4 | **Read the 9 reports and approve the content** | They are generated, but the design judgement in them is yours to stand behind |
-| 5 | Push to GitHub and put the links in slot 06 | See §9. Confirm the PII file is not pushed first |
 
 ### 🟡 Optional polish
 
@@ -403,9 +404,9 @@ projects, and the analysis loses its authority.
 The fix is not to drop the renders — it is to **regenerate them from the actual
 geometry**. Every prompt must carry the crescent's real numbers.
 
-👉 **The full prompt sheet is `RENDER_PROMPTS.md`.** It contains ten
-generation-ready prompts, each locked to the measured design, plus negative
-prompts and the acceptance test each image must pass before it goes in.
+👉 **The full prompt sheet is `AL_SAFA_MASTER_PROMPT.md`.** It contains six
+generation-ready prompts, each locked to the measured design, plus a negative
+prompt and the acceptance test each image must pass before it goes in.
 
 Non-negotiables for every render:
 - The canopy is **one continuous arc**, 141 m radius, bowing **convex south** — never straight, never a full ring.
@@ -441,18 +442,16 @@ This is a good idea and it is worth doing — **but as supporting evidence, not 
 a substitute for the PDFs.** Jurors evaluate the uploaded files; assume some will
 never click a link.
 
-1. Push the repository public (see `PUSH_TO_GITHUB.md`).
-   **Confirm `00_BRIEF/UPLODED DOCUMENT DETAILS.txt` is not pushed — it has your
-   email and mobile number.** It is gitignored; verify with `git ls-files | grep UPLODED`
-   returning nothing before you push.
-2. **GitHub renders PDFs in-browser**, so a link to a PDF in the repo opens
-   directly — no download. Links will resolve.
-3. Enable **GitHub Pages** on `docs/` → the analytics portal becomes a live URL.
-4. Put both links on **page 1 of the AI Methodology Report (slot 06)**:
-   > *The complete analysis — data, code, models and tests — is published at
-   > `github.com/<user>/Al_SAFA` and runs end to end with
-   > `python run_analysis.py`. Live analytics portal: `<pages-url>`.*
-5. Optionally mirror the 12 PDFs to Google Drive as a backup link.
+> ✅ **Done, 3 August 2026.** The repository is public at
+> **`github.com/wasim437/Al_SAFA`**, GitHub Pages is on, and the portal is
+> live at **`wasim437.github.io/Al_SAFA/`**. `00_BRIEF/UPLODED DOCUMENT
+> DETAILS.txt` was confirmed absent before every push (`git ls-files | grep
+> UPLODED` returns nothing). Both links are on page 1 of every one of the 12
+> PDFs, not only slot 06 — every cover carries a clickable banner straight to
+> the portal.
+
+Optionally mirror the 12 PDFs to Google Drive as a backup link — set
+`GDRIVE_URL` in `src/config.py` and it appears on every cover automatically.
 
 Most entries cannot offer a reproducible pipeline. It costs one line and it is
 the strongest single sentence available under criterion 3.
@@ -476,7 +475,7 @@ python tools/sync_submission.py  # → submission/01–12
 Verify before trusting any number:
 
 ```bash
-python -m tests.test_pipeline    # 33 checks
+python -m tests.test_pipeline    # 41 checks
 node docs/_PORTAL/selftest.js    # 64 checks
 node tests/test_film.js          # every frame of the film
 ```
@@ -491,18 +490,18 @@ together or the tests fail loudly.
 
 | | Item |
 |---|---|
-| ☐ | 12 slots merged into 12 single PDFs |
-| ☐ | Cost model closes against AED 35M |
-| ☐ | Commercial & Service Facilities Map produced |
-| ☐ | Word reports describe the **crescent**, not the straight spine |
-| ☐ | 99.2% replaced by 87.3% everywhere |
+| ✅ | 12 slots merged into 12 single PDFs |
+| ✅ | Cost model closes against AED 35M |
+| ✅ | Commercial & Service Facilities Map produced |
+| ✅ | Word reports describe the **crescent**, not the straight spine |
+| ✅ | 99.2% replaced by 87.3% everywhere |
 | ☐ | Site boundary confirmed against the DWG |
-| ☐ | Restrooms, fountains, bike parking, drop-off, waste stations in the plan |
-| ☐ | Jogging loop length justified |
+| ✅ | Restrooms, fountains, bike parking, drop-off, waste stations in the plan |
+| ☐ | Jogging loop length justified against the brief's ~1 km ask |
 | ☐ | Renders regenerated and captioned "artistic impression" |
-| ☐ | Concept-scoring weights stated in slot 01 |
-| ☐ | Solar array **deficit** wording confirmed in slot 08 |
+| ☐ | Concept-scoring weights stated explicitly in slot 01 |
+| ✅ | Solar array **deficit** wording confirmed in slot 08 |
 | ☐ | 60-second animation recorded to MP4 |
-| ☐ | Repo pushed; PII confirmed absent; links in slot 06 |
+| ✅ | Repo pushed; PII confirmed absent; links on every cover |
 | ☐ | All four declarations ticked |
 | ☐ | **Submitted before 15 August 2026** |

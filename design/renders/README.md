@@ -46,5 +46,6 @@ Until then, Board 1 shows a "Visualisation in preparation" placeholder naming
 the prompt that fills it. That is a smaller cost than captioning a lagoon as
 "the crescent", which is what it did before.
 
-**Every render must pass its acceptance test in `RENDER_PROMPTS.md` before it
-goes in.** A render that contradicts the drawings is worse than no render.
+**Every render must pass its acceptance test in `AL_SAFA_MASTER_PROMPT.md`
+before it goes in.** A render that contradicts the drawings is worse than no
+render.

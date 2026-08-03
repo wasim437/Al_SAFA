@@ -230,8 +230,8 @@ Full descriptions, and which analysis backs each one:
 ## Repository layout
 
 ```
-PROJECT_PLAN.md    ⭐ start here — requirements, phases, status, what is left
-RENDER_PROMPTS.md  the generation-ready prompt sheet for every visualisation
+PROJECT_PLAN.md       ⭐ start here — requirements, phases, status, what is left
+AL_SAFA_MASTER_PROMPT.md  the whole design + the generation-ready render prompts
 00_BRIEF/          the official Dubai Municipality competition documents
 data/raw/          6 documented source datasets + sources.json manifest
                    site_zoning_schedule.csv is DERIVED — written by src/plan.py
@@ -242,12 +242,15 @@ src/               config · plan · climate · solar · dataset · models
 models/            trained-model metrics and headline numbers
 figures/           every chart, one visual system
 design/            visuals/ (generated drawings) · boards/ · renders/
-tests/             33 pipeline checks + the film runtime test
+tests/             41 pipeline checks + the film runtime test
 submission/        the 12 official upload files, each with a MANIFEST.md
 reports/           written reports (PDF + editable Word)
-docs/              the project website and the analytics portal
+docs/              the project website and the analytics portal — live at
+                   wasim437.github.io/Al_SAFA/
 tools/             sync_portal · sync_film · sync_submission · build_docs
-archive/           phases/ (working history) · withdrawn_visuals/ (see above)
+archive/           withdrawn_visuals/ (see above) — phases/ was 243 files of
+                   superseded working drafts, removed 3 Aug 2026; recoverable
+                   from git history
 EXPLAIN_THE_PROJECT/  a plain-language walkthrough, for readers who want no code
 ```
 
