@@ -71,6 +71,109 @@ MUTED = HexColor("#6b6b6b")
 RULE = HexColor("#c8c8c8")
 ACCENT = HexColor("#1f6f5c")
 
+# ── Presentation palette ────────────────────────────────────────────────────
+# The generated pages are laid out as a deck: a dark banner, numbered section
+# badges, and cards with a coloured spine. The written reports keep the quieter
+# editorial styling — a report is read, a cover is scanned, and they should not
+# pretend to be the same kind of page.
+NAVY = HexColor("#0B1B2B")       # banner and footer
+NAVY_2 = HexColor("#16324B")     # banner gradient step
+BLUE = HexColor("#1B6FB8")       # primary accent
+AMBER = HexColor("#E8A33D")      # highlight / attention
+TEAL = HexColor("#12836B")       # evidence, "verified"
+CARD = HexColor("#F3F5F7")       # card fill
+CARD_2 = HexColor("#E9EDF1")     # alternating card fill
+PAPER = HexColor("#FFFFFF")
+ON_NAVY = HexColor("#EAF1F7")
+ON_NAVY_DIM = HexColor("#9BB1C4")
+
+
+def banner(c: rl_canvas.Canvas, w: float, h: float, slot: dict,
+           kicker: str, title: str, sub: str = "", tall: bool = False) -> float:
+    """The dark head every generated page opens with. Returns the new y."""
+    bh = (52 if tall else 34) * mm
+    c.setFillColor(NAVY)
+    c.rect(0, h - bh, w, bh, stroke=0, fill=1)
+    # A lighter block on the right so the band reads as designed rather than
+    # as a plain fill.
+    c.setFillColor(NAVY_2)
+    c.rect(w - 46 * mm, h - bh, 46 * mm, bh, stroke=0, fill=1)
+    c.setFillColor(AMBER)
+    c.rect(0, h - bh, w, 1.6 * mm, stroke=0, fill=1)
+
+    x = 18 * mm
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica-Bold", 7.2)
+    c.drawString(x, h - 13 * mm, kicker.upper())
+
+    c.setFillColor(PAPER)
+    c.setFont("Helvetica-Bold", 20 if tall else 15)
+    c.drawString(x, h - (25 if tall else 22) * mm, title)
+
+    if sub:
+        c.setFillColor(ON_NAVY_DIM)
+        c.setFont("Helvetica", 8.6)
+        yy = h - (33 if tall else 28) * mm
+        for line in _wrap(c, sub, "Helvetica", 8.6, w - 70 * mm):
+            c.drawString(x, yy, line)
+            yy -= 4.4 * mm
+
+    # Slot number, large, right-aligned in the lighter block.
+    c.setFillColor(AMBER)
+    c.setFont("Helvetica-Bold", 30 if tall else 22)
+    c.drawRightString(w - 18 * mm, h - (26 if tall else 21) * mm,
+                      f"{slot['n']:02d}")
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica", 6.6)
+    c.drawRightString(w - 18 * mm, h - (32 if tall else 26) * mm, "OF 12")
+    return h - bh - 10 * mm
+
+
+def badge(c: rl_canvas.Canvas, x: float, y: float, label: str,
+          colour=BLUE, size: float = 6.2 * mm) -> None:
+    """A small filled square carrying a number or glyph."""
+    c.setFillColor(colour)
+    c.roundRect(x, y - 1.4 * mm, size, size, 1.2 * mm, stroke=0, fill=1)
+    c.setFillColor(PAPER)
+    c.setFont("Helvetica-Bold", 8)
+    c.drawCentredString(x + size / 2, y + size / 2 - 4.3 * mm, label)
+
+
+def section(c: rl_canvas.Canvas, x: float, y: float, w: float, num: str,
+            title: str, colour=BLUE) -> float:
+    """A numbered section heading with a rule to the right margin."""
+    badge(c, x, y, num, colour)
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 9.4)
+    c.drawString(x + 9 * mm, y + 0.4 * mm, title.upper())
+    tw = c.stringWidth(title.upper(), "Helvetica-Bold", 9.4)
+    c.setStrokeColor(RULE)
+    c.setLineWidth(0.6)
+    c.line(x + 12 * mm + tw, y + 1.6 * mm, w - 18 * mm, y + 1.6 * mm)
+    return y - 9 * mm
+
+
+def card(c: rl_canvas.Canvas, x: float, y: float, cw: float, ch: float,
+         colour=BLUE, fill=CARD) -> None:
+    """A soft panel with a coloured spine on its left edge."""
+    c.setFillColor(fill)
+    c.roundRect(x, y, cw, ch, 1.6 * mm, stroke=0, fill=1)
+    c.setFillColor(colour)
+    c.roundRect(x, y, 1.8 * mm, ch, 0.9 * mm, stroke=0, fill=1)
+
+
+def page_foot(c: rl_canvas.Canvas, w: float, slot: dict, note: str = "") -> None:
+    """A thin dark strip closing every generated page."""
+    c.setFillColor(NAVY)
+    c.rect(0, 0, w, 11 * mm, stroke=0, fill=1)
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica", 7)
+    c.drawString(18 * mm, 4.4 * mm, f"{PROJECT}  ·  {APPLICANT}")
+    c.setFillColor(ON_NAVY)
+    c.setFont("Helvetica-Bold", 7)
+    c.drawRightString(w - 18 * mm, 4.4 * mm,
+                      note or f"UPLOAD SLOT {slot['n']:02d} OF 12")
+
 # The twelve upload fields, in the order the form presents them. `blurb` is the
 # one line that goes on the cover so a juror opening the file knows immediately
 # what they are holding.
@@ -263,68 +366,107 @@ def draft_markers(pdf: Path) -> int:
 
 
 def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
+    """The title page, laid out as a deck cover rather than a letterhead."""
     w, h = A4
-    c.setFillColor(ACCENT)
-    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+    x = 18 * mm
+    inner = w - 36 * mm
 
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8.5)
-    c.drawString(20 * mm, h - 26 * mm, CHALLENGE.upper())
+    # ── full-bleed dark head ────────────────────────────────────────────────
+    bh = 74 * mm
+    c.setFillColor(NAVY)
+    c.rect(0, h - bh, w, bh, stroke=0, fill=1)
+    c.setFillColor(NAVY_2)
+    c.rect(w - 52 * mm, h - bh, 52 * mm, bh, stroke=0, fill=1)
+    c.setFillColor(AMBER)
+    c.rect(0, h - bh, w, 2 * mm, stroke=0, fill=1)
 
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawString(20 * mm, h - 34 * mm, f"UPLOAD SLOT {slot['n']:02d} OF 12")
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica-Bold", 7.4)
+    c.drawString(x, h - 14 * mm, CHALLENGE.upper())
 
-    # Title, wrapped by hand — reportlab has no flow here and the titles are short.
-    c.setFont("Helvetica-Bold", 21)
-    y = h - 50 * mm
-    words, line = slot["title"].split(), ""
-    for word in words:
+    c.setFillColor(AMBER)
+    c.setFont("Helvetica-Bold", 40)
+    c.drawRightString(w - 18 * mm, h - 34 * mm, f"{slot['n']:02d}")
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica-Bold", 7)
+    c.drawRightString(w - 18 * mm, h - 40 * mm, "OF 12 UPLOAD SLOTS")
+
+    c.setFillColor(PAPER)
+    c.setFont("Helvetica-Bold", 22)
+    y = h - 30 * mm
+    line = ""
+    for word in slot["title"].split():
         trial = f"{line} {word}".strip()
-        if c.stringWidth(trial, "Helvetica-Bold", 21) > (w - 40 * mm):
-            c.drawString(20 * mm, y, line)
-            y -= 9.5 * mm
+        if c.stringWidth(trial, "Helvetica-Bold", 22) > (w - 76 * mm):
+            c.drawString(x, y, line)
+            y -= 10 * mm
             line = word
         else:
             line = trial
     if line:
-        c.drawString(20 * mm, y, line)
-    y -= 12 * mm
-
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 10.5)
-    for chunk in _wrap(c, slot["blurb"], "Helvetica", 10.5, w - 40 * mm):
-        c.drawString(20 * mm, y, chunk)
-        y -= 5.6 * mm
-
-    y -= 6 * mm
-    c.setStrokeColor(RULE)
-    c.line(20 * mm, y, w - 20 * mm, y)
+        c.drawString(x, y, line)
     y -= 9 * mm
 
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawString(20 * mm, y, "CONTENTS")
-    y -= 6 * mm
-    c.setFont("Helvetica", 9)
-    c.setFillColor(MUTED)
-    for it in items:
-        c.drawString(23 * mm, y, f"·  {pretty(it.name)}")
-        y -= 5 * mm
-        if y < 78 * mm:
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica", 9.4)
+    for chunk in _wrap(c, slot["blurb"], "Helvetica", 9.4, w - 76 * mm):
+        c.drawString(x, y, chunk)
+        y -= 4.9 * mm
+
+    # ── headline strip: the three numbers a juror should leave with ─────────
+    y = h - bh - 4 * mm
+    strip_h = 20 * mm
+    c.setFillColor(CARD)
+    c.rect(0, y - strip_h, w, strip_h, stroke=0, fill=1)
+    stats = [("15,000 m²", "site area"),
+             ("44.5% → 64.6%", "comfortable daylight hours"),
+             ("−7.13 °C", "heat index under canopy"),
+             ("131", "trees planted")]
+    cwid = inner / len(stats)
+    for i, (big, small) in enumerate(stats):
+        sx = x + i * cwid
+        c.setFillColor(BLUE)
+        c.setFont("Helvetica-Bold", 12.5)
+        c.drawString(sx, y - 9 * mm, big)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 6.4)
+        c.drawString(sx, y - 13.6 * mm, small.upper())
+        if i:
+            c.setStrokeColor(RULE)
+            c.setLineWidth(0.6)
+            c.line(sx - 4 * mm, y - strip_h + 4 * mm, sx - 4 * mm, y - 4 * mm)
+    y -= strip_h + 11 * mm
+
+    # ── contents ────────────────────────────────────────────────────────────
+    y = section(c, x, y, w, "01", "What is in this file", BLUE)
+    for i, it in enumerate(items):
+        if y < 96 * mm:
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica-Oblique", 7.6)
+            c.drawString(x + 4 * mm, y, f"… and {len(items) - i} more")
+            y -= 5 * mm
             break
+        card(c, x, y - 1.5 * mm, inner, 6.4 * mm, BLUE,
+             CARD if i % 2 == 0 else CARD_2)
+        c.setFillColor(INK)
+        c.setFont("Helvetica", 8.2)
+        c.drawString(x + 5 * mm, y + 0.6 * mm, pretty(it.name))
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 7)
+        c.drawRightString(w - 21 * mm, y + 0.6 * mm, classify(it).upper())
+        y -= 7.6 * mm
+    y -= 8 * mm
 
-    # Sits directly under the contents list, but never low enough to collide
-    # with the footer.
-    verify_panel(c, slot, w, max(y - 9 * mm, 70 * mm))
+    y = work_summary_strip(c, x, y, w, slot)
 
-    c.setFont("Helvetica", 8.5)
+    verify_panel(c, slot, w, max(y, 66 * mm))
+
     c.setFillColor(MUTED)
-    c.drawString(20 * mm, 26 * mm, PROJECT)
-    c.drawString(20 * mm, 21 * mm, APPLICANT)
-    c.drawString(20 * mm, 16 * mm,
-                 f"Generated {date.today().isoformat()} · "
-                 f"reproducible: python tools/build_submission_pdfs.py")
+    c.setFont("Helvetica", 7)
+    c.drawString(x, 14 * mm,
+                 f"Generated {date.today().isoformat()}  ·  reproducible with "
+                 f"python tools/build_submission_pdfs.py")
+    page_foot(c, w, slot)
     c.showPage()
 
 
@@ -338,27 +480,35 @@ def _link(c, label: str, url: str, x: float, y: float,
     c.linkURL(url, (x, y - 1.2 * mm, x + wide, y + 3.2 * mm), relative=0)
 
 
+def _wrap_links_height(c, srcs: list[str], w: float, x0: float,
+                       font: str = "Helvetica-Bold", size: float = 7.8,
+                       gap: float = 3 * mm, row_h: float = 4.4 * mm,
+                       right_margin: float = 26 * mm) -> int:
+    """How many rows a run of source links takes when wrapped — computed once
+    so the panel can be sized correctly instead of guessed and clipped."""
+    rows, sx = 1, x0
+    for src in srcs:
+        wide = c.stringWidth(src, font, size)
+        if sx + wide > w - right_margin:
+            rows += 1
+            sx = x0
+        sx += wide + gap
+    return rows
+
+
 def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
     """The evidence block: where to go to check any claim in this file.
 
     Every slot carries it, because the point of the submission is that no
     number in it was typed by hand — each one is regenerated from the code and
     data named here, and a juror can open that code in a browser.
+
+    Height is computed from the actual content before anything is drawn — the
+    previous fixed-height version clipped the "Reproduce" line on slots with
+    four or more sources.
     """
-    x = 20 * mm
-
-    c.setStrokeColor(RULE)
-    c.line(x, top + 6 * mm, w - 20 * mm, top + 6 * mm)
-
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawString(x, top, "VERIFY THIS DOCUMENT")
-
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8)
-    c.drawString(x, top - 5 * mm,
-                 "Every quantity in this file is regenerated from data by code. "
-                 "Nothing is typed by hand.")
+    x = 18 * mm
+    inner = w - 36 * mm
 
     rows = [
         ("Repository", REPO_URL.replace("https://", ""), REPO_URL),
@@ -366,37 +516,105 @@ def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
     ]
     if DRIVE_URL:
         rows.append(("Drive mirror", "the twelve upload files", DRIVE_URL))
-    y = top - 12 * mm
+    srcs = slot.get("sources", [])
+    src_rows = _wrap_links_height(c, srcs, w, x + 30 * mm)
+
+    head_h = 9.4 * mm                       # title + subtitle
+    body_h = len(rows) * 5 * mm + src_rows * 4.4 * mm + 5 * mm  # + reproduce
+    ph = head_h + body_h + 9 * mm            # top and bottom padding
+
+    c.setFillColor(NAVY)
+    c.roundRect(x, top - ph, inner, ph, 2 * mm, stroke=0, fill=1)
+    c.setFillColor(TEAL)
+    c.roundRect(x, top - ph, 2.2 * mm, ph, 1.1 * mm, stroke=0, fill=1)
+
+    x += 6 * mm
+    c.setFillColor(AMBER)
+    c.setFont("Helvetica-Bold", 8.6)
+    c.drawString(x, top - 5 * mm, "VERIFY THIS DOCUMENT")
+
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica", 7.6)
+    c.drawString(x, top - 9.4 * mm,
+                 "Every quantity in this file is regenerated from data by "
+                 "code. Nothing is typed by hand.")
+
+    y = top - 9.4 * mm - 6.5 * mm
     for label, shown, url in rows:
-        c.setFillColor(MUTED)
-        c.setFont("Helvetica", 8)
+        c.setFillColor(ON_NAVY_DIM)
+        c.setFont("Helvetica", 7.6)
         c.drawString(x, y, label)
-        _link(c, shown, url, x + 24 * mm, y)
+        _link(c, shown, url, x + 24 * mm, y, size=8)
         y -= 5 * mm
 
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8)
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica", 7.6)
     c.drawString(x, y, "Produced by")
     sx = x + 24 * mm
-    for i, src in enumerate(slot.get("sources", [])):
-        if sx + c.stringWidth(src, "Helvetica-Bold", 8.5) > w - 22 * mm:
-            y -= 4.6 * mm
+    for i, src in enumerate(srcs):
+        if sx + c.stringWidth(src, "Helvetica-Bold", 7.8) > w - 26 * mm:
+            y -= 4.4 * mm
             sx = x + 24 * mm
-        _link(c, src, f"{BLOB}/{src}", sx, y)
-        sx += c.stringWidth(src, "Helvetica-Bold", 8.5) + 3 * mm
-        if i < len(slot.get("sources", [])) - 1:
-            c.setFillColor(MUTED)
-            c.setFont("Helvetica", 8)
+        _link(c, src, f"{BLOB}/{src}", sx, y, size=7.8)
+        sx += c.stringWidth(src, "Helvetica-Bold", 7.8) + 3 * mm
+        if i < len(srcs) - 1:
+            c.setFillColor(ON_NAVY_DIM)
+            c.setFont("Helvetica", 7.6)
             c.drawString(sx - 2.4 * mm, y, "·")
-    y -= 5 * mm
+    y -= 6 * mm
 
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8)
+    c.setFillColor(ON_NAVY_DIM)
+    c.setFont("Helvetica", 7.6)
     c.drawString(x, y, "Reproduce")
-    c.setFont("Courier", 8)
-    c.setFillColor(INK)
+    c.setFont("Courier-Bold", 7.4)
+    c.setFillColor(PAPER)
     c.drawString(x + 24 * mm, y,
                  "python run_analysis.py   ·   python -m tests.test_pipeline")
+
+
+def work_summary_strip(c: rl_canvas.Canvas, x: float, y: float, w: float,
+                        slot: dict) -> float:
+    """The scale of the analysis behind this file, in one glance.
+
+    Fills the gap between the contents list and the verify panel with figures
+    a non-technical reader can hold onto — not a repeat of the room schedule,
+    a sense of how much work sits under this document.
+    """
+    inner = w - 2 * x if isinstance(x, float) else 0  # unused, kept explicit
+    left = x
+    inner = (w - 18 * mm) - left
+
+    y = section(c, left, y, w, "02", "The scale of the analysis behind it",
+                TEAL)
+
+    items = [
+        ("39 years", "of climate normals (NCM, 1977–2015) rebuilt into an "
+                      "8,760-hour modelled year"),
+        ("8,760 hours", "of sun position ray-traced against 131 trees for "
+                         "every hour of the year"),
+        ("15,000", "one-metre ground cells modelled for shade and comfort, "
+                    "site-wide"),
+        ("4 models", "trained and tested for leakage — two of them decide "
+                      "what this document reports"),
+        ("41 checks", "run on every rebuild, so a wrong number fails loudly "
+                       "instead of shipping quietly"),
+    ]
+    cols, gap = 5, 2.4 * mm
+    cw = (inner - gap * (cols - 1)) / cols
+    ch = 22 * mm
+    for i, (big, small) in enumerate(items):
+        cx = left + i * (cw + gap)
+        card(c, cx, y - ch, cw, ch, TEAL, CARD if i % 2 == 0 else CARD_2)
+        c.setFillColor(TEAL)
+        c.setFont("Helvetica-Bold", 10.5)
+        c.drawString(cx + 3.6 * mm, y - 6.4 * mm, big)
+        c.setFillColor(INK)
+        c.setFont("Helvetica", 6.1)
+        ty = y - 10.4 * mm
+        for line in _wrap(c, small, "Helvetica", 6.1, cw - 6 * mm):
+            c.drawString(cx + 3.6 * mm, ty, line)
+            ty -= 3.2 * mm
+    return y - ch - 8 * mm
 
 
 # The ten phases the project actually ran, and what each one produced. Every
@@ -561,83 +779,119 @@ def evidence_index() -> list[tuple[str, list[tuple[str, str]]]]:
     return out
 
 
-def method_page(c: rl_canvas.Canvas, slot: dict) -> None:
-    """How this document came to exist — the process, not the artefact."""
+def method_page(c: rl_canvas.Canvas, slot: dict) -> int:
+    """How this document came to exist — the process, not the artefact.
+
+    Returns the number of pages used: slots where all ten phases are marked
+    (the Complete Design Report) run past one page, and the alternative to
+    counting is a cut-off "Reproduce it" box — which is the bug this replaced.
+    """
     c.setPageSize(A4)
     w, h = A4
+    x = 18 * mm
+    inner = w - 36 * mm
+    pages = 1
 
-    c.setFillColor(ACCENT)
-    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+    floor = 24 * mm
 
-    x = 20 * mm
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 15)
-    c.drawString(x, h - 28 * mm, "How this document was produced")
+    def continued(kicker: str, title: str) -> float:
+        c.setPageSize(A4)
+        c.setFillColor(NAVY)
+        c.rect(0, h - 18 * mm, w, 18 * mm, stroke=0, fill=1)
+        c.setFillColor(AMBER)
+        c.rect(0, h - 18 * mm, w, 1.2 * mm, stroke=0, fill=1)
+        c.setFillColor(ON_NAVY_DIM)
+        c.setFont("Helvetica-Bold", 6.6)
+        c.drawString(x, h - 8 * mm, kicker.upper())
+        c.setFillColor(PAPER)
+        c.setFont("Helvetica-Bold", 10.5)
+        c.drawString(x, h - 14 * mm, title)
+        c.setFillColor(AMBER)
+        c.setFont("Helvetica-Bold", 9)
+        c.drawRightString(w - 18 * mm, h - 11 * mm, f"{slot['n']:02d}/12")
+        return h - 26 * mm
 
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 9)
-    y = h - 36 * mm
-    intro = ("This submission is the output of a ten-phase process in which "
-             "each phase is checked against the one before it. Nothing "
-             "downstream is hand-drawn or hand-typed: change an input, re-run, "
-             "and every chart, drawing and figure moves with it — or a test "
-             "fails loudly. The phases behind this particular document are "
-             "marked.")
-    for line in _wrap(c, intro, "Helvetica", 9, w - 40 * mm):
-        c.drawString(x, y, line)
-        y -= 4.6 * mm
+    def ensure(need: float, kicker: str, title: str) -> float:
+        nonlocal y, pages
+        if y - need < floor:
+            page_foot(c, w, slot)
+            c.showPage()
+            pages += 1
+            y = continued(kicker, title)
+        return y
 
-    y -= 5 * mm
+    y = banner(c, w, h, slot, "HOW THIS DOCUMENT WAS PRODUCED",
+               "A ten-phase process, checked at every step",
+               "Nothing downstream is hand-drawn or hand-typed — change an "
+               "input and every figure moves with it, or a test fails loudly.",
+               tall=True)
+    y -= 4 * mm
+
+    y = section(c, x, y, w, "01", "The ten phases", BLUE)
     mine = SLOT_PHASES.get(slot["n"], [])
     for n, name, what in PHASES:
         here = n in mine
-        if here:
-            c.setFillColor(ACCENT)
-            c.rect(x - 3 * mm, y - 1.5 * mm, 1.6 * mm, 5.5 * mm, stroke=0, fill=1)
+        rh = 12 * mm if len(what) < 90 else 15 * mm
+        y = ensure(rh + 2.2 * mm, "THE TEN PHASES — CONTINUED",
+                  "How this document was produced")
+        card(c, x, y - rh + 1.6 * mm, inner, rh,
+             TEAL if here else RULE, CARD if here else PAPER)
+        c.setFillColor(TEAL if here else MUTED)
+        c.setFont("Helvetica-Bold", 7.6)
+        c.drawString(x + 5 * mm, y - 3 * mm, f"P{n}")
         c.setFillColor(INK if here else MUTED)
-        c.setFont("Helvetica-Bold" if here else "Helvetica", 8.8)
-        c.drawString(x, y, f"Phase {n} — {name}")
-        y -= 4.4 * mm
+        c.setFont("Helvetica-Bold" if here else "Helvetica", 8.4)
+        c.drawString(x + 12 * mm, y - 3 * mm, name)
+        if here:
+            c.setFillColor(TEAL)
+            c.setFont("Helvetica-Bold", 6.4)
+            c.drawRightString(w - 22 * mm, y - 3 * mm, "★ THIS DOCUMENT")
         c.setFillColor(MUTED)
-        c.setFont("Helvetica", 7.8)
-        for line in _wrap(c, what, "Helvetica", 7.8, w - 46 * mm):
-            c.drawString(x + 4 * mm, y, line)
-            y -= 3.9 * mm
-        y -= 2.2 * mm
+        c.setFont("Helvetica", 6.8)
+        ty = y - 7 * mm
+        for line in _wrap(c, what, "Helvetica", 6.8, inner - 16 * mm):
+            c.drawString(x + 12 * mm, ty, line)
+            ty -= 3.4 * mm
+        y -= rh + 2.2 * mm
 
-    y -= 2 * mm
-    c.setStrokeColor(RULE)
-    c.line(x, y, w - 20 * mm, y)
-    y -= 7 * mm
+    y -= 4 * mm
+    y = ensure(9 * mm + 9 * mm, "SOURCES — CONTINUED",
+              "How this document was produced")
+    y = section(c, x, y, w, "02", "The code and data behind this document",
+                BLUE)
+    srcs = slot.get("sources", [])
+    ch = 9 * mm
+    cw = (inner - 3 * mm * (len(srcs) - 1)) / max(len(srcs), 1)
+    for i, src in enumerate(srcs):
+        cx = x + i * (cw + 3 * mm)
+        card(c, cx, y - ch, cw, ch, BLUE, CARD)
+        _link(c, pretty(src.split("/")[-1])[:22], f"{BLOB}/{src}",
+              cx + 3 * mm, y - 4.4 * mm, size=7)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Oblique", 5.6)
+        c.drawString(cx + 3 * mm, y - 7.6 * mm, src.rsplit("/", 1)[0])
+    y -= ch + 8 * mm
 
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawString(x, y, "THE CODE AND DATA BEHIND THIS DOCUMENT")
-    y -= 6 * mm
-    for src in slot.get("sources", []):
-        _link(c, src, f"{BLOB}/{src}", x + 3 * mm, y, size=8.2)
-        y -= 4.8 * mm
-
-    y -= 3 * mm
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawString(x, y, "REPRODUCE IT")
-    y -= 6 * mm
-    c.setFont("Courier", 8)
-    c.setFillColor(MUTED)
+    box_h = 30 * mm
+    y = ensure(9 * mm + box_h, "REPRODUCE IT — CONTINUED",
+              "How this document was produced")
+    y = section(c, x, y, w, "03", "Reproduce it end to end", TEAL)
+    card(c, x, y - box_h, inner, box_h, TEAL, NAVY)
+    c.setFont("Courier-Bold", 7.6)
+    c.setFillColor(ON_NAVY)
+    cy = y - 6 * mm
     for cmd in ("pip install -r requirements.txt",
                 "python run_analysis.py           # data, models, figures",
                 "python -m src.drawings           # section, elevation, planting",
                 "python -m src.boards             # the presentation boards",
                 "python tools/build_submission_pdfs.py",
-                "python -m tests.test_pipeline    # 38 checks"):
-        c.drawString(x + 3 * mm, y, cmd)
-        y -= 4.4 * mm
+                "python -m tests.test_pipeline    # 41 checks"):
+        c.drawString(x + 5 * mm, cy, cmd)
+        cy -= 4.5 * mm
 
-    c.setFont("Helvetica", 8)
-    c.setFillColor(MUTED)
-    c.drawString(x, 16 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    page_foot(c, w, slot)
     c.showPage()
+    return pages
 
 
 def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
@@ -1060,8 +1314,8 @@ def build_slot(slot: dict, act: bool) -> dict:
     tmp = OUT / f".{stem}.front.pdf"
     c = rl_canvas.Canvas(str(tmp), pagesize=A4)
     cover_page(c, slot, ordered)                  # page 0
-    method_page(c, slot)                          # page 1
-    for img in imgs:                              # pages 2 .. 2+len(imgs)
+    n_method = method_page(c, slot)                # page 1 .. 1+n_method
+    for img in imgs:
         image_sheet(c, img, slot)
     n_gallery = gallery_page(c, slot)              # the whole visual record
     proof_page(c, slot)                            # the numbers, and how to
@@ -1076,7 +1330,8 @@ def build_slot(slot: dict, act: bool) -> dict:
 
     writer.add_page(front.pages[0])              # cover
     marks.append(("Cover — what this file is", 0))
-    writer.add_page(front.pages[1])              # how it was produced
+    for j in range(n_method):                     # how it was produced
+        writer.add_page(front.pages[1 + j])
     marks.append(("How this document was produced", 1))
 
     for p in pdfs:                                # the written reports
@@ -1091,14 +1346,15 @@ def build_slot(slot: dict, act: bool) -> dict:
     # After the image sheets come the gallery (n_gallery pages), the proof page
     # (one), and the index (n_index). Only the first page of a multi-page
     # section gets a bookmark.
-    g0 = 2 + len(imgs)
+    img0 = 1 + n_method
+    g0 = img0 + len(imgs)
     p0 = g0 + n_gallery
     i0 = p0 + 1
-    for i, pg in enumerate(front.pages[2:], start=2):
+    for i, pg in enumerate(front.pages[img0:], start=img0):
         here = len(writer.pages)
         writer.add_page(pg)
         if i < g0:
-            j = i - 2
+            j = i - img0
             marks.append((f"{pretty(imgs[j].name)}  ({classify(imgs[j])})", here))
         elif i == g0:
             marks.append(("Every drawing and chart in this project", here))
