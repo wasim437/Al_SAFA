@@ -523,16 +523,51 @@ def _wrap_links_height(c, srcs: list[str], w: float, x0: float,
                        font: str = "Helvetica-Bold", size: float = 7.8,
                        gap: float = 3 * mm, row_h: float = 4.4 * mm,
                        right_margin: float = 26 * mm) -> int:
-    """How many rows a run of source links takes when wrapped — computed once
-    so the panel can be sized correctly instead of guessed and clipped."""
+    """How many rows the grouped, tagged source list takes when wrapped —
+    computed once, by simulating the exact same layout verify_panel draws, so
+    the panel is sized correctly instead of guessed and clipped."""
     rows, sx = 1, x0
-    for src in srcs:
-        wide = c.stringWidth(src, font, size)
-        if sx + wide > w - right_margin:
+    for label, group in _group_by_concept(srcs):
+        tag = f"{label}  "
+        tag_w = c.stringWidth(tag, "Helvetica-Bold", 6.8)
+        if sx + tag_w > w - right_margin:
             rows += 1
             sx = x0
-        sx += wide + gap
+        sx += tag_w + 1 * mm
+        for src in group:
+            wide = c.stringWidth(src, font, size)
+            if sx + wide > w - right_margin:
+                rows += 1
+                sx = x0
+            sx += wide + gap
+        sx += 3 * mm
     return rows
+
+
+# Top-level folder -> the concept a reader actually cares about. Used to
+# group the "Produced by" source list on every cover instead of running it as
+# one undifferentiated line of filenames.
+CONCEPT = {
+    "src": "CODE", "tools": "BUILD", "data": "DATA", "models": "MODELS",
+    "tests": "TESTS", "docs": "PORTAL", "figures": "FIGURES",
+    "design": "DRAWINGS", "archive": "RECORD",
+}
+
+
+def _group_by_concept(paths: list[str]) -> list[tuple[str, list[str]]]:
+    """[a/b, a/c, x/y] -> [("CODE", [a/b, a/c]), ("BUILD", [x/y])] — grouped,
+    in first-seen order, so related sources sit under one label instead of
+    reading as an arbitrary run of file names."""
+    order: list[str] = []
+    buckets: dict[str, list[str]] = {}
+    for p in paths:
+        head = p.split("/", 1)[0]
+        label = CONCEPT.get(head, "DOCS" if "/" not in p else "OTHER")
+        if label not in buckets:
+            buckets[label] = []
+            order.append(label)
+        buckets[label].append(p)
+    return [(label, buckets[label]) for label in order]
 
 
 def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
@@ -590,16 +625,22 @@ def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
     c.setFont("Helvetica", 7.6)
     c.drawString(x, y, "Produced by")
     sx = x + 24 * mm
-    for i, src in enumerate(srcs):
-        if sx + c.stringWidth(src, "Helvetica-Bold", 7.8) > w - 26 * mm:
+    for label, group in _group_by_concept(srcs):
+        tag = f"{label}  "
+        if sx + c.stringWidth(tag, "Helvetica-Bold", 6.8) > w - 26 * mm:
             y -= 4.4 * mm
             sx = x + 24 * mm
-        _link(c, src, f"{BLOB}/{src}", sx, y, size=7.8)
-        sx += c.stringWidth(src, "Helvetica-Bold", 7.8) + 3 * mm
-        if i < len(srcs) - 1:
-            c.setFillColor(ON_NAVY_DIM)
-            c.setFont("Helvetica", 7.6)
-            c.drawString(sx - 2.4 * mm, y, "·")
+        c.setFillColor(AMBER)
+        c.setFont("Helvetica-Bold", 6.8)
+        c.drawString(sx, y, tag)
+        sx += c.stringWidth(tag, "Helvetica-Bold", 6.8) + 1 * mm
+        for j, src in enumerate(group):
+            if sx + c.stringWidth(src, "Helvetica-Bold", 7.8) > w - 26 * mm:
+                y -= 4.4 * mm
+                sx = x + 24 * mm
+            _link(c, src, f"{BLOB}/{src}", sx, y, size=7.8)
+            sx += c.stringWidth(src, "Helvetica-Bold", 7.8) + 3 * mm
+        sx += 3 * mm
     y -= 6 * mm
 
     c.setFillColor(ON_NAVY_DIM)
