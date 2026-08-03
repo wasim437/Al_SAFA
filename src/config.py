@@ -250,6 +250,40 @@ FIGURE = {
 PROJECT_STAMP = "Al Safa 2 Park · Falaj Al Safa · Dubai Municipality AI Design Challenge"
 
 # ---------------------------------------------------------------------------
+# One accent colour per upload slot
+# ---------------------------------------------------------------------------
+# Navy and amber are the submission's identity and never move. This is the
+# third colour, and it is the fastest way to tell two of the twelve upload
+# files apart — before the redesign, forty-three per cent of the package was
+# the same page repeated and every cover opened on the same four numbers.
+#
+# It lives here rather than in either builder because both need it: the deck
+# pages come from tools/build_submission_pdfs.py and the written reports from
+# tools/build_reports.py, and a report whose accent disagreed with the file it
+# was merged into undid the point of having the colour at all.
+#
+# Mid-tone and desaturated on purpose, so twelve of them read as one family
+# rather than as a paintbox.
+SLOT_HUES = {
+    1: "#1B6FB8",    # blue        Design Narrative & Concept
+    2: "#12836B",    # teal        Preliminary Design Masterplan
+    3: "#B5622A",    # terracotta  Concept Plans & Spatial Diagrams
+    4: "#5B5BA6",    # indigo      Key Sections & Elevations
+    5: "#A63D6B",    # plum        3D & Spatial Visualizations
+    6: "#0F7B8A",    # cyan        AI Methodology Report
+    7: "#C2761C",    # ochre       User Experience & Activation
+    8: "#2F7D4F",    # green       Sustainability Concept & Strategy
+    9: "#8A5A2B",    # bronze      Material & Landscape Palette
+    10: "#1F4E79",   # deep blue   Complete Design Report
+    11: "#7A3E9D",   # purple      Site Analysis & Human-Centric Research
+    12: "#B03A48",   # crimson     One-minute Concept Animation
+}
+
+
+def slot_hue(n: int) -> str:
+    return SLOT_HUES.get(n, "#1B6FB8")
+
+# ---------------------------------------------------------------------------
 # Repository / publication
 # ---------------------------------------------------------------------------
 GITHUB_USER = "wasim437"

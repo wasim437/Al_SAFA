@@ -73,6 +73,17 @@ ON_NAVY_DIM = colors.HexColor("#9BB1C4")
 WASH = CARD
 
 
+def hue(report: dict) -> colors.Color:
+    """This report's accent — the colour of the upload slot it is bound for.
+
+    A report can be merged into more than one slot: the Concept Development
+    report sits in slots 01 and 03, the Detailed Design report in 04 and 09.
+    Each copy is rendered for the slot it will actually sit in, which is also
+    what stops it printing the wrong slot number in its running head.
+    """
+    return colors.HexColor(C.slot_hue(report.get("slot", 1)))
+
+
 # ── live data ────────────────────────────────────────────────────────────────
 def load() -> dict:
     m = json.loads((C.MODELS / "headline_metrics.json").read_text(encoding="utf-8"))
@@ -156,6 +167,11 @@ class Doc(BaseDocTemplate):
         bar_h = 9 * mm
         canv.setFillColor(NAVY)
         canv.rect(0, h - bar_h, w, bar_h, stroke=0, fill=1)
+        # The accent of the upload slot this copy is bound for, so the report
+        # pages belong to the file they sit in rather than to a palette of
+        # their own. See src/config.SLOT_HUES.
+        canv.setFillColor(hue(self.report))
+        canv.rect(w - 46 * mm, h - bar_h, 46 * mm, bar_h, stroke=0, fill=1)
         canv.setFillColor(AMBER)
         canv.rect(0, h - bar_h, w, 0.9 * mm, stroke=0, fill=1)
         canv.setFont("Helvetica-Bold", 7.6)
@@ -212,6 +228,9 @@ def opener(report: dict, S: dict) -> list:
         colWidths=[W],
         style=TableStyle([
             ("BACKGROUND", (0, 0), (-1, -1), NAVY),
+            # The slot's accent down the right edge, matching the deck pages
+            # this masthead is merged behind.
+            ("LINEAFTER", (0, 0), (-1, -1), 3 * mm, hue(report)),
             ("LEFTPADDING", (0, 0), (-1, -1), 7 * mm),
             ("RIGHTPADDING", (0, 0), (-1, -1), 7 * mm),
             ("TOPPADDING", (0, 0), (-1, -1), 7 * mm),
@@ -227,7 +246,7 @@ def opener(report: dict, S: dict) -> list:
         [[Paragraph(report["lead"], lead_in)]], colWidths=[W],
         style=TableStyle([
             ("BACKGROUND", (0, 0), (-1, -1), CARD),
-            ("LINEBEFORE", (0, 0), (0, -1), 2.2 * mm, ACCENT),
+            ("LINEBEFORE", (0, 0), (0, -1), 2.2 * mm, hue(report)),
             ("LEFTPADDING", (0, 0), (-1, -1), 6 * mm),
             ("RIGHTPADDING", (0, 0), (-1, -1), 6 * mm),
             ("TOPPADDING", (0, 0), (-1, -1), 4.5 * mm),
@@ -281,9 +300,9 @@ def figure(rel: str, caption: str, S: dict, width=150 * mm) -> list:
                           Paragraph(caption, S["cap"])])]
 
 
-def render(report: dict, S: dict) -> Path:
+def render(report: dict, S: dict, path: Path | None = None) -> Path:
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / f"{report['slug']}.pdf"
+    path = path or OUT / f"{report['slug']}.pdf"
     flow = opener(report, S)
     for kind, payload in report["blocks"]:
         if kind == "h1":
@@ -367,11 +386,27 @@ def main() -> int:
     # Push each regenerated report over every copy of itself in submission/,
     # so the upload package cannot keep serving the superseded text.
     import shutil
-    replaced = placed = 0
+    replaced = placed = rebound = 0
+    by_slug = {r["slug"]: r for r in reps}
     for path, slot in written:
         dests = list((ROOT / "submission").glob(f"*/{path.name}"))
         for dest in dests:
-            shutil.copy2(path, dest)
+            # A report can be merged into more than one upload slot — the
+            # Concept Development report into 01 and 03, Detailed Design into
+            # 04 and 09. Rendered once, its running head named whichever slot
+            # it declared, so three pages inside slot 03's upload file told a
+            # juror they were reading slot 01. Each copy is now rendered for
+            # the folder it is going into.
+            try:
+                dest_slot = int(dest.parent.name[:2])
+            except ValueError:
+                dest_slot = slot
+            if dest_slot == slot:
+                shutil.copy2(path, dest)
+            else:
+                variant = dict(by_slug[path.stem], slot=dest_slot)
+                render(variant, S, dest)
+                rebound += 1
             replaced += 1
         if dests:
             continue
@@ -388,7 +423,8 @@ def main() -> int:
         placed += 1
         print(f"  + placed {path.name} in {folder.name}")
     print("")
-    print(f"  {replaced} copy(ies) refreshed, {placed} newly placed in submission/")
+    print(f"  {replaced} copy(ies) refreshed, {placed} newly placed, "
+          f"{rebound} re-rendered for the slot they sit in")
 
     # The whole point: none of these may describe themselves as a draft.
     import pypdf

@@ -352,7 +352,10 @@ def slot_stats(slot: dict) -> list[tuple[str, str]]:
 
 
 def hue_of(slot: dict) -> HexColor:
-    return HexColor(slot.get("hue", "#1B6FB8"))
+    # src/config.py is the single home for these, because the written reports
+    # in tools/build_reports.py are accented to match the file they are merged
+    # into and must read the same table.
+    return HexColor(C.slot_hue(slot["n"]))
 
 
 def mix(a: HexColor, b: HexColor, t: float) -> HexColor:
