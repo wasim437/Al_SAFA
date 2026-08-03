@@ -383,7 +383,7 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 |---|---|---|
 | 1 | **Generate the renders** from [`AL_SAFA_MASTER_PROMPT.md`](AL_SAFA_MASTER_PROMPT.md) | You currently have **no** visualisation of the crescent. Prompts 01, 02, 03 first — they fix Board 1 and slot 05. Save over the original filenames and re-run the pipeline |
 | 2 | **Open the DWG** in `00_BRIEF/` and confirm the real boundary | The 150 × 100 m envelope is an assumption. Every area figure depends on it |
-| 3 | **Record the 60-second film** to MP4 | Slot 12. The interactive film itself runs and passes every frame test — this is screen-recording it, not building it |
+| 3 | **Record the 60-second film** to MP4 | Slot 12. Open `concept_film.html` in Chrome or Edge and press **Record the film to a video file** — the page writes its own 1920×1080 MP4 in sixty seconds. No screen recorder, no trimming |
 | 4 | **Read the 9 reports and approve the content** | They are generated, but the design judgement in them is yours to stand behind |
 
 ### 🟡 Optional polish

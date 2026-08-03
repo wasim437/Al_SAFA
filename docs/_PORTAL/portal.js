@@ -2611,7 +2611,7 @@ function buildDelivery() {
     $('#humanTasks').innerHTML = [
         ['Confirm the site boundary against the DWG', `The whole geometry assumes a 150 × 100 m rectangle totalling ${fmt.n(D.zoning.siteArea)} m². Open the municipality DWG and verify. Every area figure downstream depends on this.`, 'critical'],
         ['Generate the photoreal renders', 'design/renders/ is empty by design — six earlier renders contradicted the plan and were withdrawn. AL_SAFA_MASTER_PROMPT.md has the geometry-locked prompts and acceptance test to replace them.', 'critical'],
-        ['Record the 60-second concept film to video', 'The interactive film (submission/12_Concept_Animation_Video/concept_film.html) runs and passes every frame test. Screen-recording it to MP4 is the one remaining step for slot 12.', 'open'],
+        ['Record the 60-second concept film to video', 'Open submission/12_Concept_Animation_Video/concept_film.html in Chrome or Edge and press "Record the film to a video file". The page hands its canvas to the browser\'s recorder and writes a 1920 × 1080 MP4 in sixty seconds — no screen recorder, no trimming. Then upload it to slot 12.', 'open'],
         ['Read the reports and own the design judgement', 'Every "[AI DRAFT]" marker is stripped and enforced by a build check — the numbers are real — but the design decisions are yours to stand behind before submitting them as your own.', 'open'],
         ['Submit and tick all four declarations', 'On the challenge website, before 15 August 2026.', 'critical'],
     ].map(([title, body, kind]) => {

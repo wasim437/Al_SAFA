@@ -1025,14 +1025,27 @@ def build(D: dict) -> list[dict]:
                 "film quietly.",
             ]),
             ("h1", "3. How to produce the video file"),
+            ("p", "The film records itself. Every frame is a pure function of "
+                  "one number — the time in seconds — so the page can hand the "
+                  "canvas straight to the browser's recorder and write the "
+                  "video out. Nothing is screen-captured, so the file carries "
+                  "no browser chrome, no desktop behind it, and no dependence "
+                  "on what the window happened to be scaled to."),
             ("bullets", [
-                "Open <font face='Courier'>concept_film.html</font> full-screen "
-                "in a browser.",
-                "Start a screen recording (Win + Alt + R on Windows, "
-                "Shift + Cmd + 5 on macOS).",
-                "Press Restart and let all sixty seconds run.",
-                "Stop, trim the ends, and add a voiceover if wanted.",
+                "Open <font face='Courier'>concept_film.html</font> in Chrome "
+                "or Edge.",
+                "Press <b>Record the film to a video file</b> and leave the tab "
+                "in front for sixty seconds.",
+                "The file downloads on its own as "
+                "<font face='Courier'>Falaj_Al_Safa_Concept_Film_60s.mp4</font> "
+                "— 1920&#215;1080, sixty seconds, about 11 MB.",
             ]),
+            ("note", "Browsers that cannot write MP4 fall back to WebM, and a "
+                     "WebM written this way carries no duration in its header — "
+                     "it plays, but some players show no timeline. Convert it "
+                     "with <font face='Courier'>ffmpeg -i film.webm -c:v libx264 "
+                     "-pix_fmt yuv420p film.mp4</font>, or record again in "
+                     "Chrome or Edge, which write MP4 directly."),
             ("note", "The film shows the <b>analysed</b> scheme exactly: the same "
                      "arc, the same trees, the same solar model. It is therefore "
                      "consistent with every number quoted elsewhere in this "

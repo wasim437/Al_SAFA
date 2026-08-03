@@ -262,11 +262,21 @@ the film cannot drift away from the drawings the way the previous one did.
 
 **To turn it into the MP4 the portal wants:**
 
-1. Open `concept_film.html` full-screen in a browser.
-2. Start a screen recording — `Win + Alt + R` on Windows, `Shift + Cmd + 5` on macOS.
-3. Press **Restart** and let all sixty seconds run.
-4. Stop, trim the ends, add a voiceover if you want one.
-5. Upload the MP4.
+1. Open `concept_film.html` in Chrome or Edge.
+2. Press **Record the film to a video file** and leave the tab in front.
+3. Sixty seconds later `Falaj_Al_Safa_Concept_Film_60s.mp4` downloads on its own
+   — 1920 × 1080, about 11 MB.
+4. Upload it.
+
+The page records the canvas directly rather than the screen, so the file carries
+no browser chrome, no desktop behind it, and no dependence on the window size.
+Every frame in the film is a pure function of the elapsed time, which is what
+makes recording it a matter of reading the canvas rather than filming a monitor.
+
+A browser that cannot write MP4 falls back to WebM, and a WebM written this way
+carries no duration in its header — it plays, but some players show no timeline.
+Convert it with `ffmpeg -i film.webm -c:v libx264 -pix_fmt yuv420p film.mp4`, or
+record again in Chrome or Edge.
 
 This slot is **optional** on the portal, but it is the highest-leverage item you
 have: the shortlist goes to a **community vote**, and a community votes on what

@@ -105,6 +105,10 @@
            font-family: var(--mono); font-size: 11px; letter-spacing: .05em;
            color: var(--ink-3); line-height: 1.85; }
   @media (prefers-reduced-motion: reduce) { .play-mark { transition: none; } }
+  .recnote { font-family: var(--mono); font-size: 11.5px; line-height: 1.8;
+             letter-spacing: .03em; color: var(--ink-2); margin: 12px 0 0; }
+  .recnote b { color: var(--ink); }
+  #record[aria-busy="true"] { opacity: .65; cursor: progress; }
 </style>
 
 <div class="wrap">
@@ -132,9 +136,11 @@
   <div class="transport">
     <button class="btn" id="toggle">Pause</button>
     <button class="btn" id="restart">Restart</button>
+    <button class="btn" id="record">Record the film to a video file</button>
     <div class="rail" id="rail"></div>
     <span class="tc" id="tc">00:00:00 / 00:01:00</span>
   </div>
+  <p class="recnote" id="recnote" hidden></p>
 
   <section class="data">
     <h2>What the film asserts, and what computed it</h2>
@@ -204,11 +210,20 @@
       <!-- END GENERATED SECTION NOTE -->
       <h3 style="margin-top:22px">To submit this as the required video</h3>
       <ol>
-        <li>Put the film full-screen.</li>
-        <li>Record — <code>Win + Alt + R</code>, or <code>Shift + Cmd + 5</code> on macOS.</li>
-        <li>Press <strong>Restart</strong>; let all sixty seconds run.</li>
-        <li>Trim the ends, add a voiceover if you want one, upload the MP4.</li>
+        <li>Open this page in Chrome or Edge.</li>
+        <li>Press <strong>Record the film to a video file</strong> and leave the
+            tab in front.</li>
+        <li>Sixty seconds later
+            <code>Falaj_Al_Safa_Concept_Film_60s.mp4</code> downloads on its own
+            — 1920 × 1080, about 11 MB.</li>
+        <li>Upload it to slot 12.</li>
       </ol>
+      <p>
+        Every frame here is a pure function of one number, the elapsed time, so
+        the page can hand its canvas straight to the browser's recorder rather
+        than filming a monitor. The file carries no browser chrome, nothing from
+        the desktop behind it, and no dependence on the window size.
+      </p>
     </div>
   </section>
 
@@ -976,7 +991,7 @@
     // Same avenue-occlusion issue as scene 3's day pass, briefly: the opening
     // height (36) sat level with the tree crowns. It cranes away fast enough
     // that this was never as bad, but starting a little higher and wider
-    // keeps the "44.5% -> 61.3%" card from opening behind a green wall.
+    // keeps the "44.5% -> 64.6%" card from opening behind a green wall.
     setCam([[96,-70,50],[75,50,2]], [[80,-238,252],[75,50,0]], clamp(t/.9,0,1), 44, 36);
 
     const s = solar(172, lerp(15.5, 18.6, eve)), sd = sunDir(s);
@@ -1127,6 +1142,108 @@
   toggle.addEventListener("click", () => { if (playing) { playing=false; toggle.textContent="Play"; } else play(); });
   restart.addEventListener("click", () => { t = 0; play(); });
   opener.addEventListener("click", play);
+
+  // ── Record the film to a real video file ──────────────────────────────────
+  // draw(t) paints a whole frame from nothing but t, so the film can record
+  // itself: MediaRecorder reads the canvas directly and writes a video the
+  // submission portal will accept. That removes the one step in this project
+  // that used to need screen-recording software and a steady hand — and a
+  // screen recording would have captured the browser chrome and whatever the
+  // desktop was doing, at whatever the window happened to be scaled to. This
+  // records the 1920x1080 canvas itself.
+  const recBtn = document.getElementById("record");
+  const recNote = document.getElementById("recnote");
+
+  function say(html) { recNote.hidden = false; recNote.innerHTML = html; }
+
+  // MP4 if the browser will write it, because that is what submission portals
+  // ask for; WebM otherwise, which every Chromium browser can write.
+  function pickType() {
+    const wanted = ["video/mp4;codecs=avc1.42E01E", "video/mp4",
+                    "video/webm;codecs=vp9", "video/webm;codecs=vp8",
+                    "video/webm"];
+    for (const ty of wanted) {
+      if (window.MediaRecorder && MediaRecorder.isTypeSupported(ty)) return ty;
+    }
+    return "";
+  }
+
+  recBtn.addEventListener("click", async () => {
+    if (recBtn.getAttribute("aria-busy") === "true") return;
+    if (!window.MediaRecorder || !cv.captureStream) {
+      say("This browser cannot record canvas video. Open the film in Chrome " +
+          "or Edge and press this button again.");
+      return;
+    }
+    const type = pickType();
+    if (!type) { say("This browser has MediaRecorder but supports no video " +
+                     "format this page can write."); return; }
+
+    const ext = type.startsWith("video/mp4") ? "mp4" : "webm";
+    playing = false;                       // take the clock off the raf loop
+    t = 0; paint();
+    recBtn.setAttribute("aria-busy", "true");
+    toggle.disabled = restart.disabled = true;
+
+    const stream = cv.captureStream(30);
+    const chunks = [];
+    let rec;
+    try {
+      rec = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 12e6 });
+    } catch (e) {
+      say("Recording could not start: " + e.message);
+      recBtn.removeAttribute("aria-busy");
+      toggle.disabled = restart.disabled = false;
+      return;
+    }
+    rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+
+    const done = new Promise(res => { rec.onstop = res; });
+    rec.start(250);
+
+    // Paced against the wall clock, because MediaRecorder timestamps frames as
+    // they arrive: rendering faster than real time would write a video that
+    // plays faster than sixty seconds.
+    const t0 = performance.now();
+    await new Promise(res => {
+      function step(now) {
+        t = Math.min(DUR, (now - t0) / 1000);
+        paint();
+        say(`Recording <b>${Math.round(t)}s</b> of 60 — leave this tab in ` +
+            `front, the file downloads on its own when it finishes.`);
+        if (t >= DUR) return res();
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+
+    rec.stop();
+    stream.getTracks().forEach(tr => tr.stop());
+    await done;
+
+    const blob = new Blob(chunks, { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Falaj_Al_Safa_Concept_Film_60s.${ext}`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+
+    const mb = (blob.size / 1048576).toFixed(1);
+    say(`Saved <b>Falaj_Al_Safa_Concept_Film_60s.${ext}</b> — ${mb} MB, ` +
+        `1920&times;1080, sixty seconds.` +
+        (ext === "webm"
+          ? ` This browser cannot write MP4, and a WebM written this way ` +
+            `carries no duration in its header — it plays, but some players ` +
+            `show no timeline and the upload form may reject it. Convert it ` +
+            `with <b>ffmpeg -i Falaj_Al_Safa_Concept_Film_60s.webm -c:v ` +
+            `libx264 -pix_fmt yuv420p Falaj_Al_Safa_Concept_Film_60s.mp4</b>, ` +
+            `or record again in Chrome or Edge, which write MP4 directly.`
+          : ""));
+    recBtn.removeAttribute("aria-busy");
+    toggle.disabled = restart.disabled = false;
+    toggle.textContent = "Replay";
+  });
 
   if (reduce) { t = 36; toggle.textContent = "Play"; }
   paint();
