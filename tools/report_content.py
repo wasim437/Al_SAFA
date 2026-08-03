@@ -396,7 +396,7 @@ def build(D: dict) -> list[dict]:
             ("h1", "2. The four models"),
             ("table", (["Model", "Task", "Result", "Why it is a real problem"], [
                 ["<b>M1a</b> Random Forest", "Shade surrogate (regression)",
-                 f"R² {m1.get('random_forest', {}).get('test_r2', 0):.3f}",
+                 f"R² {m1.get('models', {}).get('random_forest', {}).get('test_r2', 0):.3f}",
                  "Learns a slow ray-traced simulation from cheap plan geometry"],
                 ["<b>M1b</b> Neural network", "Shade surrogate (deployed)",
                  f"R² {m['model_M1_test_r2']:.3f}",

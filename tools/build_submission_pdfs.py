@@ -36,6 +36,7 @@ Output goes to `UPLOAD_THESE_12_FILES/` — twelve files, named for their slot.
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from datetime import date
 from pathlib import Path
@@ -259,6 +260,18 @@ SLOTS: list[dict] = [
 # one. The guard against a bad render is the acceptance test in the master
 # prompt, applied by a person looking at the picture, not a filename blocklist.
 HOLD: dict[str, str] = {}
+
+# The report(s) tools/report_content.py actually generates for each slot,
+# derived once from its own slug list rather than duplicated by hand.
+def _expected_report_stems() -> dict[int, set[str]]:
+    stems: dict[int, set[str]] = {n: set() for n in range(1, 13)}
+    text = (ROOT / "tools" / "report_content.py").read_text(encoding="utf-8")
+    for m in re.finditer(r'slug="([^"]+)",\s*slot=(\d+)', text):
+        stems.setdefault(int(m.group(2)), set()).add(m.group(1))
+    return stems
+
+
+EXPECTED_REPORT_STEMS = _expected_report_stems()
 
 # Included, but the build report says why they are worth replacing. Empty: the
 # one entry was a 9-page legacy package in slot 05 suspected of embedding the
@@ -1305,6 +1318,7 @@ def build_slot(slot: dict, act: bool) -> dict:
     files = [f for f in sorted(folder.iterdir())
              if f.is_file() and f.name != "MANIFEST.md"]
 
+    expected = EXPECTED_REPORT_STEMS.get(slot["n"], set())
     pdfs, imgs = [], []
     for f in files:
         if f.name in HOLD:
@@ -1313,7 +1327,22 @@ def build_slot(slot: dict, act: bool) -> dict:
         if f.name in REVIEW:
             report["review"].append((f.name, REVIEW[f.name]))
         if f.suffix.lower() == ".pdf":
-            pdfs.append(f)
+            # Only merge a PDF that tools/report_content.py actually generated
+            # for THIS slot. Two leftover pre-redesign files — a 4 KB "Phase
+            # 1.12" log and a "Phase 1.13" catchment report — sat in these
+            # folders untouched by the current system and were merged into
+            # the final upload PDFs with no filter at all: a plain, dated,
+            # visually inconsistent page sandwiched into an otherwise
+            # coherent document. This is what caught them.
+            if f.stem in expected or not expected:
+                pdfs.append(f)
+            else:
+                report["held"].append(
+                    (f.name, f"Not one of this slot's generated reports "
+                              f"({', '.join(sorted(expected)) or 'none expected'}). "
+                              f"Likely a pre-redesign leftover — delete it from "
+                              f"submission/{slot['folder']}/ or add it to "
+                              f"tools/report_content.py if it should be here."))
         elif f.suffix.lower() in (".png", ".jpg", ".jpeg"):
             imgs.append(f)
 

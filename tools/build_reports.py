@@ -62,8 +62,16 @@ OUT = ROOT / "reports" / "pdf"
 INK = colors.HexColor("#1a1a1a")
 MUTED = colors.HexColor("#6b6b6b")
 RULE = colors.HexColor("#c8c8c8")
-ACCENT = colors.HexColor("#1f6f5c")
-WASH = colors.HexColor("#f4f2ed")
+ACCENT = colors.HexColor("#12836B")   # matches the deck's TEAL exactly
+
+# Same palette as tools/build_submission_pdfs.py's covers, methodology and
+# index pages. The written reports sit between those pages once merged —
+# a different palette here read as two different documents stapled together.
+NAVY = colors.HexColor("#0B1B2B")
+AMBER = colors.HexColor("#E8A33D")
+CARD = colors.HexColor("#F3F5F7")
+ON_NAVY_DIM = colors.HexColor("#9BB1C4")
+WASH = CARD
 
 
 # ── live data ────────────────────────────────────────────────────────────────
@@ -104,6 +112,10 @@ def _styles() -> dict:
         cap=ParagraphStyle("cap", parent=ss["BodyText"], fontName="Helvetica",
                            fontSize=7.8, leading=10.5, spaceBefore=3,
                            spaceAfter=10, textColor=MUTED),
+        cap_on_navy=ParagraphStyle("cap_on_navy", parent=ss["BodyText"],
+                                   fontName="Helvetica-Bold", fontSize=7.8,
+                                   leading=10.5, spaceBefore=3, spaceAfter=10,
+                                   textColor=colors.white),
         note=ParagraphStyle("note", parent=ss["BodyText"], fontName="Helvetica",
                             fontSize=8.8, leading=13, spaceAfter=7,
                             textColor=colors.HexColor("#8a5a00")),
@@ -133,34 +145,70 @@ class Doc(BaseDocTemplate):
 
     def _furniture(self, canv, doc):
         canv.saveState()
+        w, h = A4
+        # A slim navy running-head strip, not the full deck banner — this is
+        # a body page read top to bottom, not a cover scanned once. But it
+        # carries the same navy/amber so the report doesn't read as a
+        # different document once merged behind the cover and methodology
+        # pages in tools/build_submission_pdfs.py.
+        bar_h = 9 * mm
+        canv.setFillColor(NAVY)
+        canv.rect(0, h - bar_h, w, bar_h, stroke=0, fill=1)
+        canv.setFillColor(AMBER)
+        canv.rect(0, h - bar_h, w, 0.9 * mm, stroke=0, fill=1)
+        canv.setFont("Helvetica-Bold", 7.6)
+        canv.setFillColor(colors.white)
+        canv.drawString(22 * mm, h - bar_h + 2.8 * mm, self.report["running"].upper())
+        canv.setFont("Helvetica", 7.2)
+        canv.setFillColor(ON_NAVY_DIM)
+        canv.drawRightString(w - 22 * mm, h - bar_h + 2.8 * mm,
+                             f"UPLOAD SLOT {self.report['slot']:02d} OF 12")
+
         canv.setStrokeColor(RULE)
         canv.setLineWidth(0.4)
-        y = A4[1] - 14 * mm
-        canv.line(22 * mm, y, A4[0] - 22 * mm, y)
+        canv.line(22 * mm, 13 * mm, w - 22 * mm, 13 * mm)
         canv.setFont("Helvetica", 7.4)
         canv.setFillColor(MUTED)
-        canv.drawString(22 * mm, y + 2.5 * mm, self.report["running"])
-        canv.drawRightString(A4[0] - 22 * mm, y + 2.5 * mm,
-                             "Al Safa 2 Park · Falaj Al Safa")
-        canv.line(22 * mm, 13 * mm, A4[0] - 22 * mm, 13 * mm)
         canv.drawString(22 * mm, 9 * mm,
-                        "Dubai Municipality AI Park Design Challenge")
-        canv.drawRightString(A4[0] - 22 * mm, 9 * mm, f"{doc.page}")
+                        "Al Safa 2 Park · Falaj Al Safa · Dubai Municipality "
+                        "AI Park Design Challenge")
+        canv.drawRightString(w - 22 * mm, 9 * mm, f"{doc.page}")
         canv.restoreState()
 
 
 # ── block builders ───────────────────────────────────────────────────────────
 def cover(report: dict, S: dict) -> list:
-    f = [Spacer(1, 42 * mm),
-         Paragraph(report["title"], S["title"]),
-         Paragraph(report["subtitle"], S["sub"])]
-    f.append(Table([[""]], colWidths=[C.SITE and 150 * mm], rowHeights=[1.6],
+    # A section-divider now, not THE cover — tools/build_submission_pdfs.py's
+    # own cover and methodology pages come first once this is merged in. Same
+    # navy/amber language as those, at report scale rather than deck scale, so
+    # the page reads as "the next section of one document" and not "a second,
+    # differently-designed report starting over."
+    navy_meta = ParagraphStyle("navy_meta", parent=S["meta"],
+                               textColor=colors.HexColor("#C9D6E2"))
+    f = [
+        Spacer(1, 4 * mm),
+        Table([[Paragraph(f"<font color='#E8A33D'><b>UPLOAD SLOT "
+                          f"{report['slot']:02d} OF 12</b></font>"
+                          f"<br/><font color='#FFFFFF' size='15'><b>"
+                          f"{report['running']}</b></font>", navy_meta)]],
+              colWidths=[170 * mm], rowHeights=[22 * mm],
+              style=TableStyle([
+                  ("BACKGROUND", (0, 0), (-1, -1), NAVY),
+                  ("LEFTPADDING", (0, 0), (-1, -1), 6 * mm),
+                  ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+              ])),
+        Table([[""]], colWidths=[170 * mm], rowHeights=[1.4],
+              style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), AMBER)])),
+        Spacer(1, 16 * mm),
+        Paragraph(report["title"], S["title"]),
+        Paragraph(report["subtitle"], S["sub"]),
+    ]
+    f.append(Table([[""]], colWidths=[170 * mm], rowHeights=[1.6],
                    style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), ACCENT)])))
     f.append(Spacer(1, 10 * mm))
     f.append(Paragraph(report["lead"], S["lead"]))
-    f.append(Spacer(1, 24 * mm))
+    f.append(Spacer(1, 20 * mm))
     meta = [
-        f"<b>Upload slot {report['slot']:02d}</b> — {report['running']}",
         "Al Safa 2 Park · <b>Falaj Al Safa</b> · 15,000 m² · Al Safa 2, Dubai",
         "Mohamed Wasim · Individual Applicant",
         f"Issued {date.today().strftime('%d %B %Y')}",
@@ -179,22 +227,24 @@ def cover(report: dict, S: dict) -> list:
 
 
 def table(headers, rows, S, widths=None, highlight=None) -> Table:
-    data = [[Paragraph(f"<b>{h}</b>", S["cap"]) for h in headers]]
+    head_style = S.get("cap_on_navy") or S["cap"]
+    data = [[Paragraph(f"<b>{h}</b>", head_style) for h in headers]]
     for r in rows:
         data.append([Paragraph(str(c), S["cap"]) for c in r])
     t = Table(data, colWidths=widths, hAlign="LEFT", repeatRows=1)
     style = [
-        ("BACKGROUND", (0, 0), (-1, 0), WASH),
+        ("BACKGROUND", (0, 0), (-1, 0), NAVY),
         ("LINEBELOW", (0, 0), (-1, 0), 0.6, RULE),
         ("LINEBELOW", (0, 1), (-1, -2), 0.25, RULE),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("TOPPADDING", (0, 0), (-1, -1), 4),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
         ("LEFTPADDING", (0, 0), (-1, -1), 5),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, CARD]),
     ]
     if highlight is not None:
         style.append(("BACKGROUND", (0, highlight + 1), (-1, highlight + 1),
-                      colors.HexColor("#e8f3ef")))
+                      colors.HexColor("#DCEDE7")))
     t.setStyle(TableStyle(style))
     return t
 
