@@ -42,6 +42,7 @@ from pathlib import Path
 
 import pypdf
 from PIL import Image
+from reportlab.lib.utils import ImageReader
 from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A3, A4, landscape
 from reportlab.lib.units import mm
@@ -639,6 +640,233 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> None:
     c.showPage()
 
 
+def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
+    """Every drawing and chart the project produced, on one contact sheet.
+
+    A slot shows only its own images, so a juror reading slot 08 never sees the
+    section that the thermal argument rests on. This puts the whole visual
+    record in every file, each thumbnail captioned with its class and linked to
+    the full-resolution original.
+    """
+    shots: list[tuple[Path, str, str]] = []
+    for p in sorted((ROOT / "figures").glob("*.png")):
+        shots.append((p, f"figures/{p.name}", "analysis output"))
+    for p in sorted((ROOT / "design" / "visuals").glob("*.png")):
+        shots.append((p, f"design/visuals/{p.name}", "technical drawing"))
+    for p in sorted((ROOT / "design" / "boards").glob("*.png")):
+        shots.append((p, f"design/boards/{p.name}", "presentation board"))
+    for sub in ("Aerial", "Eye_Level", "Night", "Day"):
+        for p in sorted((ROOT / "design" / "renders" / sub).glob("*.jpg")):
+            shots.append((p, f"design/renders/{sub}/{p.name}",
+                          "artistic impression"))
+    if not shots:
+        return 0
+
+    w, h = A4
+    x0, cols = 18 * mm, 3
+    cw = (w - 36 * mm) / cols
+    cap_h, img_h = 9 * mm, 34 * mm
+    cell_h = img_h + cap_h + 5 * mm
+    pages = 1
+
+    def head(first: bool) -> float:
+        c.setPageSize(A4)
+        c.setFillColor(ACCENT)
+        c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+        c.setFillColor(INK)
+        c.setFont("Helvetica-Bold", 15)
+        c.drawString(x0, h - 28 * mm,
+                     "Every drawing and every chart in this project"
+                     if first else "The visual record — continued")
+        return h - 34 * mm
+
+    y = head(True)
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8.4)
+    for line in _wrap(c, f"All {len(shots)} images the pipeline produces, "
+                         f"whichever slot they belong to. Each is labelled "
+                         f"with its class and links to the full-resolution "
+                         f"original. Nothing here is hand-drawn.",
+                      "Helvetica", 8.4, w - 36 * mm):
+        c.drawString(x0, y, line)
+        y -= 4.4 * mm
+    y -= 4 * mm
+
+    col = 0
+    for path, rel, kind in shots:
+        if col == 0 and y - cell_h < 18 * mm:
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 8)
+            c.drawString(x0, 12 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+            c.showPage()
+            pages += 1
+            y = head(False)
+        cx = x0 + col * cw
+        try:
+            # Downsample before embedding. A contact sheet printed at 34 mm
+            # tall needs about 500 px, not the 3,400 px original — embedding
+            # the full files put every slot over 7 MB for pictures the size of
+            # a postage stamp.
+            with Image.open(path) as im:
+                im = im.convert("RGB")
+                iw, ih = im.size
+                thumb = im.copy()
+                thumb.thumbnail((520, 520), Image.LANCZOS)
+                s = min((cw - 5 * mm) / iw, img_h / ih)
+                dw, dh = iw * s, ih * s
+                c.drawImage(ImageReader(thumb), cx + (cw - 5 * mm - dw) / 2,
+                            y - dh, width=dw, height=dh,
+                            preserveAspectRatio=True)
+        except Exception:
+            pass
+        ty = y - img_h - 3.4 * mm
+        _link(c, pretty(path.name)[:34], f"{BLOB}/{rel}", cx, ty,
+              font="Helvetica-Bold", size=6.4)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Oblique", 5.9)
+        c.drawString(cx, ty - 3.4 * mm, kind)
+
+        col += 1
+        if col == cols:
+            col = 0
+            y -= cell_h
+
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8)
+    c.drawString(x0, 12 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    c.showPage()
+    return pages
+
+
+def proof_page(c: rl_canvas.Canvas, slot: dict) -> None:
+    """Evidence the pipeline runs and what it reports when it does."""
+    import json as _json
+
+    def load(p: str) -> dict:
+        try:
+            return _json.loads((ROOT / p).read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+
+    head = load("models/headline_metrics.json")
+    mods = load("models/model_metrics.json")
+
+    c.setPageSize(A4)
+    w, h = A4
+    x = 20 * mm
+    c.setFillColor(ACCENT)
+    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 15)
+    c.drawString(x, h - 28 * mm, "Proof the analysis runs, and what it reports")
+
+    y = h - 36 * mm
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8.6)
+    for line in _wrap(c, "These are the values the pipeline wrote on its last "
+                         "run, read straight out of the files it produced. The "
+                         "commands below regenerate every one of them from the "
+                         "published repository.",
+                      "Helvetica", 8.6, w - 40 * mm):
+        c.drawString(x, y, line)
+        y -= 4.4 * mm
+    y -= 4 * mm
+
+    def section(title: str, rows: list[tuple[str, str]], src: str) -> float:
+        nonlocal y
+        c.setStrokeColor(RULE)
+        c.line(x, y + 4.3 * mm, w - 20 * mm, y + 4.3 * mm)
+        c.setFillColor(INK)
+        c.setFont("Helvetica-Bold", 8.6)
+        c.drawString(x, y, title.upper())
+        _link(c, src, f"{BLOB}/{src}", x + 78 * mm, y, size=7)
+        y -= 5.6 * mm
+        for k, v in rows:
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 8)
+            c.drawString(x + 3 * mm, y, k)
+            c.setFillColor(INK)
+            c.setFont("Helvetica-Bold", 8)
+            c.drawRightString(w - 20 * mm, y, v)
+            y -= 4.5 * mm
+        y -= 4 * mm
+        return y
+
+    if head:
+        section("Measured result", [
+            ("Annual daylight hours modelled",
+             f"{head.get('annual_daylight_hours', 0):,}"),
+            ("Comfortable daylight hours — today",
+             f"{head.get('daylight_hours_comfortable_exposed_pct', 0):.1f}%"),
+            ("Comfortable daylight hours — as designed",
+             f"{head.get('daylight_hours_comfortable_shaded_pct', 0):.1f}%"),
+            ("Mean heat-index reduction under canopy",
+             f"{head.get('mean_heat_index_reduction_c', 0):.2f} °C"),
+            ("Peak heat index, exposed",
+             f"{head.get('peak_heat_index_exposed_c', 0):.1f} °C"),
+            ("Peak heat index, shaded",
+             f"{head.get('peak_heat_index_shaded_c', 0):.1f} °C"),
+            ("Crescent Walk shaded, canopy and louvre",
+             f"{head.get('spine_shade_canopy_only_pct', 0):.1f}%"),
+            ("Site-wide mean shade",
+             f"{head.get('site_mean_shade_pct', 0):.1f}%"),
+            ("Trees planted", f"{head.get('trees', 0)}"),
+        ], "models/headline_metrics.json")
+
+    if mods:
+        m1 = mods.get("M1_shade_surrogate", {})
+        rf = m1.get("models", {}).get("random_forest", {})
+        section("Trained models, on held-out test sets", [
+            ("M1a Random Forest — shade surrogate, test R²",
+             f"{rf.get('test_r2', 0):.4f}"),
+            ("M1b Neural network — deployed surrogate, test R²",
+             f"{head.get('model_M1_test_r2', 0):.4f}"),
+            ("M2 Gradient Boosting — comfort band, test accuracy",
+             f"{head.get('model_M2_test_accuracy', 0) * 100:.1f}%"),
+            ("M3 K-Means — regimes selected by silhouette",
+             f"k = {head.get('model_M3_regimes', 0)}"),
+            ("Training / validation / test split",
+             f"{m1.get('n_train', 0):,} / {m1.get('n_val', 0):,} / "
+             f"{m1.get('n_test', 0):,}"),
+            ("Random seed, fixed for reproducibility",
+             f"{mods.get('_random_seed', 'n/a')}"),
+        ], "models/model_metrics.json")
+
+    c.setStrokeColor(RULE)
+    c.line(x, y + 4.3 * mm, w - 20 * mm, y + 4.3 * mm)
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 8.6)
+    c.drawString(x, y, "RUN IT YOURSELF")
+    y -= 6 * mm
+    c.setFont("Courier", 7.8)
+    c.setFillColor(MUTED)
+    for cmd in (f"git clone {REPO_URL}.git",
+                "pip install -r requirements.txt",
+                "python run_analysis.py            # data, models, figures",
+                "python -m tests.test_pipeline     # 41 correctness checks",
+                "node docs/_PORTAL/selftest.js     # 64 portal checks",
+                "node tests/test_film.js           # every frame of the film"):
+        c.drawString(x + 3 * mm, y, cmd)
+        y -= 4.3 * mm
+
+    y -= 3 * mm
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica-Oblique", 7.6)
+    for line in _wrap(c, "The checks assert what would otherwise drift "
+                         "silently: that the modelled climate reproduces the "
+                         "published normals it was built from, that no room "
+                         "overlaps another, that the areas close on 15,000 m², "
+                         "that the cost stays inside AED 35 M, and that no "
+                         "model can see its own answer in its inputs.",
+                      "Helvetica-Oblique", 7.6, w - 40 * mm):
+        c.drawString(x, y, line)
+        y -= 3.9 * mm
+
+    c.setFont("Helvetica", 8)
+    c.drawString(x, 14 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    c.showPage()
+
+
 def index_page(c: rl_canvas.Canvas, slot: dict) -> int:
     """Every part of the project, live, from whichever file a juror opened.
 
@@ -835,7 +1063,9 @@ def build_slot(slot: dict, act: bool) -> dict:
     method_page(c, slot)                          # page 1
     for img in imgs:                              # pages 2 .. 2+len(imgs)
         image_sheet(c, img, slot)
-    index_page(c, slot)                           # last page
+    n_gallery = gallery_page(c, slot)              # the whole visual record
+    proof_page(c, slot)                            # the numbers, and how to
+    n_index = index_page(c, slot)                  # rerun them; then the index
     c.save()
 
     writer = pypdf.PdfWriter()
@@ -858,14 +1088,23 @@ def build_slot(slot: dict, act: bool) -> dict:
         except Exception as e:
             print(f"    ! could not merge {p.name}: {e}")
 
-    n_front = len(front.pages)
-    for i, pg in enumerate(front.pages[2:], start=2):   # image sheets, then index
+    # After the image sheets come the gallery (n_gallery pages), the proof page
+    # (one), and the index (n_index). Only the first page of a multi-page
+    # section gets a bookmark.
+    g0 = 2 + len(imgs)
+    p0 = g0 + n_gallery
+    i0 = p0 + 1
+    for i, pg in enumerate(front.pages[2:], start=2):
         here = len(writer.pages)
         writer.add_page(pg)
-        if i - 2 < len(imgs):
-            marks.append((f"{pretty(imgs[i - 2].name)}  ({classify(imgs[i - 2])})",
-                          here))
-        elif i == 2 + len(imgs):
+        if i < g0:
+            j = i - 2
+            marks.append((f"{pretty(imgs[j].name)}  ({classify(imgs[j])})", here))
+        elif i == g0:
+            marks.append(("Every drawing and chart in this project", here))
+        elif i == p0:
+            marks.append(("Proof the analysis runs — the measured results", here))
+        elif i == i0:
             marks.append(("The complete project — every file, live", here))
 
     for title, page in marks:
