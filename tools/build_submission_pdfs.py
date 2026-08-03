@@ -107,8 +107,15 @@ def banner(c: rl_canvas.Canvas, w: float, h: float, slot: dict,
     c.setFont("Helvetica-Bold", 7.2)
     c.drawString(x, h - 13 * mm, kicker.upper())
 
+    # Shrink to fit rather than run under the lighter slot-number block on the
+    # right, which is what a long title such as "A ten-phase process, checked
+    # at every step" did at the fixed 20 pt size.
     c.setFillColor(PAPER)
-    c.setFont("Helvetica-Bold", 20 if tall else 15)
+    size = 20 if tall else 15
+    avail = w - 18 * mm - 52 * mm
+    while size > 11 and c.stringWidth(title, "Helvetica-Bold", size) > avail:
+        size -= 0.5
+    c.setFont("Helvetica-Bold", size)
     c.drawString(x, h - (25 if tall else 22) * mm, title)
 
     if sub:
@@ -498,7 +505,11 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
 
     y = work_summary_strip(c, x, y, w, slot)
 
-    verify_panel(c, slot, w, max(y, 66 * mm))
+    # Pinned to the foot of the page rather than left to float where the
+    # contents list happens to end — floating left a band of white across the
+    # bottom fifth of every cover.
+    ph = verify_panel_height(c, slot, w)
+    verify_panel(c, slot, w, min(y, 21 * mm + ph))
 
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 7)
@@ -568,6 +579,15 @@ def _group_by_concept(paths: list[str]) -> list[tuple[str, list[str]]]:
             order.append(label)
         buckets[label].append(p)
     return [(label, buckets[label]) for label in order]
+
+
+def verify_panel_height(c: rl_canvas.Canvas, slot: dict, w: float) -> float:
+    """The panel's drawn height, without drawing it — so the caller can pin the
+    panel to the bottom of the page instead of letting it float and leave a
+    band of white underneath."""
+    rows = 2 + (1 if DRIVE_URL else 0)
+    src_rows = _wrap_links_height(c, slot.get("sources", []), w, 18 * mm + 36 * mm)
+    return 9.4 * mm + (rows * 5 * mm + src_rows * 4.4 * mm + 5 * mm) + 9 * mm
 
 
 def verify_panel(c: rl_canvas.Canvas, slot: dict, w: float, top: float) -> None:
@@ -772,7 +792,7 @@ NOTE: dict[str, str] = {
     "data/processed/planting_layout.csv": "Every one of the 131 trees",
     "models/model_metrics.json": "Trained-model metrics",
     "models/headline_metrics.json": "The headline numbers",
-    "tests/test_pipeline.py": "38 correctness checks",
+    "tests/test_pipeline.py": "41 correctness checks",
     "tests/test_film.js": "Every frame of the concept film",
     "docs/index.html": "The project website",
     "archive/withdrawn_visuals/README.md":
@@ -909,30 +929,53 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> int:
 
     y = section(c, x, y, w, "01", "The ten phases", BLUE)
     mine = SLOT_PHASES.get(slot["n"], [])
-    for n, name, what in PHASES:
-        here = n in mine
-        rh = 12 * mm if len(what) < 90 else 15 * mm
-        y = ensure(rh + 2.2 * mm, "THE TEN PHASES — CONTINUED",
-                  "How this document was produced")
-        card(c, x, y - rh + 1.6 * mm, inner, rh,
-             TEAL if here else RULE, CARD if here else PAPER)
-        c.setFillColor(TEAL if here else MUTED)
-        c.setFont("Helvetica-Bold", 7.6)
-        c.drawString(x + 5 * mm, y - 3 * mm, f"P{n}")
-        c.setFillColor(INK if here else MUTED)
-        c.setFont("Helvetica-Bold" if here else "Helvetica", 8.4)
-        c.drawString(x + 12 * mm, y - 3 * mm, name)
-        if here:
-            c.setFillColor(TEAL)
-            c.setFont("Helvetica-Bold", 6.4)
-            c.drawRightString(w - 22 * mm, y - 3 * mm, "★ THIS DOCUMENT")
-        c.setFillColor(MUTED)
-        c.setFont("Helvetica", 6.8)
-        ty = y - 7 * mm
-        for line in _wrap(c, what, "Helvetica", 6.8, inner - 16 * mm):
-            c.drawString(x + 12 * mm, ty, line)
-            ty -= 3.4 * mm
-        y -= rh + 2.2 * mm
+
+    # Two columns of five, not ten full-width bands. Ten bands ran the page
+    # over and pushed the "Reproduce it end to end" box alone onto a second
+    # sheet that was otherwise three-quarters white — the single emptiest page
+    # in the whole submission. Paired, the phases and the box share one page.
+    cw = (inner - 5 * mm) / 2
+    tw = cw - 15 * mm                       # text column inside a card
+    wrapped = {n: _wrap(c, what, "Helvetica", 6.4, tw) for n, _nm, what in PHASES}
+
+    def card_h(n: int) -> float:
+        return 7.2 * mm + len(wrapped[n]) * 3.2 * mm + 2 * mm
+
+    for row in range(5):
+        pair = PHASES[row * 2:row * 2 + 2]
+        rh = max(card_h(p[0]) for p in pair)
+        y = ensure(rh + 2.4 * mm, "THE TEN PHASES — CONTINUED",
+                   "How this document was produced")
+        for col, (n, name, _what) in enumerate(pair):
+            here = n in mine
+            cx = x + col * (cw + 5 * mm)
+            card(c, cx, y - rh + 1.6 * mm, cw, rh,
+                 TEAL if here else RULE, CARD if here else PAPER)
+            c.setFillColor(TEAL if here else MUTED)
+            c.setFont("Helvetica-Bold", 7.4)
+            c.drawString(cx + 4.5 * mm, y - 3 * mm, f"P{n}")
+            c.setFillColor(INK if here else MUTED)
+            c.setFont("Helvetica-Bold" if here else "Helvetica", 8.2)
+            c.drawString(cx + 11 * mm, y - 3 * mm, name)
+            if here:
+                # A tab, not "★" — the star glyph is outside the base-14 font
+                # encoding and prints as an empty box, the same trap the
+                # portal call-to-action arrow fell into.
+                tab_w = 15 * mm
+                c.setFillColor(TEAL)
+                c.roundRect(cx + cw - tab_w - 2 * mm, y - 4.4 * mm, tab_w,
+                            4.6 * mm, 0.8 * mm, stroke=0, fill=1)
+                c.setFillColor(PAPER)
+                c.setFont("Helvetica-Bold", 5.4)
+                c.drawCentredString(cx + cw - tab_w / 2 - 2 * mm, y - 3 * mm,
+                                    "THIS DOCUMENT")
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 6.4)
+            ty = y - 7.4 * mm
+            for line in wrapped[n]:
+                c.drawString(cx + 11 * mm, ty, line)
+                ty -= 3.2 * mm
+        y -= rh + 2.4 * mm
 
     y -= 4 * mm
     y = ensure(9 * mm + 9 * mm, "SOURCES — CONTINUED",
@@ -997,41 +1040,36 @@ def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
         return 0
 
     w, h = A4
-    x0, cols = 18 * mm, 3
+    # Four columns, not three. At three the last row of a full eighteen-image
+    # record fell onto a second sheet that carried six thumbnails and two
+    # thirds of a page of white; at four the whole visual record sits on one
+    # page, which is also how a juror wants to see it — all at once.
+    x0, cols = 18 * mm, 4
     cw = (w - 36 * mm) / cols
-    cap_h, img_h = 9 * mm, 34 * mm
-    cell_h = img_h + cap_h + 5 * mm
+    cap_h, img_h = 8.5 * mm, 30 * mm
+    cell_h = img_h + cap_h + 4 * mm
     pages = 1
 
     def head(first: bool) -> float:
         c.setPageSize(A4)
-        c.setFillColor(ACCENT)
-        c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
-        c.setFillColor(INK)
-        c.setFont("Helvetica-Bold", 15)
-        c.drawString(x0, h - 28 * mm,
-                     "Every drawing and every chart in this project"
-                     if first else "The visual record — continued")
-        return h - 34 * mm
+        # The same navy banner as every other generated page. This used to be a
+        # bare teal bar with nothing written in it, which read as a printing
+        # fault rather than a heading.
+        return banner(
+            c, w, h, slot, "THE COMPLETE VISUAL RECORD",
+            "Every drawing and every chart in this project" if first
+            else "The visual record — continued",
+            f"All {len(shots)} images the pipeline produces, whichever slot "
+            f"they belong to — each labelled with its class and linked to the "
+            f"full-resolution original. Nothing here is hand-drawn.",
+            tall=True) - 2 * mm
 
     y = head(True)
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8.4)
-    for line in _wrap(c, f"All {len(shots)} images the pipeline produces, "
-                         f"whichever slot they belong to. Each is labelled "
-                         f"with its class and links to the full-resolution "
-                         f"original. Nothing here is hand-drawn.",
-                      "Helvetica", 8.4, w - 36 * mm):
-        c.drawString(x0, y, line)
-        y -= 4.4 * mm
-    y -= 4 * mm
 
     col = 0
     for path, rel, kind in shots:
-        if col == 0 and y - cell_h < 18 * mm:
-            c.setFillColor(MUTED)
-            c.setFont("Helvetica", 8)
-            c.drawString(x0, 12 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+        if col == 0 and y - cell_h < 16 * mm:
+            page_foot(c, w, slot)
             c.showPage()
             pages += 1
             y = head(False)
@@ -1053,21 +1091,19 @@ def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
                             preserveAspectRatio=True)
         except Exception:
             pass
-        ty = y - img_h - 3.4 * mm
-        _link(c, pretty(path.name)[:34], f"{BLOB}/{rel}", cx, ty,
-              font="Helvetica-Bold", size=6.4)
+        ty = y - img_h - 3.2 * mm
+        _link(c, pretty(path.name)[:26], f"{BLOB}/{rel}", cx, ty,
+              font="Helvetica-Bold", size=6.0)
         c.setFillColor(MUTED)
-        c.setFont("Helvetica-Oblique", 5.9)
-        c.drawString(cx, ty - 3.4 * mm, kind)
+        c.setFont("Helvetica-Oblique", 5.6)
+        c.drawString(cx, ty - 3.2 * mm, kind)
 
         col += 1
         if col == cols:
             col = 0
             y -= cell_h
 
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8)
-    c.drawString(x0, 12 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    page_foot(c, w, slot)
     c.showPage()
     return pages
 
@@ -1088,23 +1124,16 @@ def proof_page(c: rl_canvas.Canvas, slot: dict) -> None:
     c.setPageSize(A4)
     w, h = A4
     x = 20 * mm
-    c.setFillColor(ACCENT)
-    c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
-    c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 15)
-    c.drawString(x, h - 28 * mm, "Proof the analysis runs, and what it reports")
-
-    y = h - 36 * mm
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8.6)
-    for line in _wrap(c, "These are the values the pipeline wrote on its last "
-                         "run, read straight out of the files it produced. The "
-                         "commands below regenerate every one of them from the "
-                         "published repository.",
-                      "Helvetica", 8.6, w - 40 * mm):
-        c.drawString(x, y, line)
-        y -= 4.4 * mm
-    y -= 4 * mm
+    inner = w - 40 * mm
+    # Was a bare teal bar with no text in it — the same defect as the gallery
+    # head, and it read as a printing fault rather than a heading.
+    y = banner(c, w, h, slot, "EVIDENCE THE PIPELINE RAN",
+               "Proof the analysis runs, and what it reports",
+               "These are the values the pipeline wrote on its last run, read "
+               "straight out of the files it produced. The commands below "
+               "regenerate every one of them from the published repository.",
+               tall=True)
+    y -= 2 * mm
 
     def section(title: str, rows: list[tuple[str, str]], src: str) -> float:
         nonlocal y
@@ -1114,16 +1143,22 @@ def proof_page(c: rl_canvas.Canvas, slot: dict) -> None:
         c.setFont("Helvetica-Bold", 8.6)
         c.drawString(x, y, title.upper())
         _link(c, src, f"{BLOB}/{src}", x + 78 * mm, y, size=7)
-        y -= 5.6 * mm
-        for k, v in rows:
+        y -= 6.4 * mm
+        # Banded rows, so a long column of numbers stays readable across the
+        # page instead of running as one undifferentiated block.
+        for i, (k, v) in enumerate(rows):
+            rh = 6.2 * mm
+            if i % 2 == 0:
+                c.setFillColor(CARD)
+                c.rect(x, y - 1.9 * mm, inner, rh, stroke=0, fill=1)
             c.setFillColor(MUTED)
             c.setFont("Helvetica", 8)
             c.drawString(x + 3 * mm, y, k)
             c.setFillColor(INK)
             c.setFont("Helvetica-Bold", 8)
-            c.drawRightString(w - 20 * mm, y, v)
-            y -= 4.5 * mm
-        y -= 4 * mm
+            c.drawRightString(w - 23 * mm, y, v)
+            y -= rh
+        y -= 5 * mm
         return y
 
     if head:
@@ -1166,38 +1201,66 @@ def proof_page(c: rl_canvas.Canvas, slot: dict) -> None:
              f"{mods.get('_random_seed', 'n/a')}"),
         ], "models/model_metrics.json")
 
+    # What the checks actually protect. This was one italic sentence listing
+    # five assertions in a row; as five cards a juror can see at a glance what
+    # the test suite is for, and it occupies the band of white the page used
+    # to leave between the numbers and the footer.
     c.setStrokeColor(RULE)
     c.line(x, y + 4.3 * mm, w - 20 * mm, y + 4.3 * mm)
     c.setFillColor(INK)
     c.setFont("Helvetica-Bold", 8.6)
-    c.drawString(x, y, "RUN IT YOURSELF")
-    y -= 6 * mm
-    c.setFont("Courier", 7.8)
+    c.drawString(x, y, "WHAT THE CHECKS PROTECT")
     c.setFillColor(MUTED)
+    c.setFont("Helvetica-Oblique", 7)
+    c.drawString(x + 78 * mm, y, "each one asserts what would otherwise "
+                                 "drift silently")
+    y -= 6.4 * mm
+
+    guards = [
+        ("Climate fidelity", "the modelled year reproduces the published "
+                             "normals it was built from"),
+        ("No overlaps", "no room in the schedule overlaps another"),
+        ("Areas close", "every area sums back to 15,000 m²"),
+        ("Budget held", "the cost plan stays inside AED 35 M"),
+        ("No leakage", "no model can see its own answer in its inputs"),
+    ]
+    gw = (inner - 4 * 3 * mm) / 5
+    gh = 20 * mm
+    for i, (t, d) in enumerate(guards):
+        gx = x + i * (gw + 3 * mm)
+        card(c, gx, y - gh, gw, gh, TEAL, CARD)
+        c.setFillColor(TEAL)
+        c.setFont("Helvetica-Bold", 7.4)
+        c.drawString(gx + 3.5 * mm, y - 5 * mm, t)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 6.2)
+        dy = y - 9 * mm
+        for line in _wrap(c, d, "Helvetica", 6.2, gw - 6 * mm):
+            c.drawString(gx + 3.5 * mm, dy, line)
+            dy -= 3.1 * mm
+    y -= gh + 8 * mm
+
+    # Pinned to the foot rather than left where the content above happens to
+    # end, so the page closes on a block instead of trailing off into white.
+    box_h = 40 * mm
+    top = min(y, 20 * mm + box_h)
+    card(c, x, top - box_h, inner, box_h, TEAL, NAVY)
+    c.setFillColor(AMBER)
+    c.setFont("Helvetica-Bold", 8.6)
+    c.drawString(x + 5 * mm, top - 6 * mm, "RUN IT YOURSELF")
+    cy = top - 12 * mm
+    c.setFont("Courier-Bold", 7.6)
+    c.setFillColor(ON_NAVY)
     for cmd in (f"git clone {REPO_URL}.git",
                 "pip install -r requirements.txt",
                 "python run_analysis.py            # data, models, figures",
                 "python -m tests.test_pipeline     # 41 correctness checks",
                 "node docs/_PORTAL/selftest.js     # 64 portal checks",
                 "node tests/test_film.js           # every frame of the film"):
-        c.drawString(x + 3 * mm, y, cmd)
-        y -= 4.3 * mm
+        c.drawString(x + 5 * mm, cy, cmd)
+        cy -= 4.5 * mm
 
-    y -= 3 * mm
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica-Oblique", 7.6)
-    for line in _wrap(c, "The checks assert what would otherwise drift "
-                         "silently: that the modelled climate reproduces the "
-                         "published normals it was built from, that no room "
-                         "overlaps another, that the areas close on 15,000 m², "
-                         "that the cost stays inside AED 35 M, and that no "
-                         "model can see its own answer in its inputs.",
-                      "Helvetica-Oblique", 7.6, w - 40 * mm):
-        c.drawString(x, y, line)
-        y -= 3.9 * mm
-
-    c.setFont("Helvetica", 8)
-    c.drawString(x, 14 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+    page_foot(c, w, slot)
     c.showPage()
 
 
@@ -1217,25 +1280,21 @@ def index_page(c: rl_canvas.Canvas, slot: dict) -> int:
 
     def new_page(first: bool) -> float:
         c.setPageSize(A4)
-        c.setFillColor(ACCENT)
-        c.rect(0, h - 12 * mm, w, 12 * mm, stroke=0, fill=1)
-        c.setFillColor(INK)
-        c.setFont("Helvetica-Bold", 15)
-        c.drawString(x, h - 28 * mm,
-                     "The complete project, and where to check it"
-                     if first else
-                     "The complete project — continued")
-        return h - 36 * mm
+        # Was a bare teal bar carrying no text — the third page type in the
+        # deck with that same fault.
+        return banner(c, w, h, slot, "EVERY FILE, LINKED AND LIVE",
+                      "The complete project, and where to check it"
+                      if first else
+                      "The complete project — continued") - 2 * mm
 
     def footer() -> None:
         c.setFillColor(MUTED)
         c.setFont("Helvetica", 7.4)
-        c.drawString(x, 16 * mm,
+        c.drawString(x, 15 * mm,
                      "Links resolve once the repository is published. GitHub "
                      "renders PDFs, notebooks, CSVs and images in the browser — "
                      "nothing needs to be downloaded or cloned.")
-        c.setFont("Helvetica", 8)
-        c.drawString(x, 11 * mm, f"{PROJECT} · Upload slot {slot['n']:02d} of 12")
+        page_foot(c, w, slot)
 
     y = new_page(True)
     c.setFillColor(MUTED)
@@ -1277,10 +1336,22 @@ def index_page(c: rl_canvas.Canvas, slot: dict) -> int:
                 c.showPage()
                 pages += 1
                 y = new_page(False)
-            _link(c, path, f"{BLOB}/{path}", x + 3 * mm, y, size=7.6)
-            c.setFillColor(MUTED)
-            c.setFont("Helvetica", 7.4)
-            c.drawRightString(w - 20 * mm, y, what)
+            # The two columns used to be drawn independently — a long path
+            # such as UPLOAD_THESE_12_FILES/02_Neighborhood_Park_...pdf ran
+            # straight underneath its own right-aligned description. Measure
+            # both, and give up the description rather than overprint it.
+            px, right = x + 3 * mm, w - 20 * mm
+            pw = c.stringWidth(path, "Helvetica-Bold", 7.6)
+            room = right - px - pw - 4 * mm
+            desc = what
+            while desc and c.stringWidth(desc, "Helvetica", 7.4) > room:
+                desc = desc[:-1]
+            _link(c, path, f"{BLOB}/{path}", px, y, size=7.6)
+            if len(desc) >= 12:
+                c.setFillColor(MUTED)
+                c.setFont("Helvetica", 7.4)
+                c.drawRightString(right, y,
+                                  desc if desc == what else desc.rstrip() + "…")
             y -= 4.2 * mm
         y -= 3.5 * mm
 

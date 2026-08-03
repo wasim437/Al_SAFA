@@ -48,9 +48,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (BaseDocTemplate, Frame, Image, KeepTogether,
-                                ListFlowable, ListItem, NextPageTemplate,
-                                PageTemplate, Paragraph, Spacer, Table,
-                                TableStyle)
+                                ListFlowable, ListItem, PageTemplate,
+                                Paragraph, Spacer, Table, TableStyle)
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -138,8 +137,11 @@ class Doc(BaseDocTemplate):
         self.report = report
         frame = Frame(self.leftMargin, self.bottomMargin,
                       self.width, self.height, id="main")
+        # "body" is first, so page one carries the running head like every
+        # other page. There is no longer a separate cover template: the report
+        # opens with a masthead block at the top of its first page of content
+        # rather than on a page of its own. See opener().
         self.addPageTemplates([
-            PageTemplate(id="cover", frames=[frame]),
             PageTemplate(id="body", frames=[frame], onPage=self._furniture),
         ])
 
@@ -177,53 +179,72 @@ class Doc(BaseDocTemplate):
 
 
 # ── block builders ───────────────────────────────────────────────────────────
-def cover(report: dict, S: dict) -> list:
-    # A section-divider now, not THE cover — tools/build_submission_pdfs.py's
-    # own cover and methodology pages come first once this is merged in. Same
-    # navy/amber language as those, at report scale rather than deck scale, so
-    # the page reads as "the next section of one document" and not "a second,
-    # differently-designed report starting over."
-    navy_meta = ParagraphStyle("navy_meta", parent=S["meta"],
-                               textColor=colors.HexColor("#C9D6E2"))
-    f = [
-        Spacer(1, 4 * mm),
-        Table([[Paragraph(f"<font color='#E8A33D'><b>UPLOAD SLOT "
-                          f"{report['slot']:02d} OF 12</b></font>"
-                          f"<br/><font color='#FFFFFF' size='15'><b>"
-                          f"{report['running']}</b></font>", navy_meta)]],
-              colWidths=[170 * mm], rowHeights=[22 * mm],
-              style=TableStyle([
-                  ("BACKGROUND", (0, 0), (-1, -1), NAVY),
-                  ("LEFTPADDING", (0, 0), (-1, -1), 6 * mm),
-                  ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-              ])),
-        Table([[""]], colWidths=[170 * mm], rowHeights=[1.4],
-              style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), AMBER)])),
-        Spacer(1, 16 * mm),
-        Paragraph(report["title"], S["title"]),
-        Paragraph(report["subtitle"], S["sub"]),
-    ]
-    f.append(Table([[""]], colWidths=[170 * mm], rowHeights=[1.6],
-                   style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), ACCENT)])))
-    f.append(Spacer(1, 10 * mm))
-    f.append(Paragraph(report["lead"], S["lead"]))
-    f.append(Spacer(1, 20 * mm))
-    meta = [
-        "Al Safa 2 Park · <b>Falaj Al Safa</b> · 15,000 m² · Al Safa 2, Dubai",
-        "Mohamed Wasim · Individual Applicant",
-        f"Issued {date.today().strftime('%d %B %Y')}",
-    ]
-    for line in meta:
-        f.append(Paragraph(line, S["meta"]))
-    f.append(Spacer(1, 12 * mm))
-    f.append(Paragraph(
-        "Every quantity in this report is regenerated from the project's "
-        "analysis pipeline by <font face='Courier'>python run_analysis.py</font>. "
-        "No figure quoted here is typed in by hand.", S["meta"]))
-    f.append(NextPageTemplate("body"))
-    from reportlab.platypus import PageBreak
-    f.append(PageBreak())
-    return f
+def opener(report: dict, S: dict) -> list:
+    """The masthead each report opens with, at the top of its first page.
+
+    This used to be a whole page of its own — a title, a one-line lead and
+    then two-thirds of an A4 sheet of white. Three reports merge into a
+    typical upload slot, so three near-empty sheets were landing in every
+    file, and they were the pages that made the submission read as thin.
+
+    It is now a band: navy masthead, amber rule, the lead in a tinted card,
+    then the report's first heading begins immediately underneath. Same
+    navy/amber/teal as the deck pages that merge in front of it, so nothing
+    reads as a second document starting over.
+    """
+    W = 170 * mm
+    # autoLeading: the block mixes a 7.6 pt kicker, a 19 pt title and a 10 pt
+    # subtitle in one paragraph. On the style's fixed leading the title's
+    # descenders collided with the line beneath it.
+    on_navy = ParagraphStyle("on_navy", parent=S["meta"], fontSize=9.6,
+                             leading=13.6, textColor=colors.HexColor("#C9D6E2"))
+    on_navy.autoLeading = "max"
+    lead_in = ParagraphStyle("lead_in", parent=S["lead"], fontSize=10.2,
+                             leading=15, spaceAfter=0)
+
+    masthead = Table(
+        [[Paragraph(
+            f"<font color='#E8A33D' size='7.6'><b>UPLOAD SLOT "
+            f"{report['slot']:02d} OF 12 &nbsp;·&nbsp; "
+            f"{report['running'].upper()}</b></font><br/>"
+            f"<font color='#FFFFFF' size='19'><b>{report['title']}</b></font>"
+            f"<br/><font size='10'>{report['subtitle']}</font>", on_navy)]],
+        colWidths=[W],
+        style=TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), NAVY),
+            ("LEFTPADDING", (0, 0), (-1, -1), 7 * mm),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 7 * mm),
+            ("TOPPADDING", (0, 0), (-1, -1), 7 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 7 * mm),
+            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ]))
+
+    amber_rule = Table([[""]], colWidths=[W], rowHeights=[1.6 * mm],
+                       style=TableStyle([
+                           ("BACKGROUND", (0, 0), (-1, -1), AMBER)]))
+
+    lead_card = Table(
+        [[Paragraph(report["lead"], lead_in)]], colWidths=[W],
+        style=TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), CARD),
+            ("LINEBEFORE", (0, 0), (0, -1), 2.2 * mm, ACCENT),
+            ("LEFTPADDING", (0, 0), (-1, -1), 6 * mm),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 6 * mm),
+            ("TOPPADDING", (0, 0), (-1, -1), 4.5 * mm),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4.5 * mm),
+        ]))
+
+    stamp = Paragraph(
+        "Al Safa 2 Park · <b>Falaj Al Safa</b> · 15,000 m² · Al Safa 2, Dubai "
+        "&nbsp;·&nbsp; Mohamed Wasim, Individual Applicant &nbsp;·&nbsp; "
+        f"Issued {date.today().strftime('%d %B %Y')} &nbsp;·&nbsp; every "
+        "quantity regenerated by <font face='Courier'>python run_analysis.py</font>",
+        S["meta"])
+
+    # KeepTogether so the masthead is never orphaned from its own lead.
+    return [KeepTogether([masthead, amber_rule, Spacer(1, 5 * mm), lead_card,
+                          Spacer(1, 3 * mm), stamp]),
+            Spacer(1, 4 * mm)]
 
 
 def table(headers, rows, S, widths=None, highlight=None) -> Table:
@@ -263,7 +284,7 @@ def figure(rel: str, caption: str, S: dict, width=150 * mm) -> list:
 def render(report: dict, S: dict) -> Path:
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{report['slug']}.pdf"
-    flow = cover(report, S)
+    flow = opener(report, S)
     for kind, payload in report["blocks"]:
         if kind == "h1":
             flow.append(Paragraph(payload, S["h1"]))
@@ -290,6 +311,23 @@ def render(report: dict, S: dict) -> Path:
             flow.extend(figure(payload[0], payload[1], S))
         elif kind == "space":
             flow.append(Spacer(1, payload))
+
+    # ReportLab emits a page for trailing whitespace. A report whose block list
+    # ended on a spacer closed on a completely blank sheet — slot 11 shipped
+    # one, with nothing on it but the running head and the page number.
+    while flow and isinstance(flow[-1], Spacer):
+        flow.pop()
+
+    # Bind the closing block to the one above it, so a short final paragraph or
+    # note cannot be stranded alone on a page of its own.
+    if len(flow) >= 2:
+        tail = [flow.pop()]
+        while flow and isinstance(flow[-1], Spacer):
+            tail.insert(0, flow.pop())
+        if flow:
+            tail.insert(0, flow.pop())
+        flow.append(KeepTogether(tail))
+
     Doc(path, report).build(flow)
     return path
 

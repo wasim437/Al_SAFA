@@ -510,7 +510,7 @@ python tools/build_docs.py              # website
 python tools/sync_portal.py             # portal gallery
 python tools/sync_submission.py         # submission/01-12
 python tools/build_submission_pdfs.py   # the 12 upload PDFs
-python -m tests.test_pipeline           # confirm 38 checks still pass
+python -m tests.test_pipeline           # confirm 41 checks still pass
 ```
 
 Every render must be captioned **"artistic impression — illustrative of design
