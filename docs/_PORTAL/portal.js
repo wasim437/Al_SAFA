@@ -2586,7 +2586,8 @@ function buildDelivery() {
               provKey: 'slots_ready' }),
         kpi({ value: files, label: 'Files mapped', sub: 'Across all upload folders', tone: 'blue' }),
         kpi({ value: dv.total - dv.ready, label: 'Slots outstanding',
-              sub: 'Complete report + animation', tone: 'red' }),
+              sub: dv.ready === dv.total ? 'All twelve populated' : 'See the human tasks below',
+              tone: dv.ready === dv.total ? 'green' : 'red' }),
         kpi({ value: daysLeft > 0 ? daysLeft : 0, unit: ' days', label: 'Until the deadline',
               sub: '15 August 2026', tone: daysLeft > 30 ? 'green' : 'orange' }),
     ].join('');
@@ -2608,11 +2609,10 @@ function buildDelivery() {
     $('#slotsB').innerHTML = dv.slots.slice(6).map(slotHtml).join('');
 
     $('#humanTasks').innerHTML = [
-        ['Review and approve the design', 'Everything from Phase 2 onward is marked "AI-generated draft". A named human has to own the design decisions before submission.', 'critical'],
         ['Confirm the site boundary against the DWG', `The whole geometry assumes a 150 × 100 m rectangle totalling ${fmt.n(D.zoning.siteArea)} m². Open the municipality DWG and verify. Every area figure downstream depends on this.`, 'critical'],
-        ['Produce the complete design report (slot 10)', 'The individual phase reports exist; the consolidated document does not.', 'open'],
-        ['Produce the 60-second animation (slot 12)', 'Optional per the brief, but the storyboard is ready.', 'optional'],
-        ['Export image sheets to PDF where required', 'Several slots hold PNG/JPG where the upload form expects PDF.', 'open'],
+        ['Generate the photoreal renders', 'design/renders/ is empty by design — six earlier renders contradicted the plan and were withdrawn. AL_SAFA_MASTER_PROMPT.md has the geometry-locked prompts and acceptance test to replace them.', 'critical'],
+        ['Record the 60-second concept film to video', 'The interactive film (submission/12_Concept_Animation_Video/concept_film.html) runs and passes every frame test. Screen-recording it to MP4 is the one remaining step for slot 12.', 'open'],
+        ['Read the reports and own the design judgement', 'Every "[AI DRAFT]" marker is stripped and enforced by a build check — the numbers are real — but the design decisions are yours to stand behind before submitting them as your own.', 'open'],
         ['Submit and tick all four declarations', 'On the challenge website, before 15 August 2026.', 'critical'],
     ].map(([title, body, kind]) => {
         const tone = kind === 'critical' ? 'red' : kind === 'optional' ? 'muted' : 'orange';

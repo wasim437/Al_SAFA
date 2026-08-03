@@ -12,7 +12,7 @@ window.AS2 = {
   "deadline": "2026-08-15",
   "siteAreaSqm": 15000.0,
   "budgetAED": 35000000,
-  "generated": "2026-08-01 12:56 UTC",
+  "generated": "2026-08-03 11:37 UTC",
   "sourceCount": 20,
   "conceptSubtitle": "a crescent of shade over a channel of water"
  },
@@ -7518,7 +7518,7 @@ window.AS2 = {
    "net_annual_tCO2e": 108.7,
    "sequestration_source": "Phase 7.5 carbon model (131-tree Phase 6 planting schedule)"
   },
-  "source": "../archive/phases/07_PHASE7_PERFORMANCE_AND_SUSTAINABILITY/outputs/advanced_lcc_energy_carbon_results.json Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years."
+  "source": "../archive/phases/07_PHASE7_PERFORMANCE_AND_SUSTAINABILITY/outputs/advanced_lcc_energy_carbon_results.json Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years."
  },
  "concepts": {
   "source": "src/config.py CRESCENT — the sweep table is in the file.",
@@ -8197,7 +8197,7 @@ window.AS2 = {
    "unit": "slots",
    "source": "../archive/phases/10_PHASE10_UPLOAD_DOCUMENTS/compilation_log.json",
    "method": "Phase 10 compilation log, counted by upload slot",
-   "note": "Slots 10 and 12 are deliberately outstanding: the complete design report and the optional 60-second animation.",
+   "note": "All 12 slots are populated with a single merged PDF each. The complete design report (slot 10) and the interactive 60-second film (slot 12) are both built; recording the film to video is the one step left for slot 12.",
    "refs": []
   }
  ],

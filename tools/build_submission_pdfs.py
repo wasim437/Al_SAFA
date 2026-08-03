@@ -435,7 +435,33 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
             c.setStrokeColor(RULE)
             c.setLineWidth(0.6)
             c.line(sx - 4 * mm, y - strip_h + 4 * mm, sx - 4 * mm, y - 4 * mm)
-    y -= strip_h + 11 * mm
+    y -= strip_h + 5 * mm
+
+    # ── portal call-to-action — big, obvious, clickable, not buried in a
+    # panel further down the page. This is the single most important link in
+    # the document: everything else in it can be checked by clicking here.
+    cta_h = 11 * mm
+    c.setFillColor(TEAL)
+    c.roundRect(x, y - cta_h, inner, cta_h, 1.8 * mm, stroke=0, fill=1)
+    # A drawn triangle, not a Unicode glyph — "▶" isn't in the base-14 PDF
+    # font encoding and rendered as an empty box.
+    ty = y - cta_h / 2
+    c.setFillColor(PAPER)
+    p = c.beginPath()
+    p.moveTo(x + 6.5 * mm, ty + 1.6 * mm)
+    p.lineTo(x + 6.5 * mm, ty - 1.6 * mm)
+    p.lineTo(x + 9.5 * mm, ty)
+    p.close()
+    c.drawPath(p, fill=1, stroke=0)
+    c.setFont("Helvetica-Bold", 10.5)
+    label = "VISIT THE LIVE PROJECT PORTAL"
+    c.drawString(x + 13 * mm, y - 7.2 * mm, label)
+    c.setFont("Helvetica-Bold", 10.5)
+    url_text = PORTAL_URL.replace("https://", "")
+    ux = w - 22 * mm - c.stringWidth(url_text, "Helvetica-Bold", 10.5)
+    c.drawString(ux, y - 7.2 * mm, url_text)
+    c.linkURL(PORTAL_URL, (x, y - cta_h, w - 18 * mm, y), relative=0)
+    y -= cta_h + 8 * mm
 
     # ── contents ────────────────────────────────────────────────────────────
     y = section(c, x, y, w, "01", "What is in this file", BLUE)
@@ -733,7 +759,7 @@ GROUPS: list[tuple[str, list[str], str]] = [
      "Dubai Municipality source document"),
     ("The twelve submission folders", ["submission/*/MANIFEST.md"],
      "What is in the slot, and what produced each file"),
-    ("Working history", ["archive/*/README.md", "archive/*/*/README.md"],
+    ("Working history", ["archive/*/README.md"],
      "Working record"),
 ]
 

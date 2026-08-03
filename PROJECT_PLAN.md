@@ -241,13 +241,17 @@ AL SAFA/
 ├── tools/                   the sync + build scripts
 │
 ├── archive/
-│   ├── phases/                the ten phase folders — real working history
 │   └── withdrawn_visuals/     images withdrawn on purpose (see §8)
 │
 └── EXPLAIN_THE_PROJECT/    the project in plain language, no code
                              (_TRASH/ was deleted on 3 Aug 2026 — 49 MB of
                               superseded reports, dead scripts and the six
-                              withdrawn renders. None of it was ever in git.)
+                              withdrawn renders. None of it was ever in git.
+                              archive/phases/ — 243 files, 34.6 MB of
+                              phase-by-phase working drafts — was removed
+                              from git on 3 Aug 2026 for the same reason: no
+                              live code read it, and it is fully recoverable
+                              from history if it is ever needed again.)
 ```
 
 **The rule that makes the whole thing trustworthy:** everything in `figures/`,
@@ -265,7 +269,7 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 3. Captured the upload form's exact slot list and accepted formats.
 4. Obtained the site DWG and the existing-park masterplan.
 
-### Phase 1 · Site & Context Analysis → `archive/phases/01_*`
+### Phase 1 · Site & Context Analysis
 1. Urban context — surrounding land use, access, connectivity, catchment.
 2. Climate — 39 years of NCM monthly normals: temperature, humidity, wind, sun path.
 3. Reconstructed an **8,760-hour year** from those normals (`src/climate.py`),
@@ -276,18 +280,18 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 7. SWOT of the existing park.
 → **Output:** the knowledge base every later decision is checked against.
 
-### Phase 2 · Problem Definition → `archive/phases/02_*`
+### Phase 2 · Problem Definition
 1. Turned Phase 1 findings into a list of problems.
 2. **Scored each by severity** rather than listing them flat.
 3. Ranked → thermal discomfort dominates everything else.
 → **Output:** the justification for making shade the organising idea.
 
-### Phase 3 · Opportunity & Objectives → `archive/phases/03_*`
+### Phase 3 · Opportunity & Objectives
 1. Converted the ranked problems into **measurable targets**.
 2. Set the comfort-hours target that the design is later tested against.
 → **Output:** the numbers §2's results table is scored against.
 
-### Phase 4 · Concept Development → `archive/phases/04_*`
+### Phase 4 · Concept Development
 1. Generated multiple concepts.
 2. Scored them against weighted criteria.
 3. Selected the crescent canopy.
@@ -296,20 +300,20 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 > suspects the weights were reverse-engineered to pick a winner discounts the
 > whole section.
 
-### Phase 5 · Masterplan Development → `archive/phases/05_*`
+### Phase 5 · Masterplan Development
 1. Room-by-room zoning, every room struck off the crescent's centre.
 2. Areas taken as the **shoelace area of the drawn polygon** — measured, not authored.
 3. Schedule closes on exactly **15,000 m²**, asserted by a test.
 → **Output:** `figures/fig10_masterplan.png`, `data/raw/site_zoning_schedule.csv`.
 
-### Phase 6 · Detailed Design → `archive/phases/06_*`
+### Phase 6 · Detailed Design
 1. Solved the canopy section against the shadow geometry — 7 m walk, 18 m
    gridshell at 4.5 m, 3 m southern louvre.
 2. Elevations, bay rhythm, 12% soffit transmittance.
 3. Planting plan — 131 trees, 5 species, drawn at mature canopy radius.
 → **Output:** `design/visuals/section_crescent.png`, `elevation_crescent.png`, `planting_crescent.png`.
 
-### Phase 7 · Performance & Sustainability → `archive/phases/07_*`
+### Phase 7 · Performance & Sustainability
 1. Water balance (~5,700 m³/yr, 43% recycled).
 2. Carbon — 2.1 tCO₂e/yr across 131 trees.
 3. Energy — canopy PV covers **~13% of load: a deficit, not a surplus.**
@@ -317,14 +321,14 @@ every chart, drawing and figure moves with it — or a test fails loudly.
 4. Shade performance by zone.
 → **Output:** the sustainability strategy.
 
-### Phase 8 · User Experience & Activation → `archive/phases/08_*`
+### Phase 8 · User Experience & Activation
 1. K-Means microclimate regimes.
 2. Mapped comfort by hour × month.
 3. Programming targets **late afternoon, spring and autumn**. Summer midday is
    deliberately not programmed outdoors.
 → **Output:** the activation strategy.
 
-### Phase 9 · AI Workflow & Visualization → `archive/phases/09_*`
+### Phase 9 · AI Workflow & Visualization
 1. Documented the four models and the anti-leakage discipline.
 2. Generated the photoreal renders.
 3. Built the analytics portal and the 60-second concept film.
