@@ -36,15 +36,17 @@ Output goes to `UPLOAD_THESE_12_FILES/` — twelve files, named for their slot.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from datetime import date
+from functools import lru_cache
 from pathlib import Path
 
 import pypdf
 from PIL import Image
 from reportlab.lib.utils import ImageReader
-from reportlab.lib.colors import HexColor
+from reportlab.lib.colors import Color, HexColor
 from reportlab.lib.pagesizes import A3, A4, landscape
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas as rl_canvas
@@ -93,12 +95,16 @@ def banner(c: rl_canvas.Canvas, w: float, h: float, slot: dict,
            kicker: str, title: str, sub: str = "", tall: bool = False) -> float:
     """The dark head every generated page opens with. Returns the new y."""
     bh = (52 if tall else 34) * mm
+    hue = hue_of(slot)
     c.setFillColor(NAVY)
     c.rect(0, h - bh, w, bh, stroke=0, fill=1)
-    # A lighter block on the right so the band reads as designed rather than
-    # as a plain fill.
-    c.setFillColor(NAVY_2)
+    # The block on the right carries this slot's own colour, blended well down
+    # into the navy so it reads as a tint of the band rather than a second
+    # brand. It is the fastest way to tell two of the twelve files apart.
+    c.setFillColor(mix(NAVY, hue, 0.55))
     c.rect(w - 46 * mm, h - bh, 46 * mm, bh, stroke=0, fill=1)
+    c.setFillColor(hue)
+    c.rect(w - 46 * mm, h - bh, 1.6 * mm, bh, stroke=0, fill=1)
     c.setFillColor(AMBER)
     c.rect(0, h - bh, w, 1.6 * mm, stroke=0, fill=1)
 
@@ -185,73 +191,175 @@ def page_foot(c: rl_canvas.Canvas, w: float, slot: dict, note: str = "") -> None
 # The twelve upload fields, in the order the form presents them. `blurb` is the
 # one line that goes on the cover so a juror opening the file knows immediately
 # what they are holding.
+# Each slot carries its own accent colour and leads on the numbers it is
+# actually about. Forty-three per cent of the package used to be the same page
+# repeated — the gallery, the proof page and the three index pages were
+# identical in all twelve files, and all twelve covers opened on the same four
+# statistics. A juror opening two files in a row saw one document twice.
+#
+# Navy and amber stay constant, because they are the submission's identity.
+# What varies is the third colour: the banner's inner block, the section
+# badges and the card spines. Mid-tone and desaturated, so twelve of them read
+# as one family rather than as a paintbox.
 SLOTS: list[dict] = [
-    dict(n=1, folder="01_Design_Narrative_Concept",
+    dict(n=1, folder="01_Design_Narrative_Concept", hue="#1B6FB8",
          title="Design Narrative & Concept",
          blurb="The argument: what is wrong with Al Safa 2 Park today, and what "
                "Falaj Al Safa does about it.",
+         stats=["comfort", "gained", "heat", "area"],
          sources=["src/plan.py", "tools/report_content.py",
                   "data/processed/hourly_climate_comfort_8760.csv"]),
-    dict(n=2, folder="02_Preliminary_Design_Masterplan",
+    dict(n=2, folder="02_Preliminary_Design_Masterplan", hue="#12836B",
          title="Neighborhood Park Preliminary Design Masterplan",
          blurb="The plan at scale. Every room struck off the crescent's centre; "
                "every area the measured area of the drawn polygon.",
+         stats=["area", "arc", "canopy", "trees"],
          sources=["src/plan.py", "src/figures.py",
                   "data/raw/site_zoning_schedule.csv"]),
-    dict(n=3, folder="03_Concept_Plans_Spatial_Diagrams",
+    dict(n=3, folder="03_Concept_Plans_Spatial_Diagrams", hue="#B5622A",
          title="Concept Plans and Spatial Organization Diagrams",
          blurb="How the park is organised — the crescent, the radial alleys, and "
                "the rooms between them.",
+         stats=["arc", "area", "sitemean", "trees"],
          sources=["src/plan.py", "src/drawings.py"]),
-    dict(n=4, folder="04_Key_Sections_Elevations",
+    dict(n=4, folder="04_Key_Sections_Elevations", hue="#5B5BA6",
          title="Key Sections & Elevations",
          blurb="The canopy section solved against the shadow geometry: a 7 m walk "
                "under an 18 m gridshell with a 3 m southern louvre.",
+         stats=["canopy", "spine", "peakshaded", "arc"],
          sources=["src/drawings.py", "src/solar.py", "src/config.py"]),
-    dict(n=5, folder="05_3D_Spatial_Visualizations",
+    dict(n=5, folder="05_3D_Spatial_Visualizations", hue="#A63D6B",
          title="3D & Spatial Visualizations",
          blurb="Presentation boards and illustrative views. Renders are artistic "
                "impressions; the analysis outputs are computed.",
+         stats=["trees", "canopy", "arc", "area"],
          sources=["src/boards.py", "src/plan.py",
                   "archive/withdrawn_visuals/README.md"]),
-    dict(n=6, folder="06_AI_Methodology_Report",
+    dict(n=6, folder="06_AI_Methodology_Report", hue="#0F7B8A",
          title="AI Methodology Report",
          blurb="Four models, the anti-leakage discipline behind them, and what "
                "each one changed about the design.",
+         stats=["m1", "m2", "m3", "hours"],
          sources=["src/models.py", "src/dataset.py",
                   "models/model_metrics.json", "tests/test_pipeline.py"]),
-    dict(n=7, folder="07_User_Experience_Activation_Strategy",
+    dict(n=7, folder="07_User_Experience_Activation_Strategy", hue="#C2761C",
          title="User Experience & Activation Strategy",
          blurb="Who uses the park, when, and why the programme targets late "
                "afternoon in spring and autumn.",
+         stats=["shaded", "gained", "hours", "m2"],
          sources=["src/models.py", "src/climate.py",
                   "data/processed/hourly_climate_comfort_8760.csv"]),
-    dict(n=8, folder="08_Sustainability_Concept_Strategy",
+    dict(n=8, folder="08_Sustainability_Concept_Strategy", hue="#2F7D4F",
          title="Sustainability Concept & Strategy",
          blurb="Water, carbon, energy and shade — stated conservatively, "
                "including where the scheme runs a deficit.",
+         stats=["cost", "util", "trees", "heat"],
          sources=["src/plan.py", "src/costing.py", "src/climate.py"]),
-    dict(n=9, folder="09_Material_Landscape_Palette",
+    dict(n=9, folder="09_Material_Landscape_Palette", hue="#8A5A2B",
          title="Material & Landscape Palette",
          blurb="131 trees across 5 desert species, and the materials that carry "
                "the crescent's language.",
+         stats=["trees", "species", "persqm", "canopy"],
          sources=["src/config.py", "src/plan.py", "src/drawings.py"]),
-    dict(n=10, folder="10_Complete_Design_Report",
+    dict(n=10, folder="10_Complete_Design_Report", hue="#1F4E79",
          title="Complete Design Report",
          blurb="The full concept and preliminary design proposal.",
+         stats=["area", "comfort", "cost", "trees"],
          sources=["run_analysis.py", "src/plan.py", "src/costing.py",
                   "models/headline_metrics.json"]),
-    dict(n=11, folder="11_Site_Analysis_Human_Centric_Research",
+    dict(n=11, folder="11_Site_Analysis_Human_Centric_Research", hue="#7A3E9D",
          title="Site Analysis & Human-Centric Research",
          blurb="39 years of climate normals, 8,760 modelled hours, and the "
                "7,640 residents within a ten-minute walk.",
+         stats=["hours", "exposed", "peakexposed", "sitemean"],
          sources=["src/climate.py", "src/solar.py", "data/raw/sources.json",
                   "DATA_SOURCES.md"]),
-    dict(n=12, folder="12_Concept_Animation_Video",
+    dict(n=12, folder="12_Concept_Animation_Video", hue="#B03A48",
          title="One-minute Concept Animation",
          blurb="Storyboard and supporting documentation for the 60-second film.",
+         stats=["arc", "trees", "canopy", "shaded"],
          sources=["tools/sync_film.py", "tests/test_film.js"]),
 ]
+
+
+@lru_cache(maxsize=1)
+def METRICS() -> dict[str, tuple[str, str]]:
+    """name -> (value, caption), read from what the pipeline actually wrote.
+
+    The covers used to hard-code their four numbers, which meant all twelve
+    printed the same four and none of them could go stale together with the
+    model. These are read from models/ at build time like everything else.
+    """
+    def rd(p: str) -> dict:
+        try:
+            return json.loads((ROOT / p).read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+
+    m = rd("models/headline_metrics.json")
+    k = rd("models/cost_summary.json")
+    try:
+        with (ROOT / "data" / "raw" /
+              "species_water_carbon_rates.csv").open(encoding="utf-8") as fh:
+            species = max(sum(1 for _ in fh) - 1, 0)
+    except Exception:
+        species = 0
+
+    return {
+        "area": (f"{m.get('site_area_sqm', 0):,.0f} m²", "site area"),
+        "comfort": (f"{m.get('daylight_hours_comfortable_exposed_pct', 0):.1f}%"
+                    f" → "
+                    f"{m.get('daylight_hours_comfortable_shaded_pct', 0):.1f}%",
+                    "comfortable daylight hours"),
+        "exposed": (f"{m.get('daylight_hours_comfortable_exposed_pct', 0):.1f}%",
+                    "comfortable today, exposed"),
+        "shaded": (f"{m.get('daylight_hours_comfortable_shaded_pct', 0):.1f}%",
+                   "comfortable as designed"),
+        "gained": (f"+{m.get('comfort_hours_gained_pct_points', 0):.1f} pts",
+                   "comfort hours gained"),
+        "heat": (f"−{m.get('mean_heat_index_reduction_c', 0):.2f} °C",
+                 "heat index under canopy"),
+        "peakexposed": (f"{m.get('peak_heat_index_exposed_c', 0):.1f} °C",
+                        "peak heat index, exposed"),
+        "peakshaded": (f"{m.get('peak_heat_index_shaded_c', 0):.1f} °C",
+                       "peak heat index, shaded"),
+        "spine": (f"{m.get('spine_shade_canopy_only_pct', 0):.1f}%",
+                  "crescent walk shaded"),
+        "sitemean": (f"{m.get('site_mean_shade_pct', 0):.1f}%",
+                     "site-wide mean shade"),
+        "hours": (f"{m.get('annual_daylight_hours', 0):,}",
+                  "daylight hours modelled"),
+        "trees": (f"{m.get('trees', 0)}", "trees planted"),
+        "species": (f"{species}", "desert species"),
+        "m1": (f"R² {m.get('model_M1_test_r2', 0):.4f}",
+               "shade surrogate, test set"),
+        "m2": (f"{m.get('model_M2_test_accuracy', 0) * 100:.1f}%",
+               "comfort band accuracy"),
+        "m3": (f"k = {m.get('model_M3_regimes', 0)}",
+               "microclimate regimes"),
+        "arc": (f"{k.get('arc_length_m', 0):.0f} m", "crescent arc length"),
+        "canopy": (f"{k.get('canopy_area_sqm', 0):,.0f} m²", "canopy area"),
+        "cost": (f"AED {k.get('total_aed', 0) / 1e6:.1f} M", "capital cost"),
+        "util": (f"{k.get('utilisation_pct', 0):.0f}%", "of AED 35 M budget"),
+        "persqm": (f"AED {k.get('cost_per_sqm', 0):,.0f}", "per m² of site"),
+    }
+
+
+def slot_stats(slot: dict) -> list[tuple[str, str]]:
+    """The four headline figures this particular file opens on."""
+    reg = METRICS()
+    return [reg[n] for n in slot.get("stats", []) if n in reg][:4]
+
+
+def hue_of(slot: dict) -> HexColor:
+    return HexColor(slot.get("hue", "#1B6FB8"))
+
+
+def mix(a: HexColor, b: HexColor, t: float) -> HexColor:
+    """Blend two colours — t=0 gives a, t=1 gives b."""
+    return Color(a.red + (b.red - a.red) * t,
+                 a.green + (b.green - a.green) * t,
+                 a.blue + (b.blue - a.blue) * t)
 
 # Assets left OUT of the package, with the reason. Nothing disappears silently —
 # every one of these is printed in the build report.
@@ -392,11 +500,14 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     inner = w - 36 * mm
 
     # ── full-bleed dark head ────────────────────────────────────────────────
+    hue = hue_of(slot)
     bh = 74 * mm
     c.setFillColor(NAVY)
     c.rect(0, h - bh, w, bh, stroke=0, fill=1)
-    c.setFillColor(NAVY_2)
+    c.setFillColor(mix(NAVY, hue, 0.55))
     c.rect(w - 52 * mm, h - bh, 52 * mm, bh, stroke=0, fill=1)
+    c.setFillColor(hue)
+    c.rect(w - 52 * mm, h - bh, 1.8 * mm, bh, stroke=0, fill=1)
     c.setFillColor(AMBER)
     c.rect(0, h - bh, w, 2 * mm, stroke=0, fill=1)
 
@@ -438,15 +549,19 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     strip_h = 20 * mm
     c.setFillColor(CARD)
     c.rect(0, y - strip_h, w, strip_h, stroke=0, fill=1)
-    stats = [("15,000 m²", "site area"),
-             ("44.5% → 64.6%", "comfortable daylight hours"),
-             ("−7.13 °C", "heat index under canopy"),
-             ("131", "trees planted")]
+    # The four figures this file is actually about, read from models/ — not
+    # the same four on all twelve covers, which is how the package came to
+    # look like one document printed a dozen times.
+    stats = slot_stats(slot) or [METRICS()["area"], METRICS()["comfort"],
+                                 METRICS()["heat"], METRICS()["trees"]]
     cwid = inner / len(stats)
     for i, (big, small) in enumerate(stats):
         sx = x + i * cwid
-        c.setFillColor(BLUE)
-        c.setFont("Helvetica-Bold", 12.5)
+        c.setFillColor(hue)
+        size = 12.5
+        while size > 8 and c.stringWidth(big, "Helvetica-Bold", size) > cwid - 6 * mm:
+            size -= 0.5
+        c.setFont("Helvetica-Bold", size)
         c.drawString(sx, y - 9 * mm, big)
         c.setFillColor(MUTED)
         c.setFont("Helvetica", 6.4)
@@ -484,7 +599,7 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     y -= cta_h + 8 * mm
 
     # ── contents ────────────────────────────────────────────────────────────
-    y = section(c, x, y, w, "01", "What is in this file", BLUE)
+    y = section(c, x, y, w, "01", "What is in this file", hue)
     for i, it in enumerate(items):
         if y < 96 * mm:
             c.setFillColor(MUTED)
@@ -492,7 +607,7 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
             c.drawString(x + 4 * mm, y, f"… and {len(items) - i} more")
             y -= 5 * mm
             break
-        card(c, x, y - 1.5 * mm, inner, 6.4 * mm, BLUE,
+        card(c, x, y - 1.5 * mm, inner, 6.4 * mm, hue,
              CARD if i % 2 == 0 else CARD_2)
         c.setFillColor(INK)
         c.setFont("Helvetica", 8.2)
@@ -505,11 +620,58 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
 
     y = work_summary_strip(c, x, y, w, slot)
 
-    # Pinned to the foot of the page rather than left to float where the
-    # contents list happens to end — floating left a band of white across the
-    # bottom fifth of every cover.
+    # Which of the ten phases this particular file came out of. Named here as
+    # well as on the methodology page, because it is the shortest true answer
+    # to "what part of the work am I holding?" — and it is different in every
+    # one of the twelve, which the rest of the cover furniture is not.
+    # The panel is pinned to the foot, so its top edge is fixed before anything
+    # else is drawn into the space above it. The phase chips then get a hard
+    # floor: without one, the Complete Design Report — the only slot that
+    # carries all ten phases — pushed the panel clean off the bottom of the
+    # page and printed its last two rows over the footer.
     ph = verify_panel_height(c, slot, w)
-    verify_panel(c, slot, w, min(y, 21 * mm + ph))
+    panel_top = 21 * mm + ph
+
+    phases = SLOT_PHASES.get(slot["n"], [])
+    # The section heading costs 10 mm and a chip row sits 6 mm below its own
+    # baseline, so 17 mm of clearance is the real requirement. At 20 mm the
+    # Complete Design Report cleared the check by too little and dropped its
+    # chips entirely, leaving the gap this block exists to fill.
+    if phases and y > panel_top + 17 * mm:
+        names = {n: nm for n, nm, _ in PHASES}
+        # Named chips need three rows once there are more than about five of
+        # them, which does not fit. Past that, number them.
+        named = len(phases) <= 5
+        y = section(c, x, y - 2 * mm, w, "03", "The phases behind this file",
+                    hue)
+        y -= 1 * mm
+        chip_h = 7.4 * mm
+        cx2 = x
+        for n in phases:
+            label = f"P{n}  {names.get(n, '')}" if named else f"P{n}"
+            cwid2 = c.stringWidth(label, "Helvetica-Bold", 7.4) + 8 * mm
+            if cx2 + cwid2 > w - 18 * mm:
+                if y - 2 * (chip_h + 2.2 * mm) < panel_top:
+                    break
+                cx2 = x
+                y -= chip_h + 2.2 * mm
+            c.setFillColor(mix(PAPER, hue, 0.12))
+            c.roundRect(cx2, y - chip_h + 1.5 * mm, cwid2, chip_h, 1.4 * mm,
+                        stroke=0, fill=1)
+            c.setFillColor(hue)
+            c.roundRect(cx2, y - chip_h + 1.5 * mm, 1.6 * mm, chip_h, 0.8 * mm,
+                        stroke=0, fill=1)
+            c.setFillColor(INK)
+            c.setFont("Helvetica-Bold", 7.4)
+            c.drawString(cx2 + 4.5 * mm, y - 1.2 * mm, label)
+            cx2 += cwid2 + 2.5 * mm
+        if not named:
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica-Oblique", 6.6)
+            c.drawString(cx2 + 1 * mm, y - 1.2 * mm,
+                         "all ten — this file is the whole design")
+
+    verify_panel(c, slot, w, panel_top)
 
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 7)
@@ -754,6 +916,50 @@ PHASES: list[tuple[int, str, str]] = [
      "manifest naming what produced it"),
 ]
 
+# What each phase actually produced: the code that ran, the file it wrote, and
+# the picture that came out. Used by work_ledger_page() to state the work as
+# "we did this, here is the proof, click it, and here is what it looks like"
+# rather than as a list of file paths at the back of the document.
+#
+# Every path is checked against the filesystem before it is drawn, so a
+# renamed or deleted asset drops out of the page instead of printing a dead
+# link — the index does the same thing for the same reason.
+PHASE_EVIDENCE: dict[int, dict] = {
+    1: dict(code=["src/climate.py", "src/solar.py"],
+            proof=["data/processed/hourly_climate_comfort_8760.csv",
+                   "data/raw/sources.json"],
+            figure="figures/fig01_climate_and_comfort.png"),
+    2: dict(code=["src/climate.py"],
+            proof=["models/headline_metrics.json"],
+            figure="figures/fig04_site_comfort_map.png"),
+    3: dict(code=["src/config.py", "src/plan.py"],
+            proof=["models/headline_metrics.json"],
+            figure="figures/fig02_comfort_bands.png"),
+    4: dict(code=["src/plan.py", "src/solar.py"],
+            proof=["data/processed/masterplan_geometry.json"],
+            figure="figures/fig03_shade_by_zone.png"),
+    5: dict(code=["src/plan.py", "src/figures.py"],
+            proof=["data/raw/site_zoning_schedule.csv",
+                   "data/processed/masterplan_geometry.json"],
+            figure="figures/fig10_masterplan.png"),
+    6: dict(code=["src/drawings.py", "src/config.py"],
+            proof=["data/processed/planting_layout.csv"],
+            figure="design/visuals/section_crescent.png"),
+    7: dict(code=["src/costing.py", "src/climate.py"],
+            proof=["data/processed/cost_plan.csv",
+                   "models/cost_summary.json"],
+            figure="figures/fig11_cost_plan.png"),
+    8: dict(code=["src/models.py", "src/dataset.py"],
+            proof=["data/processed/spatial_grid_comfort.csv"],
+            figure="figures/fig08_microclimate_regimes.png"),
+    9: dict(code=["src/models.py", "src/boards.py", "tools/sync_film.py"],
+            proof=["models/model_metrics.json", "tests/test_pipeline.py"],
+            figure="figures/fig05_surrogate_performance.png"),
+    10: dict(code=["tools/build_submission_pdfs.py", "tools/build_reports.py"],
+             proof=["tests/test_pipeline.py"],
+             figure="design/boards/board_2_evidence.png"),
+}
+
 # Which phases produced each slot.
 SLOT_PHASES: dict[int, list[int]] = {
     1: [2, 3, 4], 2: [5], 3: [4, 5], 4: [6], 5: [9], 6: [9],
@@ -890,6 +1096,7 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> int:
     w, h = A4
     x = 18 * mm
     inner = w - 36 * mm
+    hue = hue_of(slot)
     pages = 1
 
     floor = 24 * mm
@@ -927,7 +1134,7 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> int:
                tall=True)
     y -= 4 * mm
 
-    y = section(c, x, y, w, "01", "The ten phases", BLUE)
+    y = section(c, x, y, w, "01", "The ten phases", hue)
     mine = SLOT_PHASES.get(slot["n"], [])
 
     # Two columns of five, not ten full-width bands. Ten bands ran the page
@@ -981,13 +1188,13 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> int:
     y = ensure(9 * mm + 9 * mm, "SOURCES — CONTINUED",
               "How this document was produced")
     y = section(c, x, y, w, "02", "The code and data behind this document",
-                BLUE)
+                hue)
     srcs = slot.get("sources", [])
     ch = 9 * mm
     cw = (inner - 3 * mm * (len(srcs) - 1)) / max(len(srcs), 1)
     for i, src in enumerate(srcs):
         cx = x + i * (cw + 3 * mm)
-        card(c, cx, y - ch, cw, ch, BLUE, CARD)
+        card(c, cx, y - ch, cw, ch, hue, CARD)
         _link(c, pretty(src.split("/")[-1])[:22], f"{BLOB}/{src}",
               cx + 3 * mm, y - 4.4 * mm, size=7)
         c.setFillColor(MUTED)
@@ -1017,6 +1224,140 @@ def method_page(c: rl_canvas.Canvas, slot: dict) -> int:
     return pages
 
 
+def work_ledger_page(c: rl_canvas.Canvas, slot: dict) -> int:
+    """The work, stated one phase at a time, with the proof attached.
+
+    The back of every file already carries a complete index of the repository,
+    but an index is a list of paths — it tells a juror where everything is and
+    nothing about what was done. This says it the other way round: here is the
+    thing we did, here is the code that did it, here is the file it wrote that
+    you can open, and here is the picture that came out of it. The phases this
+    particular document rests on are marked and drawn first.
+    """
+    w, h = A4
+    x = 18 * mm
+    inner = w - 36 * mm
+    hue = hue_of(slot)
+    mine = SLOT_PHASES.get(slot["n"], [])
+    pages = 1
+
+    # This slot's own phases lead; the rest follow in order, so the page is
+    # different in every file without any of the work being hidden.
+    ordered = ([p for p in PHASES if p[0] in mine] +
+               [p for p in PHASES if p[0] not in mine])
+
+    def head(first: bool) -> float:
+        c.setPageSize(A4)
+        return banner(
+            c, w, h, slot, "WHAT WE DID, AND HOW TO CHECK IT",
+            "Every step of the work, with its proof attached" if first
+            else "The work, with its proof attached — continued",
+            "One row per phase: what was done, the code that did it, the file "
+            "it wrote, and the picture that came out. Every file name is a "
+            "live link — click it and read the actual thing, do not take this "
+            "document's word for it.", tall=True) - 4 * mm
+
+    y = head(True)
+    # 38 mm, not 40: at 40 only four rows cleared the foot and the page closed
+    # on a third of a sheet of white. At 38 five fit.
+    row_h = 38 * mm
+
+    for n, name, what in ordered:
+        ev = PHASE_EVIDENCE.get(n, {})
+        here = n in mine
+        if y - row_h < 18 * mm:
+            page_foot(c, w, slot)
+            c.showPage()
+            pages += 1
+            y = head(False)
+
+        card(c, x, y - row_h + 2 * mm, inner, row_h,
+             hue if here else RULE, CARD if here else PAPER)
+
+        # ── the picture that came out of this phase ─────────────────────────
+        thumb_w = 46 * mm
+        fig = ev.get("figure", "")
+        fp = ROOT / fig if fig else None
+        tx = x + 5 * mm
+        if fp is not None and fp.exists():
+            try:
+                with Image.open(fp) as im:
+                    im = im.convert("RGB")
+                    iw, ih = im.size
+                    # 46 mm wide on the page: about 360 px at 200 dpi. Bigger
+                    # than that is weight, not detail, and this thumbnail is
+                    # drawn ten times per file across twelve files.
+                    small = im.copy()
+                    small.thumbnail((460, 460), Image.LANCZOS)
+                    s = min(thumb_w / iw, (row_h - 11 * mm) / ih)
+                    dw, dh = iw * s, ih * s
+                    iy = y - 6 * mm - dh
+                    c.drawImage(ImageReader(small), tx, iy,
+                                width=dw, height=dh, preserveAspectRatio=True)
+                    c.setStrokeColor(RULE)
+                    c.setLineWidth(0.4)
+                    c.rect(tx, iy, dw, dh, stroke=1, fill=0)
+                    c.linkURL(f"{BLOB}/{fig}", (tx, iy, tx + dw, iy + dh),
+                              relative=0)
+            except Exception:
+                pass
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica-Oblique", 5.4)
+            c.drawString(tx, y - row_h + 5.5 * mm, fp.name)
+
+        # ── what was done ───────────────────────────────────────────────────
+        cx = tx + thumb_w + 5 * mm
+        cwid = inner - (cx - x) - 6 * mm
+        c.setFillColor(hue if here else MUTED)
+        c.setFont("Helvetica-Bold", 7.6)
+        c.drawString(cx, y - 5 * mm, f"PHASE {n}")
+        if here:
+            tab_w = 26 * mm
+            c.setFillColor(hue)
+            c.roundRect(x + inner - tab_w - 4 * mm, y - 6.6 * mm, tab_w,
+                        4.8 * mm, 0.9 * mm, stroke=0, fill=1)
+            c.setFillColor(PAPER)
+            c.setFont("Helvetica-Bold", 5.6)
+            c.drawCentredString(x + inner - tab_w / 2 - 4 * mm, y - 5.2 * mm,
+                                "THIS DOCUMENT RESTS ON IT")
+        c.setFillColor(INK)
+        c.setFont("Helvetica-Bold", 10)
+        c.drawString(cx + 18 * mm, y - 5 * mm, name)
+
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 6.8)
+        ty = y - 10.5 * mm
+        for line in _wrap(c, what, "Helvetica", 6.8, cwid):
+            c.drawString(cx, ty, line)
+            ty -= 3.4 * mm
+
+        # ── the code that did it, and the file it wrote ─────────────────────
+        ty -= 1.5 * mm
+        for label, key, colour in (("CODE", "code", hue),
+                                   ("PROOF — click to open", "proof", TEAL)):
+            paths = [p for p in ev.get(key, []) if (ROOT / p).exists()]
+            if not paths:
+                continue
+            c.setFillColor(colour)
+            c.setFont("Helvetica-Bold", 5.8)
+            c.drawString(cx, ty, label)
+            lx = cx + c.stringWidth(label, "Helvetica-Bold", 5.8) + 2.5 * mm
+            for p in paths:
+                pwid = c.stringWidth(p, "Helvetica-Bold", 6.6)
+                if lx + pwid > x + inner - 6 * mm:
+                    ty -= 3.4 * mm
+                    lx = cx + 16 * mm
+                _link(c, p, f"{BLOB}/{p}", lx, ty, size=6.6)
+                lx += pwid + 3 * mm
+            ty -= 4 * mm
+
+        y -= row_h + 2.5 * mm
+
+    page_foot(c, w, slot)
+    c.showPage()
+    return pages
+
+
 def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
     """Every drawing and chart the project produced, on one contact sheet.
 
@@ -1039,6 +1380,19 @@ def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
     if not shots:
         return 0
 
+    # This file's own pictures come first, at double size and under their own
+    # heading; the rest of the record follows as a contact sheet. The page used
+    # to be byte-identical in all twelve files — the same eighteen thumbnails
+    # in the same order — which is a large part of why the package read as one
+    # document printed twelve times.
+    own_names = set()
+    folder = SRC / slot["folder"]
+    if folder.exists():
+        own_names = {p.name.lower() for p in folder.iterdir()
+                     if p.suffix.lower() in (".png", ".jpg", ".jpeg")}
+    mine = [s for s in shots if s[0].name.lower() in own_names]
+    rest = [s for s in shots if s[0].name.lower() not in own_names]
+
     w, h = A4
     # Four columns, not three. At three the last row of a full eighteen-image
     # record fell onto a second sheet that carried six thumbnails and two
@@ -1050,53 +1404,82 @@ def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
     cell_h = img_h + cap_h + 4 * mm
     pages = 1
 
+    hue = hue_of(slot)
+
     def head(first: bool) -> float:
         c.setPageSize(A4)
         # The same navy banner as every other generated page. This used to be a
         # bare teal bar with nothing written in it, which read as a printing
         # fault rather than a heading.
         return banner(
-            c, w, h, slot, "THE COMPLETE VISUAL RECORD",
-            "Every drawing and every chart in this project" if first
-            else "The visual record — continued",
-            f"All {len(shots)} images the pipeline produces, whichever slot "
-            f"they belong to — each labelled with its class and linked to the "
-            f"full-resolution original. Nothing here is hand-drawn.",
+            c, w, h, slot, "THE VISUAL RECORD",
+            ((f"The {len(mine)} image in this file, and the whole record"
+              if len(mine) == 1 else
+              f"The {len(mine)} images in this file, and the whole record")
+             if mine else "Every drawing and every chart in this project")
+            if first else "The visual record — continued",
+            f"This slot's own pictures come first, larger. The remaining "
+            f"{len(rest)} of the {len(shots)} images the pipeline produces "
+            f"follow, so the whole visual record is in every file. Each links "
+            f"to its full-resolution original; nothing here is hand-drawn.",
             tall=True) - 2 * mm
 
-    y = head(True)
-
-    col = 0
-    for path, rel, kind in shots:
-        if col == 0 and y - cell_h < 16 * mm:
-            page_foot(c, w, slot)
-            c.showPage()
-            pages += 1
-            y = head(False)
-        cx = x0 + col * cw
+    def thumb(path: Path, rel: str, kind: str, cx: float, top: float,
+              tw: float, th: float, label_size: float, own: bool) -> None:
         try:
-            # Downsample before embedding. A contact sheet printed at 34 mm
+            # Downsample before embedding. A contact sheet printed at 30 mm
             # tall needs about 500 px, not the 3,400 px original — embedding
             # the full files put every slot over 7 MB for pictures the size of
             # a postage stamp.
             with Image.open(path) as im:
                 im = im.convert("RGB")
                 iw, ih = im.size
-                thumb = im.copy()
-                thumb.thumbnail((520, 520), Image.LANCZOS)
-                s = min((cw - 5 * mm) / iw, img_h / ih)
+                # Sized for how large it actually prints: the slot's own
+                # images run 62 mm, the contact-sheet thumbnails 30 mm.
+                box = 660 if own else 420
+                small = im.copy()
+                small.thumbnail((box, box), Image.LANCZOS)
+                s = min((tw - 5 * mm) / iw, th / ih)
                 dw, dh = iw * s, ih * s
-                c.drawImage(ImageReader(thumb), cx + (cw - 5 * mm - dw) / 2,
-                            y - dh, width=dw, height=dh,
+                c.drawImage(ImageReader(small), cx + (tw - 5 * mm - dw) / 2,
+                            top - dh, width=dw, height=dh,
                             preserveAspectRatio=True)
         except Exception:
             pass
-        ty = y - img_h - 3.2 * mm
-        _link(c, pretty(path.name)[:26], f"{BLOB}/{rel}", cx, ty,
-              font="Helvetica-Bold", size=6.0)
+        ty = top - th - 3.2 * mm
+        _link(c, pretty(path.name)[:26 if not own else 44], f"{BLOB}/{rel}",
+              cx, ty, font="Helvetica-Bold", size=label_size)
         c.setFillColor(MUTED)
-        c.setFont("Helvetica-Oblique", 5.6)
-        c.drawString(cx, ty - 3.2 * mm, kind)
+        c.setFont("Helvetica-Oblique", 5.6 if not own else 6.4)
+        c.drawString(cx, ty - 3.4 * mm, kind)
+
+    y = head(True)
+
+    if mine:
+        y = section(c, x0, y - 3 * mm, w, "01", "In this file", hue)
+        # A lone image gets the full width rather than half of it with an
+        # empty column beside it.
+        per_row = 1 if len(mine) == 1 else 2
+        bw = (w - 36 * mm - (per_row - 1) * 4 * mm) / per_row
+        bh_img = 62 * mm if per_row == 1 else 46 * mm
+        for i in range(0, len(mine), per_row):
+            row = mine[i:i + per_row]
+            for j, (p, rel, kind) in enumerate(row):
+                thumb(p, rel, kind, x0 + j * (bw + 4 * mm), y, bw, bh_img,
+                      7.2, True)
+            y -= bh_img + 12 * mm
+        y = section(c, x0, y - 1 * mm, w, "02", "The rest of the record", hue)
+        y -= 2 * mm
+
+    col = 0
+    for path, rel, kind in rest:
+        if col == 0 and y - cell_h < 16 * mm:
+            page_foot(c, w, slot)
+            c.showPage()
+            pages += 1
+            y = head(False)
+        cx = x0 + col * cw
+        thumb(path, rel, kind, cx, y, cw, img_h, 6.0, False)
 
         col += 1
         if col == cols:
@@ -1127,6 +1510,7 @@ def proof_page(c: rl_canvas.Canvas, slot: dict) -> None:
     inner = w - 40 * mm
     # Was a bare teal bar with no text in it — the same defect as the gallery
     # head, and it read as a printing fault rather than a heading.
+    hue = hue_of(slot)
     y = banner(c, w, h, slot, "EVIDENCE THE PIPELINE RAN",
                "Proof the analysis runs, and what it reports",
                "These are the values the pipeline wrote on its last run, read "
@@ -1134,6 +1518,40 @@ def proof_page(c: rl_canvas.Canvas, slot: dict) -> None:
                "regenerate every one of them from the published repository.",
                tall=True)
     y -= 2 * mm
+
+    # The four figures this file leads on, repeated here against the full
+    # tables they come out of. Without them the page was byte-identical in all
+    # twelve files — the same numbers in the same order, twelve times over.
+    stats = slot_stats(slot)
+    if stats:
+        c.setFillColor(INK)
+        c.setFont("Helvetica-Bold", 8.6)
+        c.drawString(x, y, "THE FIGURES THIS FILE LEADS ON")
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Oblique", 7)
+        c.drawString(x + 62 * mm, y,
+                     "each one appears in the full tables below, from the same "
+                     "file")
+        y -= 6.4 * mm
+        sw = (inner - 3 * 3 * mm) / 4
+        sh = 17 * mm
+        for i, (big, small) in enumerate(stats):
+            sx = x + i * (sw + 3 * mm)
+            card(c, sx, y - sh, sw, sh, hue, mix(PAPER, hue, 0.09))
+            size = 12.5
+            while size > 8 and c.stringWidth(big, "Helvetica-Bold",
+                                             size) > sw - 8 * mm:
+                size -= 0.5
+            c.setFillColor(hue)
+            c.setFont("Helvetica-Bold", size)
+            c.drawString(sx + 4 * mm, y - 7.5 * mm, big)
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 6.2)
+            ly = y - 11.5 * mm
+            for line in _wrap(c, small.upper(), "Helvetica", 6.2, sw - 7 * mm):
+                c.drawString(sx + 4 * mm, ly, line)
+                ly -= 3 * mm
+        y -= sh + 8 * mm
 
     def section(title: str, rows: list[tuple[str, str]], src: str) -> float:
         nonlocal y
@@ -1275,8 +1693,16 @@ def index_page(c: rl_canvas.Canvas, slot: dict) -> int:
     total = sum(len(rows) for _, rows in index)
     w, h = A4
     x = 20 * mm
+    inner = w - 40 * mm
+    hue = hue_of(slot)
     floor = 24 * mm
     pages = 1
+
+    # The files this particular slot was built from, pulled to the front and
+    # highlighted. The index below is deliberately the same in all twelve
+    # files — a juror holding one of them can reach the whole project — but
+    # opening on the identical list made every file look like the last one.
+    own = [s for s in slot.get("sources", []) if (ROOT / s).exists()]
 
     def new_page(first: bool) -> float:
         c.setPageSize(A4)
@@ -1316,6 +1742,32 @@ def index_page(c: rl_canvas.Canvas, slot: dict) -> int:
         _link(c, url.replace("https://", ""), url, x + 24 * mm, y)
         y -= 5 * mm
     y -= 4 * mm
+
+    # The sources behind this particular file, before the general index — so
+    # the page opens on something specific to the document in hand rather than
+    # on the same list of paths that opens the other eleven.
+    if own:
+        oh = 9 * mm + len(own) * 5.4 * mm
+        c.setFillColor(mix(PAPER, hue, 0.10))
+        c.roundRect(x, y - oh + 4 * mm, inner, oh, 1.6 * mm, stroke=0, fill=1)
+        c.setFillColor(hue)
+        c.roundRect(x, y - oh + 4 * mm, 2 * mm, oh, 1 * mm, stroke=0, fill=1)
+        c.setFillColor(hue)
+        c.setFont("Helvetica-Bold", 8.4)
+        c.drawString(x + 6 * mm, y, "THE SOURCES BEHIND THIS FILE")
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Oblique", 7)
+        c.drawString(x + 62 * mm, y,
+                     "open these first if you want to check this document")
+        y -= 6 * mm
+        for p in own:
+            _link(c, p, f"{BLOB}/{p}", x + 6 * mm, y, size=7.8)
+            c.setFillColor(MUTED)
+            c.setFont("Helvetica", 7.2)
+            c.drawRightString(w - 23 * mm, y, CLASSIFICATION.get(
+                classify(ROOT / p), "project file"))
+            y -= 5.4 * mm
+        y -= 6 * mm
 
     for heading, rows in index:
         # Never strand a heading at the foot of a page.
@@ -1484,6 +1936,7 @@ def build_slot(slot: dict, act: bool) -> dict:
     n_method = method_page(c, slot)                # page 1 .. 1+n_method
     for img in imgs:
         image_sheet(c, img, slot)
+    n_ledger = work_ledger_page(c, slot)           # what was done, with proof
     n_gallery = gallery_page(c, slot)              # the whole visual record
     proof_page(c, slot)                            # the numbers, and how to
     n_index = index_page(c, slot)                  # rerun them; then the index
@@ -1514,15 +1967,18 @@ def build_slot(slot: dict, act: bool) -> dict:
     # (one), and the index (n_index). Only the first page of a multi-page
     # section gets a bookmark.
     img0 = 1 + n_method
-    g0 = img0 + len(imgs)
+    l0 = img0 + len(imgs)
+    g0 = l0 + n_ledger
     p0 = g0 + n_gallery
     i0 = p0 + 1
     for i, pg in enumerate(front.pages[img0:], start=img0):
         here = len(writer.pages)
         writer.add_page(pg)
-        if i < g0:
+        if i < l0:
             j = i - img0
             marks.append((f"{pretty(imgs[j].name)}  ({classify(imgs[j])})", here))
+        elif i == l0:
+            marks.append(("What we did, and how to check it", here))
         elif i == g0:
             marks.append(("Every drawing and chart in this project", here))
         elif i == p0:
