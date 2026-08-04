@@ -203,7 +203,6 @@ AL SAFA/
 ├── PROJECT_PLAN.md         ⭐ THIS FILE — start here
 ├── README.md                the design argument, written for a juror (GitHub front page)
 ├── DATA_SOURCES.md          every data source, its period, and its limitations
-├── PUSH_TO_GITHUB.md        how to publish the repo + what must stay private
 │
 ├── 00_BRIEF/               ⭐ THE OFFICIAL COMPETITION DOCUMENTS
 │                             scope of work, parks manual, site DWG, masterplan

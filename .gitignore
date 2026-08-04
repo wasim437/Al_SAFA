@@ -28,3 +28,10 @@ archive/source_files/UPLODED DOCUMENT DETAILS.txt
 # Nothing in _TRASH/ is part of the submission. It is kept on disk so anything
 # can be recovered, but it does not belong in a public repository.
 _TRASH/
+
+# The concept film is built into UPLOAD_THESE_12_FILES/ by
+# tools/build_submission_pdfs.py, copied from its source in
+# submission/12_Concept_Animation_Video/. Tracking both copies stored 61 MB of
+# video twice for no gain — the upload folder is regenerated, the submission
+# folder is the original.
+UPLOAD_THESE_12_FILES/*.mp4

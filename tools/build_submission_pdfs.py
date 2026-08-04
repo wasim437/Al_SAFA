@@ -67,6 +67,12 @@ BLOB = f"{REPO_URL}/blob/main"
 
 PROJECT = "Al Safa 2 Park — Falaj Al Safa"
 APPLICANT = "Mohamed Wasim · Individual Applicant"
+# Email only, deliberately. These PDFs are committed to a public repository, so
+# anything printed here is scrapeable and stays in git history even if it is
+# taken out later. The mobile number is on the Dubai Municipality submission
+# form, which is where the jury actually reads it from, and it is kept out of
+# the repository — see .gitignore.
+APPLICANT_EMAIL = "wasimmisaw437@gmail.com"
 CHALLENGE = "Dubai Municipality AI Park Design Challenge"
 
 INK = HexColor("#1a1a1a")
@@ -578,28 +584,50 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     # ── portal call-to-action — big, obvious, clickable, not buried in a
     # panel further down the page. This is the single most important link in
     # the document: everything else in it can be checked by clicking here.
-    cta_h = 11 * mm
+    # Two lines deep, and the address set large on its own. The whole
+    # submission's claim is that any figure in it can be checked, and this is
+    # the door to that — at 10.5 pt tucked beside a label it read as a footnote.
+    cta_h = 19 * mm
     c.setFillColor(TEAL)
-    c.roundRect(x, y - cta_h, inner, cta_h, 1.8 * mm, stroke=0, fill=1)
+    c.roundRect(x, y - cta_h, inner, cta_h, 2 * mm, stroke=0, fill=1)
+    c.setFillColor(mix(TEAL, PAPER, 0.30))
+    c.roundRect(x, y - cta_h, 2.4 * mm, cta_h, 1.2 * mm, stroke=0, fill=1)
+
     # A drawn triangle, not a Unicode glyph — "▶" isn't in the base-14 PDF
     # font encoding and rendered as an empty box.
-    ty = y - cta_h / 2
+    ty = y - 6.4 * mm
     c.setFillColor(PAPER)
     p = c.beginPath()
-    p.moveTo(x + 6.5 * mm, ty + 1.6 * mm)
-    p.lineTo(x + 6.5 * mm, ty - 1.6 * mm)
-    p.lineTo(x + 9.5 * mm, ty)
+    p.moveTo(x + 8 * mm, ty + 1.7 * mm)
+    p.lineTo(x + 8 * mm, ty - 1.7 * mm)
+    p.lineTo(x + 11.2 * mm, ty)
     p.close()
     c.drawPath(p, fill=1, stroke=0)
-    c.setFont("Helvetica-Bold", 10.5)
-    label = "VISIT THE LIVE PROJECT PORTAL"
-    c.drawString(x + 13 * mm, y - 7.2 * mm, label)
-    c.setFont("Helvetica-Bold", 10.5)
-    url_text = PORTAL_URL.replace("https://", "")
-    ux = w - 22 * mm - c.stringWidth(url_text, "Helvetica-Bold", 10.5)
-    c.drawString(ux, y - 7.2 * mm, url_text)
+    c.setFont("Helvetica-Bold", 8)
+    c.drawString(x + 14.5 * mm, y - 5.4 * mm,
+                 "EVERY FIGURE IN THIS FILE CAN BE CHECKED HERE")
+    c.setFont("Helvetica-Bold", 17)
+    c.drawString(x + 8 * mm, y - 14 * mm, PORTAL_URL.replace("https://", ""))
     c.linkURL(PORTAL_URL, (x, y - cta_h, w - 18 * mm, y), relative=0)
-    y -= cta_h + 8 * mm
+    y -= cta_h + 7 * mm
+
+    # ── who submitted it ────────────────────────────────────────────────────
+    ch = 9.5 * mm
+    c.setFillColor(CARD)
+    c.roundRect(x, y - ch, inner, ch, 1.6 * mm, stroke=0, fill=1)
+    c.setFillColor(hue)
+    c.roundRect(x, y - ch, 1.8 * mm, ch, 0.9 * mm, stroke=0, fill=1)
+    c.setFillColor(INK)
+    c.setFont("Helvetica-Bold", 8.6)
+    c.drawString(x + 5 * mm, y - 6 * mm, "Mohamed Wasim")
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 7.6)
+    c.drawString(x + 5 * mm + c.stringWidth("Mohamed Wasim", "Helvetica-Bold", 8.6)
+                 + 3 * mm, y - 6 * mm, "· Individual Applicant")
+    _link(c, APPLICANT_EMAIL, f"mailto:{APPLICANT_EMAIL}",
+          w - 21 * mm - c.stringWidth(APPLICANT_EMAIL, "Helvetica-Bold", 8),
+          y - 6 * mm, size=8)
+    y -= ch + 7 * mm
 
     # ── contents ────────────────────────────────────────────────────────────
     y = section(c, x, y, w, "01", "What is in this file", hue)
@@ -1471,23 +1499,48 @@ def gallery_page(c: rl_canvas.Canvas, slot: dict) -> int:
                 thumb(p, rel, kind, x0 + j * (bw + 4 * mm), y, bw, bh_img,
                       7.2, True)
             y -= bh_img + 12 * mm
-        y = section(c, x0, y - 1 * mm, w, "02", "The rest of the record", hue)
-        y -= 2 * mm
+        y = section(c, x0, y - 1 * mm, w, "02",
+                    "Every other image in the project", hue)
+        y -= 3 * mm
 
+    # The rest of the record is LISTED, not reprinted.
+    #
+    # Every file used to carry a thumbnail of all twenty-four images. That put
+    # the same contact sheet in twelve documents — a juror reading slot 08 on
+    # sustainability paged through the children's play area and the confusion
+    # matrix to get there — and once the renders arrived it pushed slot 05 past
+    # 15 MB. The images are all one click away in the repository, and the file
+    # in hand should be about the slot it is for.
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 7.4)
+    for line in _wrap(c, f"The other {len(rest)} images the project produces are "
+                         f"not reprinted here — this file shows its own. Each "
+                         f"name below opens the full-resolution original in the "
+                         f"repository.", "Helvetica", 7.4, w - 36 * mm):
+        c.drawString(x0, y, line)
+        y -= 4 * mm
+    y -= 3 * mm
+
+    colw = (w - 36 * mm) / 3
     col = 0
     for path, rel, kind in rest:
-        if col == 0 and y - cell_h < 16 * mm:
+        if y - 5 * mm < 18 * mm:
             page_foot(c, w, slot)
             c.showPage()
             pages += 1
             y = head(False)
-        cx = x0 + col * cw
-        thumb(path, rel, kind, cx, y, cw, img_h, 6.0, False)
-
-        col += 1
-        if col == cols:
             col = 0
-            y -= cell_h
+        cx = x0 + col * colw
+        _link(c, pretty(path.name)[:30], f"{BLOB}/{rel}", cx, y,
+              font="Helvetica-Bold", size=7)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Oblique", 6)
+        c.drawString(cx + c.stringWidth(pretty(path.name)[:30],
+                                        "Helvetica-Bold", 7) + 2 * mm, y, kind)
+        col += 1
+        if col == 3:
+            col = 0
+            y -= 5 * mm
 
     page_foot(c, w, slot)
     c.showPage()
