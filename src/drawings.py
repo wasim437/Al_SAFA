@@ -477,7 +477,7 @@ def facilities_map():
     fig, ax = viz.open_figure(
         "Commercial & service facilities",
         "Where the park earns its running costs, and where it is serviced",
-        width=10.6, height=7.6,
+        width=10.6, height=8.2,
     )
     _ground(ax, [z for z in zones if not z.get("is_residual")])
 
@@ -502,7 +502,7 @@ def facilities_map():
                    label=f"{label}  ({len(pts)})")
 
     _site_frame(ax)
-    ax.legend(loc="upper center", ncol=3, bbox_to_anchor=(0.5, -0.02),
+    ax.legend(loc="upper center", ncol=3, bbox_to_anchor=(0.5, -0.04),
               handlelength=1.6, columnspacing=1.6, scatterpoints=1)
 
     commercial_area = sum(float(z["area"]) for z in zones

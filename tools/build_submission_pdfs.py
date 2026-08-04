@@ -47,7 +47,7 @@ import pypdf
 from PIL import Image
 from reportlab.lib.utils import ImageReader
 from reportlab.lib.colors import Color, HexColor
-from reportlab.lib.pagesizes import A3, A4, landscape
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas as rl_canvas
 
@@ -1829,13 +1829,120 @@ def _wrap(c, text: str, font: str, size: float, maxw: float) -> list[str]:
     return out
 
 
+# What produced each picture, and what it was read from. A full-page drawing
+# used to carry exactly one link — the image file itself — which tells a juror
+# where the picture lives and nothing about whether to believe it. Every sheet
+# now names the code that drew it and the data it read, both clickable, so the
+# question "where does this come from?" is answered on the page showing it.
+#
+# Paths are checked against the filesystem before they are drawn, so a renamed
+# file drops out rather than printing a dead link.
+IMAGE_EVIDENCE: dict[str, dict] = {
+    "fig01_climate_and_comfort.png": dict(
+        code=["src/climate.py", "src/figures.py"],
+        data=["data/processed/hourly_climate_comfort_8760.csv",
+              "data/raw/sources.json"],
+        says="39 years of NCM normals rebuilt into an 8,760-hour year, and what "
+             "that year feels like exposed and shaded"),
+    "fig02_comfort_bands.png": dict(
+        code=["src/models.py", "src/figures.py"],
+        data=["models/headline_metrics.json"],
+        says="How the year's hours divide across comfort bands, before the "
+             "design and after it"),
+    "fig03_shade_by_zone.png": dict(
+        code=["src/solar.py", "src/plan.py"],
+        data=["data/processed/spatial_grid_comfort.csv"],
+        says="Ray-traced shade coverage per room, so no zone's performance is "
+             "averaged away"),
+    "fig04_site_comfort_map.png": dict(
+        code=["src/solar.py", "src/figures.py"],
+        data=["data/processed/spatial_grid_comfort.csv"],
+        says="July afternoon heat index for every square metre of the site"),
+    "fig05_surrogate_performance.png": dict(
+        code=["src/models.py"], data=["models/model_metrics.json"],
+        says="The shade surrogate against held-out truth — predicted versus "
+             "measured"),
+    "fig06_feature_importance.png": dict(
+        code=["src/models.py"], data=["models/model_metrics.json"],
+        says="Which geometric feature actually decides whether a square metre "
+             "is shaded"),
+    "fig07_confusion_matrix.png": dict(
+        code=["src/models.py"], data=["models/model_metrics.json"],
+        says="Where the comfort-band classifier is wrong, and in which "
+             "direction"),
+    "fig08_microclimate_regimes.png": dict(
+        code=["src/models.py", "src/dataset.py"],
+        data=["data/processed/spatial_grid_comfort.csv"],
+        says="The microclimate regimes K-Means separates the site into, and "
+             "why k = 2"),
+    "fig09_diurnal_comfort.png": dict(
+        code=["src/climate.py", "src/figures.py"],
+        data=["data/processed/hourly_climate_comfort_8760.csv"],
+        says="Comfort hour by hour and month by month — where the programme "
+             "targets are taken from"),
+    "fig10_masterplan.png": dict(
+        code=["src/plan.py", "src/figures.py"],
+        data=["data/raw/site_zoning_schedule.csv",
+              "data/processed/masterplan_geometry.json"],
+        says="The plan as the code draws it — every room struck off the arc "
+             "centre, areas measured from the drawn polygon"),
+    "fig11_cost_plan.png": dict(
+        code=["src/costing.py"],
+        data=["data/processed/cost_plan.csv", "models/cost_summary.json"],
+        says="The capital cost plan against the AED 35 M ceiling"),
+    "section_crescent.png": dict(
+        code=["src/drawings.py", "src/config.py", "src/solar.py"],
+        data=["models/headline_metrics.json"],
+        says="The canopy section solved against real solstice sun angles, not "
+             "drawn by eye"),
+    "elevation_crescent.png": dict(
+        code=["src/drawings.py", "src/config.py"], data=[],
+        says="The structural bay repeated along the arc — one section, 21 bays"),
+    "planting_crescent.png": dict(
+        code=["src/drawings.py", "src/plan.py"],
+        data=["data/processed/planting_layout.csv",
+              "data/raw/species_water_carbon_rates.csv"],
+        says="131 trees at mature canopy, five desert species, placed from the "
+             "planting schedule"),
+    "circulation_crescent.png": dict(
+        code=["src/drawings.py", "src/plan.py"], data=[],
+        says="Every route through the park, and the step-free claim it "
+             "supports"),
+    "facilities_crescent.png": dict(
+        code=["src/plan.py", "src/drawings.py"], data=[],
+        says="The 20 facilities the brief requires, placed and counted"),
+    "board_1_concept.png": dict(
+        code=["src/boards.py", "src/plan.py"],
+        data=["models/headline_metrics.json"],
+        says="The concept board — the argument in one sheet"),
+    "board_2_evidence.png": dict(
+        code=["src/boards.py"],
+        data=["models/headline_metrics.json", "models/model_metrics.json"],
+        says="The evidence board — the numbers behind the argument"),
+}
+
+
 def image_sheet(c: rl_canvas.Canvas, img: Path, slot: dict) -> None:
-    """One image, one A3 landscape sheet, titled, classified and sourced."""
-    pw, ph = landscape(A3)
+    """One image, one A4 landscape sheet, titled, classified and sourced.
+
+    Landscape because the drawings are wide — the sections and the permutation
+    chart run past 2.5:1, and on a portrait page they shrink to a strip. A4
+    rather than A3 because every other page in the file is A4, and jumping to a
+    sheet of twice the area part-way through reads as a fault in the document
+    rather than as a decision. Same paper, turned.
+    """
+    pw, ph = landscape(A4)
     c.setPageSize((pw, ph))
 
+    hue = hue_of(slot)
     kind = classify(img)
     title = pretty(img.name)
+    ev = IMAGE_EVIDENCE.get(img.name, {})
+    code = [p for p in ev.get("code", []) if (ROOT / p).exists()]
+    data = [p for p in ev.get("data", []) if (ROOT / p).exists()]
+
+    c.setFillColor(hue)
+    c.rect(0, ph - 3 * mm, pw, 3 * mm, stroke=0, fill=1)
 
     c.setFillColor(INK)
     c.setFont("Helvetica-Bold", 13)
@@ -1843,10 +1950,14 @@ def image_sheet(c: rl_canvas.Canvas, img: Path, slot: dict) -> None:
 
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 8.5)
-    c.drawString(16 * mm, ph - 21.5 * mm, CLASSIFICATION[kind])
+    c.drawString(16 * mm, ph - 21.5 * mm,
+                 ev.get("says") or CLASSIFICATION[kind])
 
+    # Reserve the foot for the evidence strip before sizing the picture, so the
+    # two can never overlap.
+    strip_h = 15 * mm if (code or data) else 0
     top = ph - 27 * mm
-    bottom = 14 * mm
+    bottom = 14 * mm + strip_h
     avail_w, avail_h = pw - 32 * mm, top - bottom
 
     with Image.open(img) as im:
@@ -1855,6 +1966,35 @@ def image_sheet(c: rl_canvas.Canvas, img: Path, slot: dict) -> None:
     dw, dh = iw * scale, ih * scale
     c.drawImage(str(img), (pw - dw) / 2, bottom + (avail_h - dh) / 2,
                 width=dw, height=dh, preserveAspectRatio=True, mask="auto")
+
+    # ── what drew it, and what it read ──────────────────────────────────────
+    if code or data:
+        sy = 14 * mm + strip_h - 4 * mm
+        c.setStrokeColor(RULE)
+        c.setLineWidth(0.5)
+        c.line(16 * mm, sy + 3.5 * mm, pw - 16 * mm, sy + 3.5 * mm)
+        sx = 16 * mm
+        for label, paths, colour in (("DRAWN BY", code, hue),
+                                     ("READ FROM", data, TEAL)):
+            if not paths:
+                continue
+            c.setFillColor(colour)
+            c.setFont("Helvetica-Bold", 6.4)
+            c.drawString(sx, sy, label)
+            sx += c.stringWidth(label, "Helvetica-Bold", 6.4) + 2.5 * mm
+            for p in paths:
+                w2 = c.stringWidth(p, "Helvetica-Bold", 7.4)
+                if sx + w2 > pw - 16 * mm:
+                    break
+                _link(c, p, f"{BLOB}/{p}", sx, sy, size=7.4)
+                sx += w2 + 3.5 * mm
+            sx += 4 * mm
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Oblique", 6.2)
+        c.drawString(16 * mm, sy - 4.4 * mm,
+                     "Every path above is a live link. Nothing on this sheet "
+                     "was drawn by hand — regenerate it with "
+                     "python run_analysis.py")
 
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 7.5)

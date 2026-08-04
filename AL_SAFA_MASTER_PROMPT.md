@@ -259,155 +259,275 @@ Visualisation → Submission Assembly. Detail in `PROJECT_PLAN.md` §5.
 
 # SECTION C — THE IMAGE PROMPTS
 
+**Six images. Generate them in the order below — the first three are the ones
+the submission actually needs; the last three are depth.**
+
+These are written for a park-only frame. Earlier versions of these prompts asked
+for the surrounding Dubai streets and villas, and the context ate the subject:
+the park became a small thing in the middle of a neighbourhood, and the crescent
+— the entire idea — stopped reading. **Every prompt below now keeps the camera
+inside the park.** Where a boundary has to exist, it is the planted dune berm,
+which is part of the design.
+
+---
+
 ## ⚠️ Rules that apply to EVERY prompt
 
 **MUST be true in every image:**
+
 1. The canopy is **ONE continuous arc**, 141 m radius, bowing **convex south**.
    Never straight. Never an S-curve. Never a full ring or closed loop.
 2. Water is a **0.9 m narrow channel** at the canopy's northern edge.
-   **NEVER a lagoon, lake, pond, canal or reflecting pool.**
-3. The palm court (Oasis Basin) sits in the **concave / north** side.
-4. Trees are **Ghaf, Neem, Ficus nitida, Date Palm, Olive** — desert species only.
-5. Light through the soffit is **dappled at 12% transmittance** — not solid shadow.
-6. Real Dubai residential context — low-rise beige/sand buildings, palm-lined
-   streets. **Not** a skyline of glass towers. **Not** the Museum of the Future.
+   **NEVER a lagoon, lake, pond, canal or reflecting pool.** It is a rill you
+   could step across.
+3. The palm court (Oasis Basin) sits on the **concave / north** side.
+4. Trees are **Ghaf, Neem, Ficus nitida, Date Palm, Olive** — desert species
+   only. Sparse, silvery, drought-adapted. Never a lush green lawn.
+5. Light through the soffit is **dappled at 12% transmittance** — a fine mesh of
+   light on the ground, not a solid black shadow.
+6. **The park fills the frame.** No roads, no cars, no villas, no apartment
+   blocks, no skyline, no city beyond the trees. If an edge must be visible it
+   is the 3.5 m planted earth berm and the trees on it.
 7. Real people using it: Emirati and expatriate families, mixed ages, modest
    dress including kanduras and abayas, children, older people, joggers.
 
 ---
 
-## PROMPT 01 — Aerial masterplan view (HIGHEST PRIORITY)
+## HOW TO USE THESE — IF THE TOOL CAN READ THIS REPOSITORY
 
-> Photorealistic aerial architectural visualisation of a 15,000 m² neighbourhood
-> park in Dubai, UAE, at 25.19°N, viewed from 120 m altitude at a 45° oblique
-> angle looking north, golden hour late afternoon light with long soft shadows.
+If you have given the whole project folder to the tool (Antigravity, Cursor,
+Claude, a Gemini project with the files attached), **do not make it imagine the
+park — make it look at the park.** The drawings in this repository are the
+ground truth, and a model that has seen `figures/fig10_masterplan.png` will not
+invent a lagoon.
+
+**Paste this first, once, before any image prompt:**
+
+> Before you generate anything, read these files from the project folder and
+> use them as the ground truth for every image. Do not invent geometry that
+> contradicts them.
 >
-> The park is a 150 × 100 metre rectangle. Its single organising element is ONE
-> continuous crescent-shaped shade canopy — a triangulated steel-and-timber
-> gridshell 18 metres wide and 4.5 metres high, sweeping in a smooth arc of 141
-> metre radius across the full width of the site, bowing convex toward the south.
-> The arc is 144 metres long end to end with an 18 metre bow depth. Its soffit is
-> a translucent ETFE diagrid casting intricate dappled light at 12% transmittance
-> onto a 7 metre wide sand-coloured stone walkway beneath. A 3 metre deep vertical
-> louvre fin runs along the canopy's southern edge.
+> **Read first — the design itself:**
+> - `AL_SAFA_MASTER_PROMPT.md` — Section A is the whole project: exact
+>   geometry, the 18-room schedule, the planting, the facilities.
+> - `src/config.py` — the CRESCENT block. Radius, canopy width, canopy height,
+>   louvre depth, walk width. These are the real numbers; nothing overrides them.
+> - `src/plan.py` — how every room is struck off the arc centre.
 >
-> Running along the canopy's northern drip line is a very narrow shallow water
+> **Look at these images — this is what the park actually looks like in plan
+> and section. Match them:**
+> - `figures/fig10_masterplan.png` — THE MASTERPLAN. The single most important
+>   reference. The arc, the rooms, the alleys, the loop, in true proportion.
+> - `design/visuals/section_crescent.png` — the canopy in section, with real
+>   solstice sun angles. Use this for the canopy's shape and proportions.
+> - `design/visuals/elevation_crescent.png` — the structural bay, repeated.
+> - `design/visuals/planting_crescent.png` — where all 131 trees actually are.
+> - `design/visuals/facilities_crescent.png` — where the 20 facilities sit.
+> - `design/visuals/circulation_crescent.png` — every route through the park.
+> - `figures/fig04_site_comfort_map.png` — where the site is hot and cool.
+>
+> **Then tell me, before drawing:** in one short paragraph, describe the plan
+> as you understand it from those files — the arc's direction of bow, which
+> rooms are on the concave side, and how wide the water channel is. If your
+> description does not match the files, read them again. Only then generate.
+>
+> Every image must show the park and nothing outside it: no roads, no cars, no
+> villas, no apartment blocks, no skyline.
+
+**Why the read-first step matters:** six earlier renders of this project were
+generated from description alone. Every one of them showed a different park —
+a straight corridor, an S-curve, a lagoon — and all six were withdrawn. The
+files below exist so that cannot happen again.
+
+---
+
+## HOW TO USE THESE — IF THE TOOL HAS ONLY TEXT
+
+Most image tools do better if they understand the project before they are asked
+to draw it. Paste this first, once, then the prompt you want:
+
+> You are producing photorealistic architectural visualisations for a real
+> competition entry: the redesign of Al Safa 2 Park in Dubai (25.19°N), a
+> 15,000 m² neighbourhood park. The design is called Falaj Al Safa, meaning *a
+> crescent of shade over a channel of water*.
+>
+> The whole scheme is one move. A single continuous crescent-shaped shade
+> canopy, 141 metres in radius, sweeps across the site and bows convex toward
+> the south, so the structure sits between the sun and the hollow it wraps. A
+> narrow 0.9 metre water channel runs along its northern, permanently shaded
+> edge — placed there so it does not evaporate. Every room in the park is
+> struck off the same arc centre, so no room is a rectangle and every room
+> faces the crescent square-on.
+>
+> The arc is not a styling choice. A straight canopy faces one direction, and
+> when a sun angle defeats it the walk has no shade anywhere along its whole
+> length. An arc changes heading continuously, so some segment is always
+> angled well. Tested against 8,760 hours of real sun positions, the arc cuts
+> the hours with no shade anywhere from 330 to 52.
+>
+> This is a desert park in a hot arid climate: sparse silvery planting,
+> decomposed granite, sand-coloured stone, deep shade, glare. It is not a
+> temperate park and not a tropical resort.
+>
+> Every image must show the park and nothing outside it.
+
+---
+
+## PROMPT 01 — Aerial over the whole park (HIGHEST PRIORITY)
+
+> Photorealistic aerial architectural visualisation of a desert neighbourhood
+> park in Dubai, viewed from 110 metres at a 40° oblique angle looking north,
+> late afternoon golden hour, long soft shadows raking across the ground.
+>
+> **The park completely fills the frame, edge to edge. There are no roads, no
+> cars, no buildings, no city, no horizon line of towers — only the park.**
+> The composition is cropped to the park itself.
+>
+> The single organising element is ONE continuous crescent-shaped shade canopy:
+> a triangulated steel-and-timber gridshell, 18 metres wide and 4.5 metres
+> high, sweeping in one smooth arc of 141 metre radius across the full width of
+> the park, bowing convex toward the south. It is 144 metres long with an 18
+> metre bow depth. Its soffit is a translucent ETFE diagrid casting an intricate
+> dappled mesh of light onto a 7 metre wide sand-coloured stone walkway beneath.
+> A 3 metre deep vertical louvre fin runs along the canopy's southern edge.
+>
+> Along the canopy's northern drip line runs a very narrow shallow water
 > channel, only 0.9 metres wide — a thin stone-lined rill flush with the paving,
-> ankle deep, catching the light as a bright thread. It is a traditional Emirati
-> falaj irrigation channel, NOT a lake or lagoon.
+> ankle deep, catching the low sun as a single bright thread. A traditional
+> Emirati falaj irrigation channel. NOT a lake, pond or lagoon.
 >
 > On the concave northern side of the crescent: a sunken date palm court in a
-> shallow basin, a quiet contemplation garden with olive trees, a children's play
-> area shaped from sculpted sand dunes, and a family picnic grove under Neem
+> shallow basin, a quiet contemplation garden with olive trees, a children's
+> play area sculpted from sand dunes, and a family picnic grove under Neem
 > trees. On the convex southern side: a community plaza and event lawn, a
 > multipurpose sports lawn, eight small modular souk kiosks, and an outdoor
 > fitness terrace.
 >
-> Narrow 3 metre radial alleys run outward from the arc's centre, dividing these
-> rooms like slices — no room is a rectangle. A 2.5 metre wide unshaded running
-> loop traces the perimeter. A 3.5 metre planted earth berm buffers the park from
-> the roads.
+> Narrow 3 metre alleys run radially outward from the arc's centre, slicing
+> these rooms like segments — no room is a rectangle. A 2.5 metre unshaded
+> running loop traces the park's edge. A 3.5 metre planted earth berm forms the
+> outer boundary of the image and closes the composition — beyond it, nothing
+> is shown.
 >
-> 131 desert trees: Ghaf (Prosopis cineraria) with broad 12 metre crowns on the
-> southern rank, Neem on the northern rank, date palms in the basin, olives at
-> the margins. Arid-climate ground cover, decomposed granite, gravel mulch,
-> drought-tolerant native grasses — sparse and silvery, not lush green lawn.
->
-> Surrounding context: low-rise beige and sand-coloured Dubai residential
-> villas, palm-lined streets, mid-rise apartment blocks in the far distance.
+> 131 desert trees: Ghaf with broad open 12 metre crowns on the southern rank,
+> Neem on the northern rank, date palms in the basin, olives at the margins.
+> Arid ground cover, decomposed granite, gravel mulch, drought-tolerant native
+> grasses — sparse and silvery, never lush green lawn.
 >
 > Families walking in the shade, children playing, people seated at the water's
-> edge. Architectural photography, ultra-detailed, 8K, professional landscape
-> architecture competition rendering, warm desert palette of sand, terracotta,
-> bronze, sage green and pale limestone.
+> edge. Photorealistic architectural rendering, ultra detailed, professional
+> competition visualisation, 8K.
+
+**Match against these files before you draw:**
+- `figures/fig10_masterplan.png` — the plan this view must match, exactly
+- `design/visuals/planting_crescent.png` — where all 131 trees are
+- `design/visuals/facilities_crescent.png` — where the 20 facilities are
 
 **Save to:** `design/renders/Aerial/masterplan_aerial_golden_hour.jpg`
 
 ---
 
-## PROMPT 02 — Night plaza and canopy
+## PROMPT 02 — Night, the plaza under the canopy
 
-> Photorealistic night architectural visualisation of a neighbourhood park in
-> Dubai. A continuous curved gridshell canopy 18 metres wide and 4.5 metres high
-> arcs gently across the frame, bowing away from the viewer. Warm concealed
-> uplighting washes the triangulated diagrid soffit from below, making the
-> structure glow like a lantern against a deep blue desert night sky.
+> Photorealistic architectural visualisation at night, standing in the community
+> plaza on the southern convex side of a desert park in Dubai, looking north
+> toward a great illuminated shade canopy.
 >
-> Beneath it, a 7 metre wide pale stone walkway. Along its northern edge a very
-> narrow 0.9 metre water channel runs, lit from within, a thin ribbon of light
-> reflecting the canopy above. Low bollard lighting at 3 metre intervals. NO jet
-> fountains, NO large water features, NO lagoon.
+> **The park fills the frame entirely. No roads, no cars, no buildings, no city
+> lights beyond the park — the darkness past the trees is simply dark.**
 >
-> To one side, a community plaza with an event lawn where families gather in the
-> evening cool; small modular souk kiosks with warm light spilling from their
-> serving counters. Ghaf and Neem trees uplit softly. Date palms silhouetted.
+> A single continuous crescent-shaped gridshell canopy, 18 metres wide and 4.5
+> metres high, sweeps across the view in one smooth arc bowing convex toward the
+> camera. It is lit from within: warm light glowing up through a triangulated
+> ETFE diagrid soffit, so the structure reads as a long band of light curving
+> away into the dark at both ends. A 3 metre vertical louvre fin runs along its
+> near southern edge.
 >
-> Emirati and expatriate families, mixed ages, some in kanduras and abayas,
-> children running, people seated on low stone benches. Warm 2700K lighting,
-> dark sky compliant, no light pollution upward.
+> Beneath it, a 7 metre sand-coloured stone walkway. Beyond it on the far side,
+> a narrow 0.9 metre water channel catches the canopy's light as a thin bright
+> line. Low bollard lighting along the walk. Eight small modular souk kiosks
+> face the plaza, warmly lit, a few people at them.
 >
-> Low-rise Dubai residential context in the background. Architectural night
-> photography, long exposure quality, ultra-detailed, 8K.
+> Emirati and expatriate families in the plaza in the evening cool, children
+> running, older people seated. Ghaf and Neem trees silhouetted against the
+> glow. Warm amber artificial light against deep blue night, no neon, no purple,
+> no cyberpunk colour. Photorealistic architectural rendering, ultra detailed,
+> professional competition visualisation, 8K.
+
+**Match against these files before you draw:**
+- `design/visuals/facilities_crescent.png` — the souk kiosks and plaza position
+- `design/visuals/section_crescent.png` — the canopy's true section and height
+- `figures/fig10_masterplan.png` — the plaza sits on the CONVEX south face
 
 **Save to:** `design/renders/Night/night_plaza_render_1784970565232.jpg`
 
 ---
 
-## PROMPT 03 — Eye-level under the crescent walk
+## PROMPT 03 — Eye level, walking beneath the crescent
 
-> Photorealistic eye-level architectural visualisation, standing on a 7 metre
-> wide sand-coloured stone walkway beneath a curving shade canopy in Dubai at
-> midday. The canopy is a triangulated steel-and-timber gridshell 18 metres wide,
-> 4.5 metres above the walk, and it CURVES CONTINUOUSLY away from the viewer in
-> one smooth arc — the far end of the walk bends out of sight around the curve.
-> It is not straight, and it does not S-bend.
+> Photorealistic architectural visualisation at eye level, 1.7 metres above the
+> ground, standing on the walkway directly beneath a great curving shade canopy
+> in a desert park in Dubai, at two in the afternoon in August.
 >
-> The translucent ETFE soffit casts an intricate lattice of dappled light and
-> shadow onto the paving at 12% transmittance — bright and legible, not dark.
-> Along the canopy's southern edge a 3 metre deep vertical louvre fin cuts the
-> low sun. Along the northern edge, at the canopy's drip line, a very narrow 0.9
-> metre wide shallow water channel runs parallel to the walk — a thin stone rill
-> flush with the paving, ankle deep, water moving slowly, catching light. It is
-> narrow enough to step across.
+> **The frame is entirely inside the park. No roads, no cars, no buildings.**
 >
-> Ghaf trees with broad umbrella crowns line the southern rank, Neem trees the
-> northern. Low stone seating benches in the shade margin. A drinking fountain
-> and bottle-fill station. Beyond the canopy's edge, bright sunlit desert
-> planting — gravel mulch, drought-tolerant grasses, olive trees.
+> The canopy overhead is a triangulated steel-and-timber gridshell, 18 metres
+> wide, its underside 4.5 metres above the walk, curving gently away to the left
+> and out of sight — the far end is hidden by the curve, because the walk is an
+> arc rather than a straight corridor. A translucent ETFE diagrid soffit throws
+> an intricate dappled mesh of light and shadow across a 7 metre wide
+> sand-coloured stone walkway. The contrast is extreme: brilliant Dubai
+> sunlight outside the canopy's edge, deep cool shade beneath it.
 >
-> Emirati and expatriate families walking, a child trailing a hand in the water
-> channel, an older couple seated in the shade, a jogger passing. Mixed ages,
-> modest dress.
+> A 3 metre deep vertical louvre fin runs along the southern edge on the right,
+> cutting the low afternoon sun. To the left, 9 metres away, a very narrow 0.9
+> metre stone-lined water channel runs flush with the paving, ankle deep,
+> shaded, still.
 >
-> Strong contrast between the cool shaded walkway and the brilliant sunlit
-> landscape beyond. Architectural photography, 35mm lens, ultra-detailed, 8K,
-> warm desert palette.
+> A double avenue of trees flanks the walk — broad open Ghaf crowns on the
+> sunny right side, Neem on the left. Beyond them, glimpses of the park's rooms
+> through the trunks.
+>
+> Families walking, an older man seated in the shade, children ahead on the
+> path, a woman in an abaya, a man in a kandura. Photorealistic architectural
+> rendering, ultra detailed, professional competition visualisation, 8K.
+
+**Match against these files before you draw:**
+- `design/visuals/section_crescent.png` — the canopy in section; match it
+- `design/visuals/elevation_crescent.png` — the 6 m structural bay, repeated
+- `design/visuals/planting_crescent.png` — Ghaf south rank, Neem north rank
 
 **Save to:** `design/renders/Eye_Level/spine_corridor_interior.jpg`
 
 ---
 
-## PROMPT 04 — The Oasis Basin (Al Nakhil)
+## PROMPT 04 — Al Nakhil, the sunken Oasis Basin
 
-> Photorealistic architectural visualisation of a sunken palm court in a Dubai
-> neighbourhood park, late afternoon. A shallow circular basin stepped down 1.5
-> metres below the surrounding grade, held in the concave northern side of a
-> large curving shade canopy which arcs across the background, its triangulated
-> gridshell visible above and behind.
+> Photorealistic architectural visualisation at eye level inside a sunken date
+> palm court in a desert park in Dubai, late afternoon, warm low light.
 >
-> Date palms (Phoenix dactylifera) rise from the basin floor in an informal
-> grove, their crowns level with the surrounding ground so people walking above
-> look into the canopy of the palms. Stepped stone seating rings the basin.
-> Decomposed granite and pale gravel underfoot. A narrow 0.9 metre water channel
-> feeds the basin from the canopy's edge — a thin rill, not a pool.
+> **The park fills the frame. No roads, no cars, no buildings beyond it.**
 >
-> Families seated on the steps, children on the basin floor, people sheltering
-> from the sun. Warm low light raking across the stone. Traditional Emirati
-> falaj irrigation reference — the oasis as a cool sunken room.
+> A shallow circular basin set about 1.2 metres below the surrounding ground,
+> reached by broad shallow sand-coloured stone steps that double as seating on
+> all sides. Tall slender date palms rise from the basin floor, their crowns
+> level with the ground above, casting long thin shadows down the steps.
 >
-> Desert planting only: date palms, olives, drought-tolerant grasses. Low-rise
-> Dubai residential context beyond. Architectural photography, ultra-detailed,
-> 8K, sand, bronze, sage and limestone palette.
+> Behind and above the basin to the south, the underside of a great curving
+> shade canopy is visible — a triangulated gridshell 4.5 metres high, sweeping
+> past in one smooth arc, its ETFE soffit glowing. Between the basin and the
+> canopy, a very narrow 0.9 metre stone-lined water channel runs flush with the
+> paving, ankle deep, shaded, feeding the basin's planting.
+>
+> Decomposed granite ground, gravel mulch, sparse silvery drought-tolerant
+> grasses and olive trees at the rim. Families seated on the steps in the
+> shade, children with bare feet at the water channel, an older couple
+> talking. Photorealistic architectural rendering, ultra detailed, professional
+> competition visualisation, 8K.
+
+**Match against these files before you draw:**
+- `figures/fig10_masterplan.png` — Al Nakhil sits on the CONCAVE north side
+- `design/visuals/planting_crescent.png` — the date palms in the basin
 
 **Save to:** `design/renders/Eye_Level/oasis_basin.jpg`
 
@@ -415,45 +535,62 @@ Visualisation → Submission Assembly. Detail in `PROJECT_PLAN.md` §5.
 
 ## PROMPT 05 — Children's Dune Play
 
-> Photorealistic architectural visualisation of an inclusive children's play area
-> in a Dubai neighbourhood park, morning light. The play landscape is sculpted
-> from rolling sand-coloured mounds and dunes — climbable earthworks with
-> embedded slides, rope nets, tunnels and shaded nature-play elements built from
-> timber and stone. Nature play, not primary-colour plastic equipment.
+> Photorealistic architectural visualisation of a children's play landscape in a
+> desert park in Dubai, mid-morning, strong clear light and crisp shadows.
 >
-> It sits on the cool concave northern side of a large curving shade canopy,
-> whose triangulated gridshell arcs across the background casting dappled shade.
-> Neem trees provide additional canopy. A drinking fountain nearby. Shaded family
-> seating along the edge where parents can watch.
+> **The park fills the frame. No roads, no cars, no buildings.**
 >
-> Designed for different age groups and universal accessibility — a ramped route
-> up the largest dune, ground-level play elements, sensory planting.
+> The play area is sculpted from the ground itself: smooth rolling artificial
+> sand dunes in warm sand-coloured rammed earth and soft sand-textured safety
+> surfacing, with timber and rope climbing structures set into the slopes,
+> shaded tunnels cut through the dunes, and low timber decks. Natural materials
+> only — timber, rope, sand, stone. No brightly coloured plastic equipment.
 >
-> Emirati and expatriate children playing, parents seated in shade, mixed ages
-> and abilities. Desert planting, gravel and sand surfaces, no lush lawn.
-> Architectural photography, ultra-detailed, 8K, warm sand and terracotta palette.
+> Broad Neem and Ghaf trees stand over the dunes throwing generous shade, and to
+> the south the great curving shade canopy sweeps past in one smooth arc, its
+> gridshell soffit visible, casting a dappled mesh of light onto the near edge of
+> the play area.
+>
+> Emirati and expatriate children of mixed ages climbing and running, parents
+> watching from shaded timber seating, a mother in an abaya, a father with a
+> toddler. Photorealistic architectural rendering, ultra detailed, professional
+> competition visualisation, 8K.
+
+**Match against these files before you draw:**
+- `figures/fig10_masterplan.png` — the play area is on the CONCAVE north side
+- `design/visuals/circulation_crescent.png` — how it is reached, step-free
 
 **Save to:** `design/renders/Day/childrens_dune_play.jpg`
 
 ---
 
-## PROMPT 06 — The Souk Kiosks and Community Plaza
+## PROMPT 06 — The souk kiosks and community plaza
 
-> Photorealistic architectural visualisation of a small community plaza and
-> market edge in a Dubai neighbourhood park, early evening. Eight small modular
-> souk kiosks in timber and perforated bronze-toned metal line one edge, serving
-> food and drink, their shutters open, warm light spilling out.
+> Photorealistic architectural visualisation of a small open-air market and
+> gathering plaza in a desert park in Dubai, late afternoon, warm raking light.
 >
-> They face an open plaza and event lawn on the convex southern side of a large
-> curving shade canopy, which arcs across the background. The kiosks are small
-> and modular — market stalls, not a shopping centre.
+> **The park fills the frame. No roads, no cars, no buildings beyond the park.**
 >
-> Families gathering in the evening cool, people queuing at a kiosk, children on
-> the lawn, an informal event setting up. Low stone benches, shade sails over
-> the seating, Ghaf trees with broad crowns.
+> Eight small modular kiosks in timber and pale stone, single storey, simple
+> and repeating, arranged in a gentle curve facing an open plaza of
+> sand-coloured stone paving. Food and small retail, shaded by deep overhangs
+> and by fabric shades stretched between them. Behind them to the north rises
+> the great curving shade canopy — a triangulated gridshell, 18 metres wide,
+> 4.5 metres high, sweeping past in one continuous arc with a 3 metre vertical
+> louvre fin along its southern face, the side that faces the plaza.
 >
-> Low-rise Dubai residential context beyond. Warm evening light. Architectural
-> photography, ultra-detailed, 8K, desert palette of sand, bronze and terracotta.
+> The plaza opens onto an event lawn of sparse drought-tolerant grass. Ghaf
+> trees with broad open crowns stand around its edges. Beyond, the planted
+> earth berm closes the view — nothing outside the park is visible.
+>
+> Families eating, people queuing at a kiosk, children running across the
+> plaza, an older group seated in the shade, a vendor serving. Photorealistic
+> architectural rendering, ultra detailed, professional competition
+> visualisation, 8K.
+
+**Match against these files before you draw:**
+- `design/visuals/facilities_crescent.png` — 8 modular kiosks, placed
+- `figures/fig10_masterplan.png` — plaza and event lawn on the CONVEX south face
 
 **Save to:** `design/renders/Day/souk_plaza.jpg`
 
@@ -490,7 +627,7 @@ previous six were withdrawn.**
 | 4 | Is the water on the canopy's **northern** edge? | ☐ |
 | 5 | Is the light through the soffit **dappled**, not solid black shade? | ☐ |
 | 6 | Are all trees **desert species**? (no tropical, no temperate) | ☐ |
-| 7 | Is the context **low-rise Dubai residential**? (no glass towers) | ☐ |
+| 7 | Does the **park fill the frame**? (no roads, cars, villas or skyline) | ☐ |
 | 8 | Are there **real people of mixed ages** actually using it? | ☐ |
 | 9 | Does the canopy read as roughly **18 m wide, 4.5 m high** over a **7 m walk**? | ☐ |
 | 10 | Would a juror comparing this with `figures/fig10_masterplan.png` see **the same park**? | ☐ |

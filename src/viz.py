@@ -195,9 +195,11 @@ def finish(fig, name: str, *, source: str, note: str | None = None,
         va="bottom",
         fontsize=C.FIGURE["caption_size"],
         color=C.PALETTE["muted"],
-        linespacing=1.5,
+        linespacing=1.35,
     )
-    fig.tight_layout(rect=(0, 0.035, 1, 0.93))
+    lines = strip.count("\n") + 1
+    bottom = max(0.045, 0.018 * lines + 0.025)
+    fig.tight_layout(rect=(0, bottom, 1, 0.93))
     if save:
         out = (save_to or C.FIGURES) / f"{name}.png"
         out.parent.mkdir(parents=True, exist_ok=True)

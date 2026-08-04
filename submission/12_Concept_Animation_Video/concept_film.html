@@ -1076,17 +1076,26 @@
 
   // ======================================================================
   const SCENES = [
-    // Re-cut for pace. The first version front-loaded eleven seconds on an
-    // establishing shot and fourteen on a rising number, which is a long time
-    // to watch very little change. Time is moved into the two movements that
-    // actually carry the argument — the spine building itself, and the day
-    // passing over it — and the opening is trimmed to the point where the
-    // title has landed.
-    { t0:0,  t1:7,  name:"The site",   fn:s1 },
-    { t0:7,  t1:18, name:"The heat",   fn:s2 },
-    { t0:18, t1:38, name:"The crescent", fn:s3 },
-    { t0:38, t1:48, name:"Beneath it", fn:s4 },
-    { t0:48, t1:60, name:"The proof",  fn:s5 },
+    // Re-cut twice. The first version front-loaded eleven seconds on an
+    // establishing shot and fourteen on a rising number. The second still gave
+    // the crescent twenty seconds — a third of the whole film on one scene —
+    // and it dragged. The film renders at 140 fps; what was slow was the cut,
+    // not the code.
+    //
+    // Time now goes to the shots that keep changing. The two most static beats
+    // are trimmed: the opening aerial is over as soon as the title lands, and
+    // the heat scene is a counter climbing, which does not need eleven seconds
+    // to make its point. The walk-through and the closing gain what they lose.
+    //
+    // The boundaries also land where the narration does. The voice is cued to
+    // 0, 15, 30 and 45 s, and the segment that describes the crescent now
+    // plays across the crescent scene instead of starting three seconds before
+    // it appears.
+    { t0:0,  t1:6,  name:"The site",   fn:s1 },
+    { t0:6,  t1:14, name:"The heat",   fn:s2 },
+    { t0:14, t1:32, name:"The crescent", fn:s3 },
+    { t0:32, t1:44, name:"Beneath it", fn:s4 },
+    { t0:44, t1:60, name:"The proof",  fn:s5 },
   ];
 
   function draw(time) {
