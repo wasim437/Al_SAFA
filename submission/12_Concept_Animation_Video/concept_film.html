@@ -1431,8 +1431,30 @@
   // MP4 if the browser will write it, because that is what submission portals
   // ask for; WebM otherwise, which every Chromium browser can write.
   function pickType() {
-    const wanted = ["video/mp4;codecs=avc1.42E01E", "video/mp4",
-                    "video/webm;codecs=vp9", "video/webm;codecs=vp8",
+    // The audio codec has to be named, not left to the browser.
+    //
+    // Asking for "video/mp4;codecs=avc1.42E01E" gets H.264 video and, in
+    // Chromium, an OPUS audio track inside the MP4 container. That combination
+    // is legal but almost nothing plays it: Chrome decodes it, Windows Media
+    // Player, QuickTime and most editors do not, so the film arrives looking
+    // silent to anyone who is not watching it in Chrome. Asking for
+    // mp4a.40.2 — AAC-LC — gets the pairing every player expects.
+    //
+    // WebM keeps Opus, which is correct there; Opus is the native WebM codec.
+    // The video profile has to match the resolution too. avc1.42E01E is
+    // H.264 Baseline at Level 3.0, which is specified for 720x480 — asking for
+    // it while handing the encoder a 3840x2160 canvas is a contradiction, and
+    // the encoder resolves it by throwing quality away. High profile at Level
+    // 5.1 (avc1.640033) is the level actually defined for 4K.
+    const hi = "avc1.640033";                  // High 5.1  — 4K
+    const lo = "avc1.64002A";                  // High 4.2  — 1080p
+    const v = want4K ? hi : lo;
+    const wanted = [`video/mp4;codecs=${v},mp4a.40.2`,
+                    "video/mp4;codecs=avc1.640033,mp4a.40.2",
+                    "video/mp4;codecs=avc1.42E01E,mp4a.40.2",
+                    "video/mp4;codecs=avc1.42E01E",
+                    "video/mp4",
+                    "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus",
                     "video/webm"];
     for (const ty of wanted) {
       if (window.MediaRecorder && MediaRecorder.isTypeSupported(ty)) return ty;
