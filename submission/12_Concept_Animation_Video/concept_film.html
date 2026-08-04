@@ -711,17 +711,41 @@
       }
 
       // Three lobes: main mass, a shaded underside, a sunlit shoulder.
+      //
+      // The avenue crowns are 10-12 m across on an 8-9 m spacing, so adjacent
+      // trees genuinely touch — that is what a planted avenue does, and the
+      // planting schedule is not going to be quietly falsified to make a
+      // prettier picture. But every tree was drawn in the same two greens, so
+      // fifty-seven touching crowns read as one green caterpillar lying along
+      // the arc rather than as an avenue.
+      //
+      // Two changes, neither of which moves a tree or shrinks a crown: each
+      // tree takes its own shade of its species colour from a stable hash, and
+      // each crown carries a darker rim. Where two crowns overlap there is now
+      // an edge, so the eye separates them.
       const j1 = hash2(t.x, t.y), j2 = hash2(t.y, t.x);
-      ctx.globalAlpha = .95;
-      ctx.fillStyle = cDark;
+      const vary = 0.80 + j1 * 0.42;                   // per-tree value shift
+      const cL = mix(cLit, j2 > .5 ? "#DCE6C8" : "#22402F", (vary - 1) * 0.55 + 0.10);
+      const cD = mix(cDark, "#16281F", 0.10 + (1 - j2) * 0.16);
+      const rim = mix(cD, "#0E1A14", 0.45);
+      const rr = r * (0.94 + (j2 - 0.5) * 0.14);       // natural size variation
+
+      ctx.globalAlpha = .96;
+      ctx.fillStyle = cD;
       ctx.beginPath();
-      ctx.ellipse(p[0] + (j1-.5)*r*.30, p[1] + r*.22, r*.94, r*.72, 0, 0, 7); ctx.fill();
-      ctx.fillStyle = mix(cDark, cLit, .45);
+      ctx.ellipse(p[0] + (j1-.5)*rr*.30, p[1] + rr*.22, rr*.94, rr*.72, 0, 0, 7);
+      ctx.fill();
+      if (rr > 3) { ctx.strokeStyle = rim; ctx.lineWidth = Math.max(0.6, rr*0.045); ctx.stroke(); }
+
+      ctx.fillStyle = mix(cD, cL, .45);
       ctx.beginPath();
-      ctx.ellipse(p[0] + (j2-.5)*r*.34, p[1] - r*.04, r*.90, r*.80, 0, 0, 7); ctx.fill();
-      ctx.fillStyle = cLit;
+      ctx.ellipse(p[0] + (j2-.5)*rr*.34, p[1] - rr*.04, rr*.90, rr*.80, 0, 0, 7);
+      ctx.fill();
+
+      ctx.fillStyle = cL;
       ctx.beginPath();
-      ctx.ellipse(p[0] + lightX*r*.42, p[1] - r*.34, r*.62, r*.50, 0, 0, 7); ctx.fill();
+      ctx.ellipse(p[0] + lightX*rr*.42, p[1] - rr*.34, rr*.62, rr*.50, 0, 0, 7);
+      ctx.fill();
       ctx.globalAlpha = 1;
     }
   }
@@ -961,7 +985,13 @@
     cam.tgt = [ctp, arcY(ctp), 3.0];
     cam.fov = 52; camSetup();
 
-    const s = solar(172, 13.4), sd = sunDir(s);
+    // Day 227 is 15 August. This scene has always been captioned "Walk it in
+    // August" — the month the climate record makes the hardest case, at 42.1 °C
+    // mean daily maximum and a 56.8 °C peak heat index — while computing the
+    // sun for day 172, which is 21 June. The caption and the physics disagreed.
+    // August is also a lower sun in the afternoon than the solstice, so the
+    // louvre is doing more visible work here than it was.
+    const s = solar(227, 14.6), sd = sunDir(s);
     // Tight haze: at eye level the far end of a 140 m corridor should soften,
     // which is what gives the walk its sense of length.
     FOG = { col: "#93AEBE", near: 26, far: 165, k: .58 };
@@ -975,7 +1005,10 @@
       if (onPath) return band ? "rgb(96,90,79)" : "rgb(90,84,74)";
       return y > 20 && y < 80 ? "rgb(62,78,58)" : "rgb(44,38,32)";
     });
-    drawShadows(sd, .42);
+    // 0.42 on top of the canopy's own shadow put the walk almost black, which
+    // is the opposite of the point: shade here is comfortable, not a cave.
+    // Real shade under a 12% soffit is bright — you can read in it.
+    drawShadows(sd, .26);
     drawTrees(TREES, undefined, null, s.azim);
     drawCanopy(1, true);
 
@@ -1011,8 +1044,44 @@
       }
     }
 
+    // August, stated on screen. This is the scene that has to carry the month
+    // the whole design is argued against — the hottest in the record — so the
+    // date, the hour and the two temperatures sit in frame rather than being
+    // left to the caption.
+    clockStamp(14.6, "15 AUGUST", win(t, .10, .12));
+
+    const ha = win(t, .16, .14);
+    if (ha > .001) {
+      // On a plate. Set straight onto the scene, the red 56.8 sat on a green
+      // tree crown and was unreadable — the two colours are near-identical in
+      // value, so the digits vanished into the leaves.
+      const pw2 = 250, px2 = W - 118 - pw2, py2 = FT + FH * .30 - 46;
+      ctx.globalAlpha = ha;
+      ctx.fillStyle = "rgba(10,12,14,.62)";
+      ctx.beginPath();
+      // roundRect only where the canvas has it — a plain rect otherwise. Not
+      // worth a hard dependency for six pixels of corner radius.
+      if (ctx.roundRect) ctx.roundRect(px2 - 18, py2, pw2 + 26, 132, 6);
+      else ctx.rect(px2 - 18, py2, pw2 + 26, 132);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      ctx.textAlign = "right";
+      ctx.fillStyle = `rgba(232,113,47,${.98 * ha})`;
+      mono(50, 700); tx("56.8°", W - 118, py2 + 46, ha);
+      ctx.fillStyle = `rgba(239,233,221,.55)`;
+      mono(12, 400); tx("EXPOSED, PEAK", W - 118, py2 + 66, ha);
+
+      ctx.fillStyle = `rgba(140,206,182,${1 * ha})`;
+      mono(50, 700); tx("48.7°", W - 118, py2 + 110, ha);
+      ctx.fillStyle = `rgba(239,233,221,.55)`;
+      mono(12, 400); tx("HERE, UNDER THE CANOPY", W - 118, py2 + 128, ha);
+      ctx.textAlign = "left";
+    }
+
     lower("Walk it in August.",
-          "Shade takes 7.1 °C off the heat index on average — 8.1 °C at the peak.",
+          "The worst month in the record — 42.1 °C mean daily maximum. " +
+          "Shade takes 8.1 °C off the peak heat index.",
           win(t,.14,.16));
     chapter("04","BENEATH IT", win(t,.10,.12));
   }
@@ -1071,23 +1140,42 @@
       }
     }
 
+    // The payoff of the whole film. It was set straight onto the comfort map —
+    // a dark red 44.5% on a bright orange surface, at 58% opacity — and it
+    // was, measured against its own background, almost invisible. This is the
+    // number the entire submission argues for; it gets a plate, full opacity,
+    // and colours chosen against the plate rather than against the sky.
     const a = win(clamp((t-.20)/.42,0,1), .25, .28);
     if (a > .001) {
-      ctx.textAlign="center";
       const y = FT+FH*.22;
-      ctx.fillStyle="rgba(239,233,221,.58)"; mono(16,400);
+      ctx.globalAlpha = a;
+      ctx.fillStyle = "rgba(8,10,12,.72)";
+      ctx.beginPath();
+      const bx = W/2 - 470, by = y - 84, bw = 940, bh = 152;
+      if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, 8); else ctx.rect(bx, by, bw, bh);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,182,39,.45)"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by+bh); ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      ctx.textAlign="center";
+      ctx.fillStyle="rgba(239,233,221,.72)"; mono(16,400);
       ctx.save(); ctx.letterSpacing="6px";
       tx("COMFORTABLE DAYLIGHT HOURS", W/2, y-52, a); ctx.restore();
-      ctx.fillStyle=C.heat; mono(86,700); tx("44.5%", W/2-250, y+30, a);
-      ctx.fillStyle="rgba(239,233,221,.35)"; mono(46,400); tx("→", W/2, y+24, a);
-      ctx.fillStyle=C.cool; mono(86,700);
+      ctx.fillStyle="#F0794A"; mono(86,700); tx("44.5%", W/2-250, y+30, a);
+      ctx.fillStyle="rgba(239,233,221,.55)"; mono(46,400); tx("→", W/2, y+24, a);
+      ctx.fillStyle="#8CD6B6"; mono(86,700);
       tx((44.5+20.1*easeOut(clamp((t-.24)/.26,0,1))).toFixed(1)+"%", W/2+260, y+30, a);
       ctx.textAlign="left";
     }
 
+    // The closing card sat at 82% black, so the park showed through it as mud
+    // behind the title. A title card should be a card.
     const ca = clamp((t-.78)/.20, 0, 1);
     if (ca > .001) {
-      ctx.fillStyle = `rgba(6,5,5,${.82*ca})`; ctx.fillRect(0,FT,W,FH);
+      ctx.fillStyle = `rgba(6,7,9,${Math.min(1, 1.08*ca)})`; ctx.fillRect(0,FT,W,FH);
+      ctx.fillStyle = `rgba(255,182,39,${.70*ca})`;
+      ctx.fillRect(W/2 - 150, FT+FH*.44 - 96, 300, 2);
       ctx.textAlign="center"; ctx.fillStyle=C.bone; disp(92,700);
       ctx.save(); ctx.letterSpacing = `${lerp(16,2,easeOut(ca))}px`;
       tx("FALAJ AL SAFA", W/2, FT+FH*.44, ca); ctx.restore();
