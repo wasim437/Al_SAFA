@@ -155,8 +155,8 @@ def section():
         tx = sgn * (pw + cw) / 4.0
         cy = th * 0.66
         ax.plot([tx, tx], [0, cy], color="#6b5a44", lw=2.0, zorder=2)
-        ax.add_patch(Ellipse((tx, cy), 2 * r, th * 0.62, facecolor=C.SERIES[5],
-                             alpha=0.11, edgecolor=C.SERIES[5], lw=0.9, zorder=2))
+        ax.add_patch(Ellipse((tx, cy), 2 * r, th * 0.62, facecolor=C.SPECIES_COLORS["Ghaf"],
+                             alpha=0.11, edgecolor=C.SPECIES_COLORS["Ghaf"], lw=0.9, zorder=2))
         ax.text(tx, -1.55, f"{name} · {r * 2:.0f} m crown at maturity",
                 ha="center", fontsize=7.5, color=C.PALETTE["ink_secondary"])
 
@@ -245,8 +245,8 @@ def elevation():
         th, r = (9.0, 5.0) if i % 2 else (8.0, 6.0)
         cy = th * 0.66
         ax.plot([tx, tx], [0, cy], color="#6b5a44", lw=1.6, zorder=2)
-        ax.add_patch(Ellipse((tx, cy), 2 * r, th * 0.62, facecolor=C.SERIES[5],
-                             alpha=0.10, edgecolor=C.SERIES[5], lw=0.8, zorder=2))
+        ax.add_patch(Ellipse((tx, cy), 2 * r, th * 0.62, facecolor=C.SPECIES_COLORS["Ghaf"],
+                             alpha=0.10, edgecolor=C.SPECIES_COLORS["Ghaf"], lw=0.8, zorder=2))
 
     ax.plot([-2, run + 2], [0, 0], color=C.PALETTE["ink"], lw=1.4, zorder=5)
 
@@ -419,8 +419,8 @@ def planting():
     ax.add_patch(Polygon(plan.canopy_outline(), closed=True, facecolor=C.SERIES[0],
                          alpha=0.13, edgecolor="none", zorder=2))
 
-    colours = {"Ghaf": C.SERIES[5], "Neem": C.SERIES[2], "Ficus nitida": C.SERIES[4],
-               "Olive": C.SERIES[3], "Date Palm": C.SERIES[1]}
+    # Real species colours, not a chart ramp — see config.SPECIES_COLORS.
+    colours = dict(C.SPECIES_COLORS)
     order = ["Ghaf", "Neem", "Ficus nitida", "Olive", "Date Palm"]
     info = species.set_index("Species")
 

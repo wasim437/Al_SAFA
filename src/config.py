@@ -209,6 +209,33 @@ PALETTE = {
 # figure to the next. Past six series, fold the tail into "Other" or facet the
 # chart — do not generate a seventh hue.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300"]
+
+# Trees are not a data series.
+#
+# The planting drawings took their tree colours off SERIES, which is a
+# categorical ramp built to keep chart lines apart. That painted Ficus pink,
+# Olive yellow and Date Palm orange, and the park read as a bar chart lying on
+# the ground. Worse, it contradicted the design's own words: the master prompt
+# bans "lush green lawn" and asks for planting "sparse and silvery", and then
+# every drawing showed bright saturated green.
+#
+# These are the colours these species actually are in Dubai — Ghaf and Olive
+# silver-grey, Neem denser mid-green, Ficus darker and glossier, Date Palm a
+# warmer olive. Still five distinguishable values, so the legend still works,
+# but the plan now reads as a desert park and sits beside the renders instead
+# of arguing with them.
+# Separated by value and by cast, not just by hue. The first attempt at this
+# put Ghaf and Olive within a few points of each other and the legend became
+# unreadable — a palette that is honest about the planting but cannot tell two
+# species apart has solved the wrong half of the problem. These run light to
+# dark and warm to cool, so they survive being printed small and greyscale.
+SPECIES_COLORS = {
+    "Ghaf": "#A8BC7E",          # Prosopis cineraria — light, open, yellow-green
+    "Neem": "#4F8055",          # Azadirachta indica — denser mid-green
+    "Ficus nitida": "#2E5540",  # Ficus microcarpa — darkest, glossy
+    "Olive": "#93A6A0",         # Olea europaea — silver, cool grey-green
+    "Date Palm": "#8A7F3C",     # Phoenix dactylifera — warm bronze-olive
+}
 SERIES_DARK = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300"]
 
 # Reserved status colours — severity only, never used as a series colour.
