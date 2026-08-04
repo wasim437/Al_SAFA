@@ -2248,6 +2248,31 @@ def main() -> int:
             print("\n  ⛔ OVER 95 MB — the form's ceiling is 100 MB:")
             for r in over:
                 print(f"     slot {r['slot']:02d}  {r['mb']:.1f} MB")
+        # The concept film is deliverable 15 and is uploaded as its own file,
+        # not inside a PDF — so it belongs in the upload folder beside the
+        # twelve documents. It has to be copied here rather than left where it
+        # was recorded, because this script empties the folder before it starts
+        # and would delete anything dropped in by hand. Carrying it across on
+        # every build also means the copy in the upload folder can never be an
+        # older cut than the film it came from.
+        if act:
+            import shutil as _sh
+            film_dir = SRC / "12_Concept_Animation_Video"
+            films = sorted(film_dir.glob("Falaj_Al_Safa_Concept_Film_60s*.mp4"))
+            if films:
+                print()
+                for f in films:
+                    try:
+                        _sh.copy2(f, OUT / f.name)
+                        print(f"  + {f.name}  {f.stat().st_size/1e6:.1f} MB  "
+                              f"(deliverable 15, uploaded as its own file)")
+                    except OSError as e:
+                        print(f"  ! could not copy {f.name}: {e}")
+            else:
+                print()
+                print("  [!] no recorded film in submission/12_Concept_Animation_Video/")
+                print("      Open concept_film.html, press Record, and re-run.")
+
         total = sum(r["mb"] for r in reports)
         built = sum(1 for r in reports if r["out"])
         print()
