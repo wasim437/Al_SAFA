@@ -68,11 +68,12 @@ PLAN: dict[str, list[tuple[Path, str]]] = {
         (FIG / "fig10_masterplan.png",
          "The masterplan the visualisations must agree with. Any render that "
          "does not show this park does not belong in this slot."),
-        # Generated from AL_SAFA_MASTER_PROMPT.md. Absent until then — a missing
-        # source is reported, not fatal, so the slot still builds meanwhile.
-        (REND / "Aerial" / "masterplan_aerial_golden_hour.jpg",
-         "Aerial, golden hour — artistic impression, illustrative of design "
-         "intent. Master prompt 01."),
+        # The aerial is deliberately NOT listed. masterplan_aerial_golden_hour.jpg
+        # exists but shows a closed oval ring, which is the plan form the sweep
+        # in AL_SAFA_MASTER_PROMPT.md Section A4 tested and rejected — 79.1%
+        # mean cover and 89 hours with no shade, against the arc's 52. A juror
+        # reads the scheme from the aerial, and that file teaches the wrong one.
+        # Re-add this line when an aerial exists that shows a single open arc.
         (REND / "Eye_Level" / "spine_corridor_interior.jpg",
          "Eye level beneath Al Hilal — artistic impression. Master prompt 03."),
         (REND / "Night" / "night_plaza_render_1784970565232.jpg",

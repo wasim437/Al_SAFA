@@ -93,9 +93,19 @@ def board_concept():
                  "Board 1 of 2 — CONCEPT")
 
     _panel(fig, [0.010, 0.415, 0.575, 0.505], F / "fig10_masterplan.png")
+    # This panel held masterplan_aerial_golden_hour.jpg, which shows a closed
+    # oval ring. It sat directly beside fig10_masterplan.png, which shows the
+    # single open arc — so the board presented two different parks side by side
+    # and captioned the wrong one "the crescent". Nothing undermines a design
+    # board faster than contradicting itself within one sheet.
+    #
+    # Until an aerial exists that shows this scheme, the panel carries a render
+    # that does. The aerial is still wanted — see AL_SAFA_MASTER_PROMPT.md
+    # prompt 01, which now states in as many ways as it can that the arc is one
+    # open curve with two ends and not a ring.
     _panel(fig, [0.600, 0.655, 0.392, 0.265],
-           R / "Aerial" / "masterplan_aerial_golden_hour.jpg",
-           caption="The crescent from the north-west, at golden hour",
+           R / "Night" / "night_plaza_render_1784970565232.jpg",
+           caption="Al Hilal after dark — the canopy lit from within",
            pending="Aerial view · AL_SAFA_MASTER_PROMPT.md prompt 01")
     _panel(fig, [0.600, 0.400, 0.392, 0.215],
            R / "Eye_Level" / "spine_corridor_interior.jpg",
