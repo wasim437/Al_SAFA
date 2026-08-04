@@ -474,7 +474,10 @@
   function bars(){ ctx.fillStyle="#000"; ctx.fillRect(0,0,W,FT); ctx.fillRect(0,FB,W,H-FB); }
   function vignette(){
     const g = ctx.createRadialGradient(W/2, FT+FH/2, FH*.30, W/2, FT+FH/2, FH*1.08);
-    g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,.60)");
+    // 0.60 was crushing the corners of every frame on top of already dark
+    // scenes — two darkenings stacked. A vignette should shape attention, not
+    // remove the edges of the picture.
+    g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,.34)");
     ctx.fillStyle = g; ctx.fillRect(0,FT,W,FH);
   }
   function grain(){
@@ -804,10 +807,16 @@
   // spare across the whole interpolation.
   function s1(t) {
     setCam([[40,-300,320],[75,50,0]], [[75,-232,248],[75,50,0]], t, 32, 36);
-    FOG = { col: "#141110", near: 240, far: 620, k: .75 };
-    drawSky("#0D0B0A", "#040404", null);
-    drawGround(16, () => "rgb(14,12,11)");
-    drawSiteGround(10, () => "rgb(32,28,23)");
+    // Opened at near-black — sky #0D0B0A over #040404, ground at rgb(14,12,11).
+    // Measured, the first six seconds sat at a mean luminance of 14 out of 255,
+    // which on anything but a good monitor in a dark room is a black rectangle
+    // with a title on it. This is blue hour now, not midnight: the site reads,
+    // the survey grid reads, and the film still opens dark enough to have
+    // somewhere to go.
+    FOG = { col: "#2A3038", near: 240, far: 620, k: .58 };
+    drawSky("#25384D", "#0E151D", null);
+    drawGround(16, () => "rgb(40,38,35)");
+    drawSiteGround(10, () => "rgb(74,66,56)");
     const draw = easeIO(clamp(t/.55,0,1));
     ctx.lineWidth = 1;
     for (let m = 0; m <= 150; m += 10) {
@@ -841,10 +850,10 @@
     const s = solar(172, hour), sd = sunDir(s);
     const heat = easeIO(clamp(t/.6,0,1));
 
-    FOG = { col: mix("#2A1B14","#8A5030",heat), near: 60, far: 300, k: .82 };
-    drawSky(mix("#120F0D","#B4502A",heat), mix("#080606","#3A1C12",heat), s);
-    drawGround(16, () => mix("#0E0C0B","#2A1710",heat), 340);
-    drawSiteGround(6, () => mix("#241E18","#8A4526",heat));
+    FOG = { col: mix("#3E2C22","#A8663E",heat), near: 60, far: 300, k: .62 };
+    drawSky(mix("#2B2118","#C75E2F",heat), mix("#14100C","#54291A",heat), s);
+    drawGround(16, () => mix("#231E1A","#43241A",heat), 340);
+    drawSiteGround(6, () => mix("#443A30","#A0562E",heat));
     boundary(.5);
 
     // The existing planting and its shadows — small, scattered, and falling
@@ -900,11 +909,11 @@
     const s = solar(172, hour), sd = sunDir(s);
     const k = day > 0 ? clamp(s.elev/60, 0, 1) : 1;
 
-    FOG = { col: day>0 ? mix("#241C18","#4E6E86",k) : "#1A1512", near: 70, far: 340, k: .80 };
+    FOG = { col: day>0 ? mix("#3B322C","#6E8CA4",k) : "#2E2822", near: 70, far: 340, k: .60 };
     drawSky(day>0 ? mix("#2A1C16","#5C86A8",k) : "#1E1912",
             day>0 ? mix("#0A0807","#16232C",k) : "#070606", day>0 ? s : null);
-    drawGround(16, () => mix("#100D0B","#1A1613",k*.5), 380);
-    drawSiteGround(6, () => mix("#2C231B","#4A3E31",k*.5));
+    drawGround(16, () => mix("#262220","#33302C",k*.5), 380);
+    drawSiteGround(6, () => mix("#4A3E33","#6E5F4E",k*.5));
     drawRooms(clamp(t/.13,0,1), true);
     boundary(.45);
 
@@ -955,11 +964,11 @@
     const s = solar(172, 13.4), sd = sunDir(s);
     // Tight haze: at eye level the far end of a 140 m corridor should soften,
     // which is what gives the walk its sense of length.
-    FOG = { col: "#7C9AAC", near: 26, far: 165, k: .70 };
+    FOG = { col: "#93AEBE", near: 26, far: 165, k: .58 };
     drawSky("#8FB3C6", "#33454F", null);
     // Paving, finer near the camera so the joints read. Distance-culled at
     // 130 m — beyond that the cells are sub-pixel and only cost time.
-    drawGround(16, () => "rgb(40,34,29)", 200);
+    drawGround(16, () => "rgb(74,66,58)", 200);
     drawSiteGround(3, (x,y) => {
       const onPath = distToArc(x, y) <= CRESCENT.pathW/2 + 1;
       const band = (Math.floor(x/3) + Math.floor(y/3)) % 2;
@@ -971,11 +980,35 @@
     drawCanopy(1, true);
 
     // Dappled light falling through the vault onto the walkway.
-    for (let x = 8; x < 150; x += 4) {
-      const p = proj([x, 50 + Math.sin(x*.7)*2.4, .03]);
-      if (!p) continue;
-      ctx.fillStyle = `rgba(255,205,120,${.10*clamp(p[3]/6,0,1)})`;
-      ctx.beginPath(); ctx.ellipse(p[0], p[1], 26*p[3]/4, 9*p[3]/4, 0, 0, 7); ctx.fill();
+    //
+    // These were 26 m wide in world terms and stepped every 4 m along a single
+    // line down the centre, so near the camera each one filled a third of the
+    // frame: not dapple, three orange blobs. The soffit is a diagrid at 12%
+    // transmittance, so what lands is many small patches scattered across the
+    // full 7 m width of the walk. Sized in metres now — under a metre across —
+    // and laid on a grid, so perspective shrinks them with distance instead of
+    // inflating them at the near end.
+    // Irregular on purpose. On a regular grid at one size these read as
+    // cobblestones rather than light — the eye finds the lattice immediately.
+    // A stable hash varies position, size and strength per patch, and the
+    // whole set is faint: sunlight through a 12% soffit is a wash with bright
+    // spots in it, not a paved surface.
+    for (let x = 6; x < 150; x += 1.1) {
+      for (let j = -3; j <= 3; j++) {
+        const h1 = hash2(x * 3.1, j * 7.7), h2 = hash2(j * 5.3, x * 2.9);
+        if (h1 > 0.62) continue;                 // leave gaps
+        const off = j * 0.95 + (h2 - 0.5) * 1.5;
+        const p = proj([x + (h1 - 0.5) * 0.9, arcY(x) + off, 0.03]);
+        if (!p || p[3] > 200) continue;
+        const fade = clamp(p[3] / 20, 0, 1) * clamp((150 - x) / 45, 0, 1);
+        if (fade <= 0.01) continue;
+        const rx = (0.16 + h2 * 0.20) * p[3];
+        if (rx < 0.5) continue;
+        ctx.fillStyle = `rgba(255,222,168,${0.085 * fade * (0.5 + h1)})`;
+        ctx.beginPath();
+        ctx.ellipse(p[0], p[1], rx, rx * 0.42, 0, 0, 7);
+        ctx.fill();
+      }
     }
 
     lower("Walk it in August.",
@@ -996,11 +1029,11 @@
     setCam([[96,-70,50],[75,50,2]], [[80,-238,252],[75,50,0]], clamp(t/.9,0,1), 44, 36);
 
     const s = solar(172, lerp(15.5, 18.6, eve)), sd = sunDir(s);
-    FOG = { col: mix("#4A6980","#221A2E",eve), near: 90, far: 420, k: .78 };
+    FOG = { col: mix("#5F7E96","#332844",eve), near: 90, far: 420, k: .62 };
     drawSky(mix("#4E7EA0","#2A1E38",eve), mix("#16232C","#08070A",eve), eve<.85?s:null);
 
     const reveal = easeIO(clamp(t/.40,0,1));
-    drawGround(16, () => mix("#161310","#0B0A0C",eve));
+    drawGround(16, () => mix("#2C2724","#16141A",eve));
     drawSiteGround(2.5, (x,y) => {
       if (x/SITE.w > reveal) return "#2C231B";
       let near = 99;
