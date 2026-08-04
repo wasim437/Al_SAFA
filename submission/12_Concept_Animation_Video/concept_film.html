@@ -1216,6 +1216,77 @@
   }
 
   // ======================================================================
+  // ── Stills, from the same model ───────────────────────────────────────────
+  // The film is the only place this park exists in three dimensions, built
+  // from src/plan.py by tools/sync_film.py. A still rendered here is therefore
+  // guaranteed to agree with the masterplan, the section and every number in
+  // the submission — which is the one thing an image generator cannot promise.
+  // The first generated aerial came back as a closed ring; this cannot, because
+  // it is drawing the actual arc.
+  //
+  // Full frame, no letterbox and no titles: these are plates for a document,
+  // not frames of a film. Driven by tools/render_views.py.
+  function still(o) {
+    const hour = o.hour === undefined ? 15.5 : o.hour;
+    const doy = o.doy === undefined ? 227 : o.doy;   // 15 August
+    cam.pos = o.pos; cam.tgt = o.tgt; cam.fov = o.fov || 38; camSetup();
+
+    const s = solar(doy, hour), sd = sunDir(s);
+    const night = !!o.night;
+    const k = clamp(s.elev / 60, 0, 1);
+
+    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
+    ctx.save();
+    // Draw into the full canvas: temporarily treat the whole frame as picture.
+    const _FT = FT, _FB = FB, _FH = FH;
+    try {
+      FOG = night
+        ? { col: "#1B2430", near: 80, far: 420, k: .58 }
+        : { col: mix("#5B7285", "#C8B393", k), near: 80, far: 460, k: .55 };
+      drawSky(night ? "#16233A" : mix("#4E7EA0", "#9FC2D8", k),
+              night ? "#080A10" : mix("#20303C", "#5E7386", k),
+              night ? null : s);
+      drawGround(16, () => night ? "rgb(26,24,26)" : "rgb(74,66,58)");
+      drawSiteGround(3, (x, y) => {
+        const onPath = distToArc(x, y) <= CRESCENT.pathW / 2 + 1;
+        if (onPath) return night ? "rgb(78,72,64)" : "rgb(198,186,166)";
+        const band = (Math.floor(x / 6) + Math.floor(y / 6)) % 2;
+        const base = band ? "rgb(150,138,118)" : "rgb(142,130,111)";
+        return night ? mix(base, "#1C1A1C", .72) : base;
+      });
+      drawRooms(o.labels === false ? 0.55 : 1, o.labels !== false);
+      boundary(.5);
+      if (!night) drawShadows(sd, .30);
+      drawLoop(1); drawWater(1);
+      drawTrees(TREES, undefined, night ? "#2C4A44" : null, s.azim);
+      drawCanopy(1, !night);
+      drawMajlis(1);
+      if (night) {
+        for (let i = 0; i < 19; i++) {
+          const q = proj([9 + i * 7.2, arcY(9 + i * 7.2), 4.4]); if (!q) continue;
+          const g = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], 70 * q[3] / 3);
+          g.addColorStop(0, "rgba(255,182,39,.42)"); g.addColorStop(1, "rgba(255,182,39,0)");
+          ctx.fillStyle = g;
+          ctx.beginPath(); ctx.arc(q[0], q[1], 70 * q[3] / 3, 0, 7); ctx.fill();
+          ctx.fillStyle = "rgba(255,236,190,.95)";
+          ctx.beginPath(); ctx.arc(q[0], q[1], 2.6 * q[3], 0, 7); ctx.fill();
+        }
+      }
+    } finally { ctx.restore(); }
+
+    if (o.caption) {
+      ctx.textAlign = "left";
+      ctx.fillStyle = "rgba(6,8,10,.62)";
+      ctx.fillRect(0, H - 62, W, 62);
+      ctx.fillStyle = C.bone; disp(24, 700);
+      ctx.fillText(o.caption, 40, H - 34);
+      ctx.fillStyle = "rgba(239,233,221,.60)"; mono(14, 400);
+      ctx.fillText(o.sub || "Drawn from src/plan.py — the same geometry the "
+                   + "masterplan and the analysis use", 40, H - 14);
+    }
+  }
+  window.__view = { still, setStage };
+
   const SCENES = [
     // Re-cut twice. The first version front-loaded eleven seconds on an
     // establishing shot and fourteen on a rising number. The second still gave
