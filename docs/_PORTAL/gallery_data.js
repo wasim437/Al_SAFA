@@ -16,7 +16,7 @@ window.AS2_SHEETS = [
   "tag": "Section",
   "title": "Section A\u2013A \u2014 the Crescent Canopy",
   "caption": "The 7 m walk under an 18 m gridshell at 4.5 m, with the 3 m southern louvre. Both solstice sun angles are computed, not drawn.",
-  "kb": 205
+  "kb": 200
  },
  {
   "src": "assets/drawings/elevation_crescent.png",
@@ -24,7 +24,7 @@ window.AS2_SHEETS = [
   "tag": "Elevation",
   "title": "Elevation \u2014 the bay rhythm",
   "caption": "6 m structural bays, the perforated soffit at 12% transmittance, and the louvre screen hanging on the southern face.",
-  "kb": 149
+  "kb": 147
  },
  {
   "src": "assets/drawings/circulation_crescent.png",
@@ -32,7 +32,7 @@ window.AS2_SHEETS = [
   "tag": "Circulation",
   "title": "Circulation & accessibility",
   "caption": "One shaded primary route, radial sikkas to every room, and Al Madar \u2014 the 438 m running loop \u2014 around the whole.",
-  "kb": 277
+  "kb": 269
  },
  {
   "src": "assets/drawings/facilities_crescent.png",
@@ -40,7 +40,7 @@ window.AS2_SHEETS = [
   "tag": "Facilities",
   "title": "Commercial & service facilities",
   "caption": "Where the park earns its running costs and where it is serviced. Souk and cafe on the convex face; restrooms at both gates; every facility reachable without a vehicle entering the walk.",
-  "kb": 243
+  "kb": 238
  },
  {
   "src": "assets/drawings/planting_crescent.png",
@@ -48,7 +48,7 @@ window.AS2_SHEETS = [
   "tag": "Planting",
   "title": "Planting plan \u2014 131 trees",
   "caption": "Drawn at mature canopy radius. Ghaf takes the southern rank because it is the most drought-tolerant species in the schedule.",
-  "kb": 396
+  "kb": 383
  },
  {
   "src": "assets/boards/board_1_concept.png",
@@ -56,7 +56,7 @@ window.AS2_SHEETS = [
   "tag": "Board 1",
   "title": "Presentation board \u2014 concept",
   "caption": "The concept, the plan, the section and the circulation on one sheet.",
-  "kb": 957
+  "kb": 3556
  },
  {
   "src": "assets/boards/board_2_evidence.png",
@@ -64,7 +64,7 @@ window.AS2_SHEETS = [
   "tag": "Board 2",
   "title": "Presentation board \u2014 evidence",
   "caption": "What the models measured, and what they changed about the design.",
-  "kb": 797
+  "kb": 792
  },
  {
   "src": "assets/figures/fig04_site_comfort_map.png",

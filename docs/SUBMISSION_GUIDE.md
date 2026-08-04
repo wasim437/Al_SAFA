@@ -263,10 +263,17 @@ the film cannot drift away from the drawings the way the previous one did.
 **To turn it into the MP4 the portal wants:**
 
 1. Open `concept_film.html` in Chrome or Edge.
-2. Press **Record the film to a video file** and leave the tab in front.
-3. Sixty seconds later `Falaj_Al_Safa_Concept_Film_60s.mp4` downloads on its own
-   — 1920 × 1080, sixty seconds **with narration**, about 9 MB.
-4. Upload it.
+2. Press **Quality** to choose 1080p or **4K**.
+3. Press **Record the film to a video file** and leave the tab in front.
+4. Sixty seconds later the file downloads on its own, **with narration** —
+   about 43 MB at 4K (3840 × 2160) or 28 MB at 1080p.
+5. Upload it.
+
+At 4K the canvas backing store is doubled and the drawing context scaled by two,
+so every line, glyph and gradient is resolved at 3840 × 2160 rather than
+upscaled from 1080p — which would add pixels and no detail. The preview stays at
+1080p because drawing four times the pixels for sixty seconds costs a lot and
+shows nothing on a canvas displayed a metre wide.
 
 **Narration on / off** beside it records a silent version instead.
 

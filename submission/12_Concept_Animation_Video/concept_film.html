@@ -137,6 +137,7 @@
     <button class="btn" id="toggle">Pause</button>
     <button class="btn" id="restart">Restart</button>
     <button class="btn" id="voice" aria-pressed="true">Narration on</button>
+    <button class="btn" id="quality" aria-pressed="false">Quality · 1080p</button>
     <button class="btn" id="record">Record the film to a video file</button>
     <div class="rail" id="rail"></div>
     <span class="tc" id="tc">00:00:00 / 00:01:00</span>
@@ -467,6 +468,25 @@
   // FRAME FURNITURE
   // ======================================================================
   const BAR = Math.round((H - W/2.39)/2), FT = BAR, FB = H - BAR, FH = FB - FT;
+
+  // ── Output resolution ─────────────────────────────────────────────────────
+  // Every coordinate in this film is written in a 1920x1080 space, and W, H and
+  // the letterbox bars above were read once at load, so they stay in it. To
+  // render at 4K the backing store is doubled and the context scaled by two:
+  // the drawing code is untouched and every line, glyph and gradient is
+  // resolved at 3840x2160 rather than upscaled from 1080p, which would add
+  // pixels and no detail.
+  //
+  // Assigning to canvas.width wipes the context state, so the transform has to
+  // be re-applied here every time and nowhere else.
+  let SCALE = 1;
+  function setStage(k) {
+    if (SCALE === k) return;
+    SCALE = k;
+    cv.width = W * k;
+    cv.height = H * k;
+    ctx.setTransform(k, 0, 0, k, 0, 0);
+  }
   function mono(s,w){ ctx.font = `${w||400} ${s}px ui-monospace, "SF Mono", Consolas, monospace`; }
   function disp(s,w){ ctx.font = `${w||700} ${s}px "Helvetica Neue", Helvetica, Arial, sans-serif`; }
   function tx(s,x,y,a){ ctx.globalAlpha = a===undefined?1:clamp(a,0,1); ctx.fillText(s,x,y); ctx.globalAlpha = 1; }
@@ -1387,6 +1407,24 @@
   // records the 1920x1080 canvas itself.
   const recBtn = document.getElementById("record");
   const recNote = document.getElementById("recnote");
+  const qBtn = document.getElementById("quality");
+
+  // Preview stays at 1080p whatever this is set to — the stage is only enlarged
+  // for the duration of a recording, because drawing four times the pixels on
+  // every frame of a sixty-second preview costs a lot and shows nothing on a
+  // canvas that is displayed a metre wide.
+  let want4K = false;
+  if (qBtn) {
+    qBtn.addEventListener("click", () => {
+      want4K = !want4K;
+      qBtn.textContent = want4K ? "Quality · 4K" : "Quality · 1080p";
+      qBtn.setAttribute("aria-pressed", String(want4K));
+      say(want4K
+        ? "Next recording will be <b>3840 &times; 2160</b>. It still takes sixty "
+          + "seconds, but the file will be several times larger."
+        : "Next recording will be <b>1920 &times; 1080</b>.");
+    });
+  }
 
   function say(html) { recNote.hidden = false; recNote.innerHTML = html; }
 
@@ -1418,6 +1456,11 @@
     t = 0; paint();
     audioSetup();
     if (actx && actx.state === "suspended") { try { await actx.resume(); } catch (e) {} }
+    // Enlarge the stage before the stream is captured — captureStream reads the
+    // canvas at whatever size it is when the track starts, so resizing later
+    // would be ignored or would kill the track.
+    setStage(want4K ? 2 : 1);
+    paint();
     recBtn.setAttribute("aria-busy", "true");
     toggle.disabled = restart.disabled = true;
 
@@ -1431,10 +1474,16 @@
     const chunks = [];
     let rec;
     try {
-      rec = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 12e6 });
+      rec = new MediaRecorder(stream, { mimeType: type,
+        // 4K needs roughly four times the bits to hold the same detail;
+        // leaving it at 12 Mb/s would render four times the pixels and then
+        // throw the extra away in compression.
+        videoBitsPerSecond: want4K ? 44e6 : 12e6 });
     } catch (e) {
       say("Recording could not start: " + e.message);
-      recBtn.removeAttribute("aria-busy");
+      setStage(1);
+    paint();
+    recBtn.removeAttribute("aria-busy");
       toggle.disabled = restart.disabled = false;
       return;
     }
@@ -1472,13 +1521,13 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `Falaj_Al_Safa_Concept_Film_60s.${ext}`;
+    a.download = `Falaj_Al_Safa_Concept_Film_60s_${want4K ? "4K" : "1080p"}.${ext}`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 30000);
 
     const mb = (blob.size / 1048576).toFixed(1);
-    say(`Saved <b>Falaj_Al_Safa_Concept_Film_60s.${ext}</b> — ${mb} MB, ` +
-        `1920&times;1080, sixty seconds.` +
+    say(`Saved <b>${a.download}</b> — ${mb} MB, ` +
+        `${want4K ? "3840&times;2160" : "1920&times;1080"}, sixty seconds.` +
         (ext === "webm"
           ? ` This browser cannot write MP4, and a WebM written this way ` +
             `carries no duration in its header — it plays, but some players ` +

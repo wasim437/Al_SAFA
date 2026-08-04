@@ -1049,9 +1049,15 @@ def build(D: dict) -> list[dict]:
                 "or Edge.",
                 "Press <b>Record the film to a video file</b> and leave the tab "
                 "in front for sixty seconds.",
+                "<b>Quality</b> beside it switches the recording between "
+                "1920&#215;1080 and 3840&#215;2160. At 4K the film's backing "
+                "canvas is doubled and the drawing context scaled, so every "
+                "line and glyph is resolved at 4K rather than upscaled from "
+                "1080p — the bitrate rises with it.",
                 "The file downloads on its own as "
-                "<font face='Courier'>Falaj_Al_Safa_Concept_Film_60s.mp4</font> "
-                "— 1920&#215;1080, sixty seconds with narration, about 9 MB.",
+                "<font face='Courier'>Falaj_Al_Safa_Concept_Film_60s_4K.mp4</font> "
+                "— sixty seconds with narration, about 43 MB at 4K or 28 MB at "
+                "1080p.",
                 "<b>Narration on / off</b> beside it records a silent version "
                 "instead, if a voice-over is not wanted.",
             ]),

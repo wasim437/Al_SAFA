@@ -596,6 +596,36 @@ to draw it. Paste this first, once, then the prompt you want:
 
 ---
 
+---
+
+## ⚠️ WHAT THE FIRST GENERATED SET GOT WRONG — read before regenerating
+
+Six images were generated on 4 August 2026. Two failed and two were weak, and
+the faults were the same each time. State these explicitly in any regeneration.
+
+**1. The canopy came back as a CLOSED RING.** The aerial showed an oval loop
+running the whole way round the park. That is not this scheme — it is the
+closed elliptical loop the sweep in Section A4 tested and rejected, at 79.1%
+mean cover and 89 hours with no shade anywhere against the arc's 52. The arc is
+ONE OPEN CURVE with two ends that stop at the park boundary. Say so in the
+words a model cannot misread: not a ring, not a loop, not an oval, not closed,
+two open ends.
+
+**2. The neighbourhood stayed in shot.** Villas, roads and cars were visible in
+five of the six. "The park fills the frame" was not strong enough on its own —
+name the things that must not appear, one by one.
+
+**3. The canopy came back too tall and too short.** In the souk image it read as
+a single arch like a footbridge. It is 18 m wide, 4.5 m high and 144 m long —
+low, long and horizontal. A model given "gridshell" alone reaches for a hall.
+
+**4. Bright green lawn.** This is a desert park. Sparse, dry, silvery grass.
+
+Add to the negative prompt when regenerating:
+`ring, oval, loop, closed curve, racetrack, doughnut, stadium, arena, tall arch,
+footbridge, hangar, bright green lawn, manicured turf, cars, parked cars, road,
+street, villa, house, apartment block, city skyline`
+
 ## NEGATIVE PROMPT — paste this with every single prompt
 
 ```
