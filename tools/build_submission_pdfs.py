@@ -605,7 +605,7 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     c.drawPath(p, fill=1, stroke=0)
     c.setFont("Helvetica-Bold", 8)
     c.drawString(x + 14.5 * mm, y - 5.4 * mm,
-                 "EVERY FIGURE IN THIS FILE CAN BE CHECKED HERE")
+                 "VISIT THE LIVE PROJECT PORTAL")
     c.setFont("Helvetica-Bold", 17)
     c.drawString(x + 8 * mm, y - 14 * mm, PORTAL_URL.replace("https://", ""))
     c.linkURL(PORTAL_URL, (x, y - cta_h, w - 18 * mm, y), relative=0)

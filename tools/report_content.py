@@ -1024,6 +1024,36 @@ def build(D: dict) -> list[dict]:
                 "NaN or undefined value, so a geometry change cannot break the "
                 "film quietly.",
             ]),
+            ("h1", "3. Three cuts, one film"),
+            ("p", "The submitted video is the hero cut. Two others exist "
+                  "because they answer different questions, and all three run "
+                  "sixty seconds against the same narration and the same "
+                  "figures."),
+            ("table", (["Cut", "What it shows", "Built by"], [
+                ["<b>concept_film_hero.html</b><br/>the submitted film",
+                 "Drawn entirely from the project's data — no photographs. "
+                 "Seven plan forms swept against the 8,760-hour solar model "
+                 "and scored, a real August day passing over the adopted arc, "
+                 "and a peak heat index falling from 56.8 °C to 48.7 °C.",
+                 "tools/build_concept_film_hero.py"],
+                ["concept_film_presentation.html",
+                 "The six photoreal renders, moving between each visualisation "
+                 "and the analysis behind it.",
+                 "tools/build_concept_film_v2.py"],
+                ["concept_film.html",
+                 "The park drawn in 3D in real time from src/plan.py with "
+                 "shadows computed live — evidence that the film and the "
+                 "drawings share one geometry.",
+                 "hand-authored; geometry by tools/sync_film.py"],
+            ], "All three record their own MP4. Every frame of the third is "
+               "asserted by tests/test_film.js.", [42, 78, 42])),
+            ("p", "The hero cut is submitted because the plan-form sweep is "
+                  "the part of this proposal that cannot be photographed. The "
+                  "straight bar shades more ground on average and the film "
+                  "shows it doing so; the arc is adopted on hours in the year "
+                  "when the route offers nowhere at all to stand, 330 down to "
+                  "52. That is the clearest available answer to how AI changed "
+                  "the design rather than decorated it."),
             ("h1", "3. The narration"),
             ("p", "The film carries a spoken commentary in four fifteen-second "
                   "segments, cued to 0, 15, 30 and 45 seconds. The voice is "

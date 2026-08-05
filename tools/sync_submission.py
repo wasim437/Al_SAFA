@@ -158,6 +158,33 @@ Images withdrawn from this submission, and why, are recorded in
 """
 
 
+# Files that live in a slot without this tool putting them there — the films
+# and the recorded video. Left to the fallback they were all described as
+# "Written report / supporting document", which for a sixty-second MP4 is
+# actively misleading to anyone reading the folder.
+DEFAULT_WHAT = "Written report / supporting document."
+DESCRIBE = {
+    "Falaj_Al_Safa_Concept_Film_60s_4K.mp4":
+        "**Deliverable 15 — the one-minute concept animation.** 3840x2160, "
+        "sixty seconds, H.264 with AAC narration. Upload this file. Recorded "
+        "from concept_film_hero.html.",
+    "concept_film_hero.html":
+        "The film that produced the MP4 — drawn entirely from the project's "
+        "own data, no photographs. Seven plan forms swept and scored, and a "
+        "heat index falling from 56.8 to 48.7 C. Press Record to rebuild the "
+        "video at 1080p or 4K. Built by tools/build_concept_film_hero.py.",
+    "concept_film_presentation.html":
+        "An alternative cut using the six photoreal renders against the same "
+        "narration, moving between the visualisations and the analysis behind "
+        "them. Built by tools/build_concept_film_v2.py.",
+    "concept_film.html":
+        "The original real-time cut: the park drawn in 3D from src/plan.py "
+        "with shadows computed live, kept because it demonstrates that the "
+        "film and the drawings share one geometry. Every frame is asserted by "
+        "tests/test_film.js.",
+}
+
+
 def main() -> int:
     copied = 0
     for slot, items in PLAN.items():
@@ -179,7 +206,7 @@ def main() -> int:
         for p in sorted(dest.iterdir()):
             if p.name in known or p.name == "MANIFEST.md" or p.suffix == ".bak":
                 continue
-            rows.append(f"| `{p.name}` | Written report / supporting document. |")
+            rows.append(f"| `{p.name}` | {DESCRIBE.get(p.name, DEFAULT_WHAT)} |")
         (dest / "MANIFEST.md").write_text(
             HEADER.format(slot=slot.replace("_", " ")) + "\n".join(rows) + "\n" + FOOTER,
             encoding="utf-8")

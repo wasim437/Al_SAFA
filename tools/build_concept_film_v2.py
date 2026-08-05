@@ -2,10 +2,10 @@
 
 WHY THIS EXISTS
 ---------------
-There are two earlier cuts. concept_film.html draws the park live from
-src/plan.py — accurate, and it looks like geometry on a canvas.
-concept_film_renders.html cuts the six photoreal renders together — it looks
-like a place, and says nothing about how the place was arrived at.
+concept_film.html draws the park live from src/plan.py — accurate, and it
+looks like geometry on a canvas. An earlier cut of the six renders on their
+own looked like a place and said nothing about how the place was arrived at;
+it was dropped in favour of this one, which does both.
 
 This one is the argument. It moves between the renders and the analysis that
 produced them, because that movement *is* the entry: every other proposal will
