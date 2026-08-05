@@ -12,7 +12,7 @@ window.AS2 = {
   "deadline": "2026-08-15",
   "siteAreaSqm": 15000.0,
   "budgetAED": 35000000,
-  "generated": "2026-08-04 12:54 UTC",
+  "generated": "2026-08-05 11:41 UTC",
   "sourceCount": 20,
   "conceptSubtitle": "a crescent of shade over a channel of water"
  },
@@ -7518,7 +7518,7 @@ window.AS2 = {
    "net_annual_tCO2e": 108.7,
    "sequestration_source": "Phase 7.5 carbon model (131-tree Phase 6 planting schedule)"
   },
-  "source": "../archive/phases/07_PHASE7_PERFORMANCE_AND_SUSTAINABILITY/outputs/advanced_lcc_energy_carbon_results.json Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years."
+  "source": "../archive/phases/07_PHASE7_PERFORMANCE_AND_SUSTAINABILITY/outputs/advanced_lcc_energy_carbon_results.json Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years. Cost side rebuilt from the redesigned take-off (AED 18,011,313) at 4% discount and 2.3% inflation over 30 years."
  },
  "concepts": {
   "source": "src/config.py CRESCENT — the sweep table is in the file.",

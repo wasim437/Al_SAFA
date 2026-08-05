@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-31T16:53:56",
+  "generated": "2026-08-05T11:38:38",
   "site_area_sqm": 15000.0,
   "annual_daylight_hours": 4402,
   "spine_shade_canopy_only_pct": 87.28,
@@ -26,5 +26,8 @@
   "trees": 131,
   "model_M1_test_r2": 0.9944,
   "model_M2_test_accuracy": 0.9749,
-  "model_M3_regimes": 2
+  "model_M3_regimes": 2,
+  "capital_cost_aed": 26973012.82,
+  "budget_utilisation_pct": 77.1,
+  "cost_per_sqm_aed": 1798.2
 }

@@ -7,7 +7,7 @@ Files in this folder, and what produced each one.
 | `fig10_masterplan.png` | The masterplan the sixty-second film flies over. Every frame of the film reads the same geometry, asserted by tests/test_film.js. |
 | `Concept_Animation_Storyboard.pdf` | Written report / supporting document. |
 | `concept_film.html` | Written report / supporting document. |
-| `Falaj_Al_Safa_Concept_Film_60s_1080p.mp4` | Written report / supporting document. |
+| `concept_film_renders.html` | Written report / supporting document. |
 | `Falaj_Al_Safa_Concept_Film_60s_4K.mp4` | Written report / supporting document. |
 | `narration` | Written report / supporting document. |
 | `README_VIDEO.txt` | Written report / supporting document. |

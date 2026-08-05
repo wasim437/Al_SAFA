@@ -8,7 +8,7 @@ window.AS2_SHEETS = [
   "tag": "Plan",
   "title": "Masterplan \u2014 Falaj Al Safa",
   "caption": "One arc, and every room struck off its centre. The numbered key is the room schedule; each area is the shoelace area of the drawn polygon.",
-  "kb": 433
+  "kb": 423
  },
  {
   "src": "assets/drawings/section_crescent.png",
@@ -16,7 +16,7 @@ window.AS2_SHEETS = [
   "tag": "Section",
   "title": "Section A\u2013A \u2014 the Crescent Canopy",
   "caption": "The 7 m walk under an 18 m gridshell at 4.5 m, with the 3 m southern louvre. Both solstice sun angles are computed, not drawn.",
-  "kb": 200
+  "kb": 197
  },
  {
   "src": "assets/drawings/elevation_crescent.png",
@@ -24,7 +24,7 @@ window.AS2_SHEETS = [
   "tag": "Elevation",
   "title": "Elevation \u2014 the bay rhythm",
   "caption": "6 m structural bays, the perforated soffit at 12% transmittance, and the louvre screen hanging on the southern face.",
-  "kb": 147
+  "kb": 136
  },
  {
   "src": "assets/drawings/circulation_crescent.png",
@@ -48,7 +48,7 @@ window.AS2_SHEETS = [
   "tag": "Planting",
   "title": "Planting plan \u2014 131 trees",
   "caption": "Drawn at mature canopy radius. Ghaf takes the southern rank because it is the most drought-tolerant species in the schedule.",
-  "kb": 383
+  "kb": 382
  },
  {
   "src": "assets/boards/board_1_concept.png",
@@ -56,7 +56,7 @@ window.AS2_SHEETS = [
   "tag": "Board 1",
   "title": "Presentation board \u2014 concept",
   "caption": "The concept, the plan, the section and the circulation on one sheet.",
-  "kb": 3571
+  "kb": 3151
  },
  {
   "src": "assets/boards/board_2_evidence.png",
@@ -64,7 +64,7 @@ window.AS2_SHEETS = [
   "tag": "Board 2",
   "title": "Presentation board \u2014 evidence",
   "caption": "What the models measured, and what they changed about the design.",
-  "kb": 792
+  "kb": 784
  },
  {
   "src": "assets/figures/fig04_site_comfort_map.png",
@@ -72,7 +72,7 @@ window.AS2_SHEETS = [
   "tag": "Analysis",
   "title": "Predicted summer comfort, square metre by square metre",
   "caption": "July afternoon heat index per m\u00b2. The crescent reads as the coolest continuous route, and its concave side is measurably cooler.",
-  "kb": 200
+  "kb": 196
  },
  {
   "src": "assets/figures/fig02_comfort_bands.png",
@@ -80,7 +80,7 @@ window.AS2_SHEETS = [
   "tag": "Analysis",
   "title": "Shade converts unusable daylight hours into usable ones",
   "caption": "The share of the year's 4,402 daylight hours in each comfort band, exposed today and shaded as designed.",
-  "kb": 95
+  "kb": 92
  },
  {
   "src": "assets/figures/fig09_diurnal_comfort.png",
@@ -88,7 +88,7 @@ window.AS2_SHEETS = [
   "tag": "Analysis",
   "title": "When is the park comfortable?",
   "caption": "Hour by hour and month by month. The design opens up the late afternoon in spring and autumn.",
-  "kb": 107
+  "kb": 105
  },
  {
   "src": "assets/figures/fig03_shade_by_zone.png",
@@ -96,7 +96,7 @@ window.AS2_SHEETS = [
   "tag": "Analysis",
   "title": "Annual shade coverage by zone type",
   "caption": "Ray-traced ground-plane occlusion on a 1 m grid, sampled across the year.",
-  "kb": 100
+  "kb": 97
  },
  {
   "src": "assets/figures/fig01_climate_and_comfort.png",
@@ -104,7 +104,7 @@ window.AS2_SHEETS = [
   "tag": "Climate",
   "title": "Dubai climate, and what it feels like",
   "caption": "39 years of NCM monthly normals against the modelled heat index.",
-  "kb": 220
+  "kb": 218
  },
  {
   "src": "assets/figures/fig06_feature_importance.png",
@@ -112,7 +112,7 @@ window.AS2_SHEETS = [
   "tag": "Model",
   "title": "What actually determines whether a square metre is shaded",
   "caption": "Permutation importance. The caption on this figure is generated from the model output, because the redesign inverted the answer.",
-  "kb": 123
+  "kb": 121
  },
  {
   "src": "assets/figures/fig05_surrogate_performance.png",
@@ -120,7 +120,7 @@ window.AS2_SHEETS = [
   "tag": "Model",
   "title": "Does the surrogate reproduce the simulation?",
   "caption": "Neural-network predictions against ray-traced ground truth, on the held-out test set.",
-  "kb": 353
+  "kb": 345
  },
  {
   "src": "assets/figures/fig07_confusion_matrix.png",
@@ -128,7 +128,7 @@ window.AS2_SHEETS = [
   "tag": "Model",
   "title": "Predicting thermal stress from the clock and the sun alone",
   "caption": "Temperature and humidity withheld. Errors fall between adjacent bands, never between comfortable and dangerous.",
-  "kb": 123
+  "kb": 121
  },
  {
   "src": "assets/figures/fig08_microclimate_regimes.png",
@@ -136,6 +136,6 @@ window.AS2_SHEETS = [
   "tag": "Model",
   "title": "The park's operating regimes, found by clustering",
   "caption": "k selected by silhouette score rather than chosen.",
-  "kb": 128
+  "kb": 126
  }
 ];

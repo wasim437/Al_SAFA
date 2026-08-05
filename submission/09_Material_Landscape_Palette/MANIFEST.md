@@ -6,6 +6,7 @@ Files in this folder, and what produced each one.
 |---|---|
 | `planting_crescent.png` | Planting plan — species, counts, mature canopy and summer water demand. |
 | `section_crescent.png` | Section A–A, showing the surface build-up and the falaj channel. |
+| `oasis_basin.jpg` | Written report / supporting document. |
 | `Phase6_Detailed_Design_Report.pdf` | Written report / supporting document. |
 
 Every image here is generated. Rebuild them with:
