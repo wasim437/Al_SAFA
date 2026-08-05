@@ -557,23 +557,16 @@
       ctx.restore();
       ctx.fillStyle="rgba(246,243,237,.36)"; mono(15,400);
       tx(`${M.peakExposed} °C  →  ${M.peakShaded} °C   ·   python run_analysis.py`,
-         W/2,FT+FH*.46+88,ca);
-      // Divider line
-      ctx.fillStyle=`rgba(255,182,39,${.55*ca})`;
-      ctx.fillRect(W/2-220,FT+FH*.46+120,440,1);
-      // Portal CTA
-      ctx.fillStyle=`rgba(100,220,180,${.90*ca})`; mono(17,700);
-      ctx.save(); ctx.letterSpacing="2px";
-      tx("wasim437.github.io/Al_SAFA",W/2,FT+FH*.46+148,ca);
-      ctx.restore();
-      ctx.fillStyle=`rgba(246,243,237,.50)`; mono(13,400);
-      tx("LIVE PROJECT PORTAL  ·  VISIT TO CHECK EVERY FIGURE IN THIS SUBMISSION",W/2,FT+FH*.46+170,ca);
-      // Author row
-      ctx.fillStyle=`rgba(246,243,237,.70)`; mono(14,600);
-      tx("Mohamed Wasim  ·  AI Engineer",W/2,FT+FH*.46+198,ca);
-      // Contact details
-      ctx.fillStyle=`rgba(246,243,237,.40)`; mono(12,400);
-      tx("0565919456  ·  wasimmisaw437@gmail.com  ·  github.com/wasim437",W/2,FT+FH*.46+218,ca);
+         W/2,FT+FH*.46+76,ca);
+
+      ctx.fillStyle="rgba(255,182,39,.95)"; mono(15,700);
+      tx("MOHAMED WASIM  ·  AI ENGINEER", W/2, FT+FH*.46+114, ca);
+      ctx.fillStyle="rgba(246,243,237,.80)"; mono(13,400);
+      tx("PHONE: +971 56 591 9456   ·   EMAIL: wasimmisaw437@gmail.com", W/2, FT+FH*.46+138, ca);
+      ctx.fillStyle="#6FD9B0"; mono(14,600);
+      tx("MUST VISIT LIVE PORTAL: https://wasim437.github.io/Al_SAFA/", W/2, FT+FH*.46+164, ca);
+      ctx.fillStyle="rgba(246,243,237,.55)"; mono(12,400);
+      tx("GITHUB REPO: https://github.com/wasim437/Al_SAFA", W/2, FT+FH*.46+188, ca);
       ctx.textAlign="left";
     }
 

@@ -66,7 +66,8 @@ DRIVE_URL = getattr(C, "GDRIVE_URL", "")
 BLOB = f"{REPO_URL}/blob/main"
 
 PROJECT = "Al Safa 2 Park — Falaj Al Safa"
-APPLICANT = "Mohamed Wasim · Individual Applicant"
+APPLICANT = "Mohamed Wasim · AI Engineer · Individual Applicant"
+APPLICANT_PHONE = "+971 56 591 9456"
 # Email only, deliberately. These PDFs are committed to a public repository, so
 # anything printed here is scrapeable and stays in git history even if it is
 # taken out later. The mobile number is on the Dubai Municipality submission
@@ -623,7 +624,7 @@ def cover_page(c: rl_canvas.Canvas, slot: dict, items: list[Path]) -> None:
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 7.6)
     c.drawString(x + 5 * mm + c.stringWidth("Mohamed Wasim", "Helvetica-Bold", 8.6)
-                 + 3 * mm, y - 6 * mm, "· Individual Applicant")
+                 + 3 * mm, y - 6 * mm, "· AI Engineer · Tel: +971 56 591 9456")
     _link(c, APPLICANT_EMAIL, f"mailto:{APPLICANT_EMAIL}",
           w - 21 * mm - c.stringWidth(APPLICANT_EMAIL, "Helvetica-Bold", 8),
           y - 6 * mm, size=8)
